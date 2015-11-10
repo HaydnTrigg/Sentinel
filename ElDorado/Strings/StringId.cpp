@@ -53,7 +53,7 @@ namespace ElDorado
 
 		std::istream &operator>>(std::istream &in, StringId &stringId)
 		{
-			return in.read((char *)stringId.Value, 4);
+			return in.read((char *)&stringId.Value, 4);
 		}
 	}
 }

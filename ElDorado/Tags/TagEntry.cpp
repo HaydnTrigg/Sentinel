@@ -37,20 +37,10 @@ namespace ElDorado
 			in.read((char *)&resourceFixupCount, 2);
 			in.seekg(0x2, std::ios::cur);
 			in.read((char *)&definitionOffset, 4);
-
-			uint32_t value = 0;
-
-			in.read((char *)&value, 4);
-			tagEntry.GroupTag = Tag(value);
-
-			in.read((char *)&value, 4);
-			tagEntry.ParentGroupTag = Tag(value);
-
-			in.read((char *)&value, 4);
-			tagEntry.GrandparentGroupTag = Tag(value);
-
-			in.read((char *)&value, 4);
-			tagEntry.GroupNameId = StringId(value);
+			in >> tagEntry.GroupTag;
+			in >> tagEntry.ParentGroupTag;
+			in >> tagEntry.GrandparentGroupTag;
+			in >> tagEntry.GroupNameId;
 
 			uint32_t headerSize = (TagHeaderSize + dependencyCount * 4 + dataFixupCount * 4 + resourceFixupCount * 4);
 

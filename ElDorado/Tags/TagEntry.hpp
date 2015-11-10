@@ -22,10 +22,10 @@ namespace ElDorado
 
 		protected:
 			int32_t Index;
-			Tag &GroupTag;
-			Tag &ParentGroupTag;
-			Tag &GrandparentGroupTag;
-			StringId &GroupNameId;
+			Tag GroupTag;
+			Tag ParentGroupTag;
+			Tag GrandparentGroupTag;
+			StringId GroupNameId;
 			uint32_t Address;
 			uint32_t Size;
 			uint32_t Offset;
