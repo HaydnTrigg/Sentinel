@@ -23,20 +23,24 @@
     <ClInclude Include="ElDorado\Resources\ResourceCache.hpp" />
     <ClInclude Include="ElDorado\Strings\StringId.hpp" />
     <ClInclude Include="ElDorado\Strings\StringIdCache.hpp" />
+    <ClInclude Include="ElDorado\Strings\StringIdResolverBase.hpp" />
     <ClInclude Include="ElDorado\Tags\Tag.hpp" />
     <ClInclude Include="ElDorado\Tags\TagCache.hpp" />
     <ClInclude Include="ElDorado\Tags\TagEntry.hpp" />
     <ClInclude Include="ElDorado\Tags\TagFixup.hpp" />
+    <ClInclude Include="ElDorado\V1_106708\StringIdResolver.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ElDorado\Game\GameVersion.cpp" />
     <ClCompile Include="ElDorado\Resources\ResourceCache.cpp" />
     <ClCompile Include="ElDorado\Strings\StringId.cpp" />
     <ClCompile Include="ElDorado\Strings\StringIdCache.cpp" />
+    <ClCompile Include="ElDorado\Strings\StringIdResolverBase.cpp" />
     <ClCompile Include="ElDorado\Tags\Tag.cpp" />
     <ClCompile Include="ElDorado\Tags\TagCache.cpp" />
     <ClCompile Include="ElDorado\Tags\TagEntry.cpp" />
     <ClCompile Include="ElDorado\Tags\TagFixup.cpp" />
+    <ClCompile Include="ElDorado\V1_106708\StringIdResolver.cpp" />
     <ClCompile Include="Sentinel.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

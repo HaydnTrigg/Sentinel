@@ -72,6 +72,12 @@
     <ClCompile Include="ElDorado\Tags\TagEntry.cpp">
       <Filter>Source Files\ElDorado\Tags</Filter>
     </ClCompile>
+    <ClCompile Include="ElDorado\V1_106708\StringIdResolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ElDorado\Strings\StringIdResolverBase.cpp">
+      <Filter>Source Files\ElDorado\Strings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ElDorado\Game\GameVersion.hpp">
@@ -97,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="ElDorado\Tags\TagFixup.hpp">
       <Filter>Header Files\ElDorado\Tags</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\V1_106708\StringIdResolver.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\Strings\StringIdResolverBase.hpp">
+      <Filter>Header Files\ElDorado\Strings</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

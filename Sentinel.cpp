@@ -1,9 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <ElDorado\Game\GameVersion.hpp>
+#include <ElDorado\Strings\StringIdResolverBase.hpp>
 #include <ElDorado\Tags\TagCache.hpp>
+#include <ElDorado\V1_106708\StringIdResolver.hpp>
 
+using namespace ElDorado;
 using namespace ElDorado::Game;
+using namespace ElDorado::Strings;
 using namespace ElDorado::Tags;
 
 int main(int argc, char **argv)
@@ -22,8 +26,11 @@ int main(int argc, char **argv)
 	std::cout <<
 		"Sentinel - A tool for Halo Online content development" << std::endl <<
 		"Written by Camden Smallwood <camden.smallwood@outlook.com>" << std::endl <<
-		"Thanks to Shockfire & the Members of #ElDorito on Snoonet" << std::endl <<
-		std::endl;
+		"Thanks to Shockfire & the Members of #ElDorito on Snoonet" << std::endl;
+
+	//
+	// Read the tags cache
+	//
 
 	std::ifstream in;
 	in.open(argv[1], std::ios::in | std::ios::binary);
@@ -35,17 +42,33 @@ int main(int argc, char **argv)
 	}
 
 	in >> tagCache;
+	in.close();
+
+	//
+	// Detect the game version
+	//
 
 	auto gameVersion = GameVersion::Find(tagCache.GetTimestamp());
 
 	if (gameVersion == GameVersion::Unknown)
 	{
-
+		std::cout << "ERROR: The game version of the tag cache was not recognized." << std::endl;
+		return 1;
 	}
-	else
+	
+	std::cout << "Game Version: " << gameVersion.GetName() << std::endl;
+
+	//
+	// Read the string_ids cache
+	//
+
+	if (gameVersion.GetTimestamp() >= GameVersion::V11_1_498295_Live.GetTimestamp())
 	{
-
+		std::cout << "ERROR: The game version's string_ids format is not supported." << std::endl;
+		return 1;
 	}
+
+	auto resolver = new V1_106708::StringIdResolver();
 
 	return 0;
 }
