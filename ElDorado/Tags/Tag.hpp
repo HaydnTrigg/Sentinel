@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <iostream>
 
 namespace ElDorado
 {
@@ -16,6 +17,8 @@ namespace ElDorado
 
 			bool operator==(const Tag &other);
 			bool operator!=(const Tag &other);
+
+			friend std::istream &operator>>(std::istream &in, Tag &tag);
 
 		protected:
 			uint32_t Value;

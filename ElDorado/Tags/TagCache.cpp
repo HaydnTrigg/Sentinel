@@ -4,38 +4,49 @@ namespace ElDorado
 {
 	namespace Tags
 	{
-		TagCache::TagCache()
+		TagCache::TagCache() :
+			TagHeaderOffsets(),
+			TagEntries()
 		{
 		}
 
 		std::istream &operator>>(std::istream &in, TagCache &tagCache)
 		{
+			in.seekg(4, std::ios::beg);
+
+			//
 			// Read tag list info
-			in.seekg(0x4);
-			in >> tagCache.TagListOffset;
-			in >> tagCache.TagEntryCount;
+			//
 
-			// Read the timestamp
-			in.seekg(0x10);
-			in >> tagCache.Timestamp;
+			in.read((char *)&tagCache.TagListOffset, 4);
+			in.read((char *)&tagCache.TagEntryCount, 4);
 
+			in.seekg(0x10, std::ios::beg);
+			in.read((char *)&tagCache.Timestamp, 8);
+
+			//
 			// Read the tag list
-			in.seekg(tagCache.TagListOffset);
-			for (auto i = 0; i < tagCache.TagEntryCount; i++)
+			//
+
+			in.seekg(tagCache.TagListOffset, std::ios::beg);
+			for (uint32_t i = 0; i < tagCache.TagEntryCount; i++)
 			{
-				uint32_t tagHeaderOffset;
-				in >> tagHeaderOffset;
-				tagCache.TagHeaderOffsets.push_back(tagHeaderOffset);
+				uint32_t offset;
+				in.read((char *)&offset, 4);
+				tagCache.TagHeaderOffsets.push_back(offset);
 			}
 
+			//
 			// Read each entry in the tag list
-			for (auto i = 0; i < tagCache.TagEntryCount; i++)
+			//
+
+			for (uint32_t i = 0; i < tagCache.TagEntryCount; i++)
 			{
 				TagEntry tagEntry(i);
 
 				if (i != 0)
 				{
-					in.seekg(tagCache.TagHeaderOffsets[i]);
+					in.seekg(tagCache.TagHeaderOffsets[i], std::ios::beg);
 					in >> tagEntry;
 				}
 

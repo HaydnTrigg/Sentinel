@@ -50,5 +50,10 @@ namespace ElDorado
 		{
 			return Value != other.Value;
 		}
+
+		std::istream &operator>>(std::istream &in, StringId &stringId)
+		{
+			return in.read((char *)stringId.Value, 4);
+		}
 	}
 }

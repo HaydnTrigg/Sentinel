@@ -21,10 +21,10 @@
   <ItemGroup>
     <ClInclude Include="ElDorado\Game\GameVersion.hpp" />
     <ClInclude Include="ElDorado\Resources\ResourceCache.hpp" />
+    <ClInclude Include="ElDorado\Strings\StringId.hpp" />
     <ClInclude Include="ElDorado\Strings\StringIdCache.hpp" />
     <ClInclude Include="ElDorado\Tags\Tag.hpp" />
     <ClInclude Include="ElDorado\Tags\TagCache.hpp" />
-    <ClInclude Include="ElDorado\Strings\StringId.hpp" />
     <ClInclude Include="ElDorado\Tags\TagEntry.hpp" />
     <ClInclude Include="ElDorado\Tags\TagFixup.hpp" />
   </ItemGroup>

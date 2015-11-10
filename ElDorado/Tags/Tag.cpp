@@ -25,5 +25,10 @@ namespace ElDorado
 		{
 			return Value != other.Value;
 		}
+
+		std::istream &operator>>(std::istream &in, Tag &tag)
+		{
+			return in.read((char *)&tag.Value, 4);
+		}
 	}
 }

@@ -13,18 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\ElDorado">
-      <UniqueIdentifier>{0dc192f0-b112-43e6-805c-65ec5c321596}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\ElDorado\Game">
-      <UniqueIdentifier>{df19cd14-7579-4317-8ba3-415849215204}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\ElDorado\Strings">
-      <UniqueIdentifier>{895761c5-467e-4510-bda7-3398ff353180}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\ElDorado\Tags">
-      <UniqueIdentifier>{06668769-c2ca-40bc-8399-0702dfdc8cbd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\ElDorado">
       <UniqueIdentifier>{c4d60312-67c3-4775-8475-593c4328256f}</UniqueIdentifier>
     </Filter>
@@ -37,11 +25,23 @@
     <Filter Include="Source Files\ElDorado\Strings">
       <UniqueIdentifier>{03251c80-1569-41dd-bc77-84616ea1bd4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ElDorado\Resources">
-      <UniqueIdentifier>{9225304d-5f7f-42c5-be15-f97dd3852914}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\ElDorado\Resources">
       <UniqueIdentifier>{a79f9e3a-3424-4141-b828-98bec775a27f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ElDorado">
+      <UniqueIdentifier>{ba77ffd7-d49c-405b-b68d-9c9553df9aef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ElDorado\Game">
+      <UniqueIdentifier>{049b986d-e6da-4e4f-a314-1b04792c8dae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ElDorado\Tags">
+      <UniqueIdentifier>{e950b194-3fc5-48cf-9529-60894c2ac083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ElDorado\Strings">
+      <UniqueIdentifier>{50d6544d-2fa7-486f-9131-00f1baa9535c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ElDorado\Resources">
+      <UniqueIdentifier>{0294cc2e-ea96-445c-9a66-91b57f646314}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +77,9 @@
     <ClInclude Include="ElDorado\Game\GameVersion.hpp">
       <Filter>Header Files\ElDorado\Game</Filter>
     </ClInclude>
+    <ClInclude Include="ElDorado\Resources\ResourceCache.hpp">
+      <Filter>Header Files\ElDorado\Resources</Filter>
+    </ClInclude>
     <ClInclude Include="ElDorado\Strings\StringId.hpp">
       <Filter>Header Files\ElDorado\Strings</Filter>
     </ClInclude>
@@ -89,13 +92,10 @@
     <ClInclude Include="ElDorado\Tags\TagCache.hpp">
       <Filter>Header Files\ElDorado\Tags</Filter>
     </ClInclude>
-    <ClInclude Include="ElDorado\Tags\TagFixup.hpp">
+    <ClInclude Include="ElDorado\Tags\TagEntry.hpp">
       <Filter>Header Files\ElDorado\Tags</Filter>
     </ClInclude>
-    <ClInclude Include="ElDorado\Resources\ResourceCache.hpp">
-      <Filter>Header Files\ElDorado\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Tags\TagEntry.hpp">
+    <ClInclude Include="ElDorado\Tags\TagFixup.hpp">
       <Filter>Header Files\ElDorado\Tags</Filter>
     </ClInclude>
   </ItemGroup>
