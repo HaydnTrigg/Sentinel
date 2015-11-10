@@ -9,6 +9,7 @@ namespace ElDorado
 		class GameVersion
 		{
 		public:
+			static const GameVersion Unknown;
 			static const GameVersion V1_106708_cert_ms23;
 			static const GameVersion V1_235640_cert_ms25;
 			static const GameVersion V0_0_1_301003_cert_MS26_new;
@@ -29,6 +30,11 @@ namespace ElDorado
 
 			std::string &GetName();
 			int64_t GetTimestamp() const;
+
+			bool operator==(const GameVersion &other);
+			bool operator!=(const GameVersion &other);
+
+			static GameVersion &Find(const int64_t timestamp);
 
 		protected:
 			std::string Name;

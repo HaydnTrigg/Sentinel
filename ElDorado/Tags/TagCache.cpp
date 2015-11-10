@@ -10,6 +10,11 @@ namespace ElDorado
 		{
 		}
 
+		int64_t TagCache::GetTimestamp() const
+		{
+			return Timestamp;
+		}
+
 		std::istream &operator>>(std::istream &in, TagCache &tagCache)
 		{
 			in.seekg(4, std::ios::beg);

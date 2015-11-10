@@ -12,6 +12,8 @@ namespace ElDorado
 		public:
 			TagCache();
 
+			int64_t GetTimestamp() const;
+
 			friend std::istream &operator>>(std::istream &in, TagCache &tagCache);
 
 		protected:

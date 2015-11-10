@@ -4,6 +4,8 @@ namespace ElDorado
 {
 	namespace Game
 	{
+		const GameVersion GameVersion::Unknown(-1);
+
 		const GameVersion GameVersion::V1_106708_cert_ms23
 			("1.106708 cert_ms23", 130713360239499012);
 
@@ -64,6 +66,48 @@ namespace ElDorado
 		int64_t GameVersion::GetTimestamp() const
 		{
 			return Timestamp;
+		}
+
+		bool GameVersion::operator==(const GameVersion &other)
+		{
+			return Name == other.Name && Timestamp == other.Timestamp;
+		}
+
+		bool GameVersion::operator!=(const GameVersion &other)
+		{
+			return Name != other.Name || Timestamp != other.Timestamp;
+		}
+
+		GameVersion &GameVersion::Find(const int64_t timestamp)
+		{
+			if (timestamp == GameVersion::V1_106708_cert_ms23.Timestamp)
+				return (GameVersion &)GameVersion::V1_106708_cert_ms23;
+			else if (timestamp == GameVersion::V1_235640_cert_ms25.Timestamp)
+				return (GameVersion &)GameVersion::V1_235640_cert_ms25;
+			else if (timestamp == GameVersion::V0_0_1_301003_cert_MS26_new.Timestamp)
+				return (GameVersion &)GameVersion::V0_0_1_301003_cert_MS26_new;
+			else if (timestamp == GameVersion::V8_1_372731_Live.Timestamp)
+				return (GameVersion &)GameVersion::V8_1_372731_Live;
+			else if (timestamp == GameVersion::V0_0_416097_Live.Timestamp)
+				return (GameVersion &)GameVersion::V0_0_416097_Live;
+			else if (timestamp == GameVersion::V10_1_430475_Live.Timestamp)
+				return (GameVersion &)GameVersion::V10_1_430475_Live;
+			else if (timestamp == GameVersion::V10_1_454665_Live.Timestamp)
+				return (GameVersion &)GameVersion::V10_1_454665_Live;
+			else if (timestamp == GameVersion::V10_1_449175_Live.Timestamp)
+				return (GameVersion &)GameVersion::V10_1_449175_Live;
+			else if (timestamp == GameVersion::V11_1_498295_Live.Timestamp)
+				return (GameVersion &)GameVersion::V11_1_498295_Live;
+			else if (timestamp == GameVersion::V11_1_530605_Live.Timestamp)
+				return (GameVersion &)GameVersion::V11_1_530605_Live;
+			else if (timestamp == GameVersion::V11_1_532911_Live.Timestamp)
+				return (GameVersion &)GameVersion::V11_1_532911_Live;
+			else if (timestamp == GameVersion::V11_1_554482_Live.Timestamp)
+				return (GameVersion &)GameVersion::V11_1_554482_Live;
+			else if (timestamp == GameVersion::V11_1_571627_Live.Timestamp)
+				return (GameVersion &)GameVersion::V11_1_571627_Live;
+			else
+				return (GameVersion &)GameVersion::Unknown;
 		}
 	}
 }
