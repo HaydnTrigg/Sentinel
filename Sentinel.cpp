@@ -21,8 +21,8 @@ int main(int argc, char **argv)
 
 	std::cout <<
 		"Sentinel - A tool for Halo Online content development" << std::endl <<
-		"Written by Camden Smallwood" << std::endl <<
-		"Thanks to Shockfire & the Halo Online IRC" << std::endl <<
+		"Written by Camden Smallwood <camden.smallwood@outlook.com>" << std::endl <<
+		"Thanks to Shockfire & the Members of #ElDorito on Snoonet" << std::endl <<
 		std::endl;
 
 	std::ifstream in;
