@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <iostream>
 #include <unordered_set>
 #include <vector>
 #include <ElDorado\Strings\StringId.hpp>
@@ -12,10 +13,12 @@ namespace ElDorado
 
 	namespace Tags
 	{
-		class TagDefinition
+		class TagEntry
 		{
 		public:
-			TagDefinition();
+			TagEntry(const int32_t index);
+
+			friend std::istream &operator>>(std::istream &in, TagEntry &tagEntry);
 
 		protected:
 			int32_t Index;

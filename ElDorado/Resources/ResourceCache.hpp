@@ -2,12 +2,12 @@
 
 namespace ElDorado
 {
-	namespace Strings
+	namespace Resources
 	{
-		class StringIdCache
+		class ResourceCache
 		{
 		public:
-			StringIdCache();
+			ResourceCache();
 
 		protected:
 

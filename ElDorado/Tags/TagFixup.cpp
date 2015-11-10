@@ -18,5 +18,17 @@ namespace ElDorado
 		{
 			return TargetOffset;
 		}
+
+		bool TagFixup::operator==(const TagFixup &other)
+		{
+			return WriteOffset == other.WriteOffset &&
+				TargetOffset == other.TargetOffset;
+		}
+
+		bool TagFixup::operator!=(const TagFixup &other)
+		{
+			return WriteOffset != other.WriteOffset ||
+				TargetOffset != other.TargetOffset;
+		}
 	}
 }

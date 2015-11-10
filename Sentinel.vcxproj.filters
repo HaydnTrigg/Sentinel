@@ -37,6 +37,12 @@
     <Filter Include="Source Files\ElDorado\Strings">
       <UniqueIdentifier>{03251c80-1569-41dd-bc77-84616ea1bd4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ElDorado\Resources">
+      <UniqueIdentifier>{9225304d-5f7f-42c5-be15-f97dd3852914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ElDorado\Resources">
+      <UniqueIdentifier>{a79f9e3a-3424-4141-b828-98bec775a27f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sentinel.cpp">
@@ -51,13 +57,19 @@
     <ClCompile Include="ElDorado\Tags\Tag.cpp">
       <Filter>Source Files\ElDorado\Tags</Filter>
     </ClCompile>
-    <ClCompile Include="ElDorado\Tags\TagDefinition.cpp">
-      <Filter>Source Files\ElDorado\Tags</Filter>
-    </ClCompile>
     <ClCompile Include="ElDorado\Tags\TagFixup.cpp">
       <Filter>Source Files\ElDorado\Tags</Filter>
     </ClCompile>
     <ClCompile Include="ElDorado\Tags\TagCache.cpp">
+      <Filter>Source Files\ElDorado\Tags</Filter>
+    </ClCompile>
+    <ClCompile Include="ElDorado\Resources\ResourceCache.cpp">
+      <Filter>Source Files\ElDorado\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ElDorado\Strings\StringIdCache.cpp">
+      <Filter>Source Files\ElDorado\Strings</Filter>
+    </ClCompile>
+    <ClCompile Include="ElDorado\Tags\TagEntry.cpp">
       <Filter>Source Files\ElDorado\Tags</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,10 +89,13 @@
     <ClInclude Include="ElDorado\Tags\TagCache.hpp">
       <Filter>Header Files\ElDorado\Tags</Filter>
     </ClInclude>
-    <ClInclude Include="ElDorado\Tags\TagDefinition.hpp">
+    <ClInclude Include="ElDorado\Tags\TagFixup.hpp">
       <Filter>Header Files\ElDorado\Tags</Filter>
     </ClInclude>
-    <ClInclude Include="ElDorado\Tags\TagFixup.hpp">
+    <ClInclude Include="ElDorado\Resources\ResourceCache.hpp">
+      <Filter>Header Files\ElDorado\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\Tags\TagEntry.hpp">
       <Filter>Header Files\ElDorado\Tags</Filter>
     </ClInclude>
   </ItemGroup>

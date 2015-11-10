@@ -20,19 +20,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ElDorado\Game\GameVersion.hpp" />
+    <ClInclude Include="ElDorado\Resources\ResourceCache.hpp" />
     <ClInclude Include="ElDorado\Strings\StringIdCache.hpp" />
     <ClInclude Include="ElDorado\Tags\Tag.hpp" />
     <ClInclude Include="ElDorado\Tags\TagCache.hpp" />
     <ClInclude Include="ElDorado\Strings\StringId.hpp" />
-    <ClInclude Include="ElDorado\Tags\TagDefinition.hpp" />
+    <ClInclude Include="ElDorado\Tags\TagEntry.hpp" />
     <ClInclude Include="ElDorado\Tags\TagFixup.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ElDorado\Game\GameVersion.cpp" />
+    <ClCompile Include="ElDorado\Resources\ResourceCache.cpp" />
     <ClCompile Include="ElDorado\Strings\StringId.cpp" />
+    <ClCompile Include="ElDorado\Strings\StringIdCache.cpp" />
     <ClCompile Include="ElDorado\Tags\Tag.cpp" />
     <ClCompile Include="ElDorado\Tags\TagCache.cpp" />
-    <ClCompile Include="ElDorado\Tags\TagDefinition.cpp" />
+    <ClCompile Include="ElDorado\Tags\TagEntry.cpp" />
     <ClCompile Include="ElDorado\Tags\TagFixup.cpp" />
     <ClCompile Include="Sentinel.cpp" />
   </ItemGroup>
@@ -93,6 +96,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -100,6 +104,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

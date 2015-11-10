@@ -13,6 +13,9 @@ namespace ElDorado
 			uint32_t GetWriteOffset() const;
 			uint32_t GetTargetOffset() const;
 
+			bool operator==(const TagFixup &other);
+			bool operator!=(const TagFixup &other);
+
 		protected:
 			uint32_t WriteOffset;
 			uint32_t TargetOffset;
