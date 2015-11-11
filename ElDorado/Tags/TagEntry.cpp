@@ -16,7 +16,12 @@ namespace ElDorado
 		const uint32_t TagHeaderSize = 0x24;
 		const uint32_t FixupPointerBase = 0x40000000;
 
-		std::istream &operator>>(std::istream &in, TagEntry &tagEntry)
+		void TagEntry::Serialize(std::ostream &out)
+		{
+			throw std::exception("TagEntry::Serialize is not yet implemented");
+		}
+
+		void TagEntry::Deserialize(std::istream &in)
 		{
 			uint32_t totalSize = 0;
 			int16_t dependencyCount = 0;
@@ -30,23 +35,23 @@ namespace ElDorado
 			// Read tag entry structure
 			//
 
-			in.read((char *)&tagEntry.Checksum, 4);
+			in.read((char *)&Checksum, 4);
 			in.read((char *)&totalSize, 4);
 			in.read((char *)&dependencyCount, 2);
 			in.read((char *)&dataFixupCount, 2);
 			in.read((char *)&resourceFixupCount, 2);
 			in.seekg(0x2, std::ios::cur);
 			in.read((char *)&definitionOffset, 4);
-			in >> tagEntry.GroupTag;
-			in >> tagEntry.ParentGroupTag;
-			in >> tagEntry.GrandparentGroupTag;
-			in >> tagEntry.GroupNameId;
+			in >> GroupTag;
+			in >> ParentGroupTag;
+			in >> GrandparentGroupTag;
+			in >> GroupNameId;
 
 			uint32_t headerSize = (TagHeaderSize + dependencyCount * 4 + dataFixupCount * 4 + resourceFixupCount * 4);
 
-			tagEntry.Address = headerOffset + headerSize;
-			tagEntry.Offset = definitionOffset - headerSize;
-			tagEntry.Size = totalSize - headerSize;
+			Address = headerOffset + headerSize;
+			Offset = definitionOffset - headerSize;
+			Size = totalSize - headerSize;
 
 			//
 			// Read tag dependencies
@@ -56,7 +61,7 @@ namespace ElDorado
 			{
 				int32_t value = 0;
 				in.read((char *)&value, 4);
-				tagEntry.Dependencies.emplace(value);
+				Dependencies.emplace(value);
 			}
 
 			//
@@ -81,6 +86,8 @@ namespace ElDorado
 			// Read data fixup definitions
 			//
 
+			DataFixups = std::vector<TagFixup>(dataFixupCount);
+
 			for (auto i = 0; i < dataFixupCount; i++)
 			{
 				uint32_t targetOffset = 0;
@@ -89,15 +96,14 @@ namespace ElDorado
 				in.read((char *)&targetOffset, 4);
 				targetOffset -= FixupPointerBase;
 
-				tagEntry.DataFixups.push_back(
-					TagFixup(
-						fixupOffset - headerSize,
-						targetOffset - headerSize));
+				DataFixups[i] = TagFixup(fixupOffset - headerSize, targetOffset - headerSize);
 			}
 
 			//
 			// Read resource fixup definitions
 			//
+
+			ResourceFixups = std::vector<TagFixup>(resourceFixupCount);
 
 			for (auto i = 0; i < resourceFixupCount; i++)
 			{
@@ -107,10 +113,7 @@ namespace ElDorado
 				in.read((char *)&targetOffset, 4);
 				targetOffset -= FixupPointerBase;
 
-				tagEntry.ResourceFixups.push_back(
-					TagFixup(
-						fixupOffset - headerSize,
-						targetOffset - headerSize));
+				ResourceFixups[i] = TagFixup(fixupOffset - headerSize, targetOffset - headerSize);
 			}
 
 			//
@@ -119,8 +122,6 @@ namespace ElDorado
 
 			delete resourceFixups;
 			delete dataFixups;
-
-			return in;
 		}
 	}
 }

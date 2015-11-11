@@ -1,8 +1,10 @@
 #pragma once
 #include <cstdint>
+#include <exception>
 #include <iostream>
 #include <unordered_set>
 #include <vector>
+#include <ElDorado\Common\Serializable.hpp>
 #include <ElDorado\Strings\StringId.hpp>
 #include <ElDorado\Tags\Tag.hpp>
 #include <ElDorado\Tags\TagFixup.hpp>
@@ -13,12 +15,13 @@ namespace ElDorado
 
 	namespace Tags
 	{
-		class TagEntry
+		class TagEntry : public Serializable<TagEntry>
 		{
 		public:
 			TagEntry(const int32_t index = 0);
 
-			friend std::istream &operator>>(std::istream &in, TagEntry &tagEntry);
+			void Serialize(std::ostream &out);
+			void Deserialize(std::istream &in);
 
 		protected:
 			int32_t Index;

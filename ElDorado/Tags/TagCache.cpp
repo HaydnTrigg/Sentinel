@@ -15,7 +15,12 @@ namespace ElDorado
 			return Timestamp;
 		}
 
-		std::istream &operator>>(std::istream &in, TagCache &tagCache)
+		void TagCache::Serialize(std::ostream &out)
+		{
+			throw std::exception("TagCache::Serialize is not yet implemented");
+		}
+
+		void TagCache::Deserialize(std::istream &in)
 		{
 			in.seekg(4, std::ios::beg);
 
@@ -23,44 +28,47 @@ namespace ElDorado
 			// Read tag list info
 			//
 
-			in.read((char *)&tagCache.TagListOffset, 4);
-			in.read((char *)&tagCache.TagEntryCount, 4);
+			in.read((char *)&TagListOffset, 4);
+			in.read((char *)&TagEntryCount, 4);
 
 			in.seekg(0x10, std::ios::beg);
-			in.read((char *)&tagCache.Timestamp, 8);
+			in.read((char *)&Timestamp, 8);
 
 			//
 			// Read the tag list
 			//
 
-			in.seekg(tagCache.TagListOffset, std::ios::beg);
-			for (uint32_t i = 0; i < tagCache.TagEntryCount; i++)
+			in.seekg(TagListOffset, std::ios::beg);
+			for (uint32_t i = 0; i < TagEntryCount; i++)
 			{
 				uint32_t offset;
 				in.read((char *)&offset, 4);
-				tagCache.TagHeaderOffsets.push_back(offset);
+				TagHeaderOffsets.push_back(offset);
 			}
 
 			//
 			// Read each entry in the tag list
 			//
 
-			tagCache.TagEntries = std::vector<TagEntry>(tagCache.TagEntryCount);
+			TagEntries = std::vector<TagEntry>(TagEntryCount);
 
-			for (uint32_t i = 0; i < tagCache.TagEntryCount; i++)
+			for (uint32_t i = 0; i < TagEntryCount; i++)
 			{
 				TagEntry tagEntry(i);
 
 				if (i != 0)
 				{
-					in.seekg(tagCache.TagHeaderOffsets[i], std::ios::beg);
+					in.seekg(TagHeaderOffsets[i], std::ios::beg);
 					in >> tagEntry;
 				}
 
-				tagCache.TagEntries[i] = tagEntry;
+				TagEntries[i] = tagEntry;
 			}
+		}
 
-			return in;
+		TagEntry &TagCache::operator[](const size_t index)
+		{
+			return TagEntries[index];
 		}
 	}
 }
