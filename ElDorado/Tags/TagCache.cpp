@@ -45,6 +45,8 @@ namespace ElDorado
 			// Read each entry in the tag list
 			//
 
+			tagCache.TagEntries = std::vector<TagEntry>(tagCache.TagEntryCount);
+
 			for (uint32_t i = 0; i < tagCache.TagEntryCount; i++)
 			{
 				TagEntry tagEntry(i);
@@ -55,7 +57,7 @@ namespace ElDorado
 					in >> tagEntry;
 				}
 
-				tagCache.TagEntries.push_back(tagEntry);
+				tagCache.TagEntries[i] = tagEntry;
 			}
 
 			return in;

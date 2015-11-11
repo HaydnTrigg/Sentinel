@@ -93,6 +93,12 @@ namespace ElDorado
 				in.seekg(dataOffset + offset, std::ios::beg);
 				Strings.push_back(ReadString(in));
 			}
+
+			//
+			// Clean up
+			//
+
+			delete stringOffsets;
 		}
 
 		const std::string &StringIdCache::operator[](const StringId &stringId)

@@ -16,7 +16,7 @@ namespace ElDorado
 		class TagEntry
 		{
 		public:
-			TagEntry(const int32_t index);
+			TagEntry(const int32_t index = 0);
 
 			friend std::istream &operator>>(std::istream &in, TagEntry &tagEntry);
 
