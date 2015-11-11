@@ -43,6 +43,15 @@
     <Filter Include="Header Files\ElDorado\Resources">
       <UniqueIdentifier>{0294cc2e-ea96-445c-9a66-91b57f646314}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ElDorado\Common">
+      <UniqueIdentifier>{6e9444bd-0575-410b-8b8c-2fa0d0852a15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ElDorado\V1_106708">
+      <UniqueIdentifier>{695b9706-e6a9-4eb4-b948-035b491a5989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ElDorado\V1_106708">
+      <UniqueIdentifier>{103c510c-a9a6-4ad6-b997-054d053984a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sentinel.cpp">
@@ -72,11 +81,11 @@
     <ClCompile Include="ElDorado\Tags\TagEntry.cpp">
       <Filter>Source Files\ElDorado\Tags</Filter>
     </ClCompile>
-    <ClCompile Include="ElDorado\V1_106708\StringIdResolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ElDorado\Strings\StringIdResolverBase.cpp">
       <Filter>Source Files\ElDorado\Strings</Filter>
+    </ClCompile>
+    <ClCompile Include="ElDorado\V1_106708\StringIdResolver.cpp">
+      <Filter>Source Files\ElDorado\V1_106708</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,44 +113,44 @@
     <ClInclude Include="ElDorado\Tags\TagFixup.hpp">
       <Filter>Header Files\ElDorado\Tags</Filter>
     </ClInclude>
-    <ClInclude Include="ElDorado\V1_106708\StringIdResolver.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ElDorado\Strings\StringIdResolverBase.hpp">
       <Filter>Header Files\ElDorado\Strings</Filter>
     </ClInclude>
-    <ClInclude Include="ElDorado\Common\Vector3D.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Serializable.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Vector2D.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Quaternion.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ElDorado\Common\EulerAngles2D.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\ElDorado\Common</Filter>
     </ClInclude>
     <ClInclude Include="ElDorado\Common\EulerAngles3D.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Plane2D.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Plane3D.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\ElDorado\Common</Filter>
     </ClInclude>
     <ClInclude Include="ElDorado\Common\Orientation3D.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\ElDorado\Common</Filter>
     </ClInclude>
-    <ClInclude Include="ElDorado\Common\Point3D.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ElDorado\Common\Plane2D.hpp">
+      <Filter>Header Files\ElDorado\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\Common\Plane3D.hpp">
+      <Filter>Header Files\ElDorado\Common</Filter>
     </ClInclude>
     <ClInclude Include="ElDorado\Common\Point2D.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\ElDorado\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\Common\Point3D.hpp">
+      <Filter>Header Files\ElDorado\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\Common\Quaternion.hpp">
+      <Filter>Header Files\ElDorado\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\Common\Serializable.hpp">
+      <Filter>Header Files\ElDorado\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\Common\Vector2D.hpp">
+      <Filter>Header Files\ElDorado\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\Common\Vector3D.hpp">
+      <Filter>Header Files\ElDorado\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\V1_106708\StringIdResolver.hpp">
+      <Filter>Header Files\ElDorado\V1_106708</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
