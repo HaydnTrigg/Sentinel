@@ -13,7 +13,6 @@ using namespace ElDorado::Tags;
 
 int main(int argc, char **argv)
 {
-	/*
 	if (argc != 2)
 	{
 		std::cout <<
@@ -22,7 +21,7 @@ int main(int argc, char **argv)
 
 		return 1;
 	}
-	*/
+
 	std::cout <<
 		"Sentinel - A tool for Halo Online content development" << std::endl <<
 		"Written by Camden Smallwood <camden.smallwood@outlook.com>" << std::endl <<
@@ -32,7 +31,7 @@ int main(int argc, char **argv)
 	// Find cache files
 	//
 
-	std::string tagsCacheFile("C:/Halo Online/maps/tags.dat");
+	std::string tagsCacheFile(argv[1]);
 	auto lastSlash = tagsCacheFile.find_last_of("/\\");
 
 	std::string cacheDirectory = lastSlash < tagsCacheFile.length() ?
