@@ -4,7 +4,7 @@ namespace ElDorado
 {
 	namespace Strings
 	{
-		StringIdCache::StringIdCache()
+		StringIdCache::StringIdCache(StringIdResolver &resolver)
 		{
 		}
 	}

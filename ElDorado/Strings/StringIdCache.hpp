@@ -1,4 +1,7 @@
 #pragma once
+#include <iostream>
+#include <fstream>
+#include <ElDorado\Strings\StringIdResolverBase.hpp>
 
 namespace ElDorado
 {
@@ -7,7 +10,7 @@ namespace ElDorado
 		class StringIdCache
 		{
 		public:
-			StringIdCache();
+			StringIdCache(StringIdResolver &resolver);
 
 		protected:
 
