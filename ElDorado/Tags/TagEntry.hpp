@@ -4,7 +4,7 @@
 #include <iostream>
 #include <unordered_set>
 #include <vector>
-#include <ElDorado\Common\Serializable.hpp>
+#include <Common\Serialization\Serializable.hpp>
 #include <ElDorado\Strings\StringId.hpp>
 #include <ElDorado\Tags\Tag.hpp>
 #include <ElDorado\Tags\TagFixup.hpp>
@@ -15,6 +15,8 @@ namespace ElDorado
 
 	namespace Tags
 	{
+		using namespace Common::Serialization;
+
 		class TagEntry : public Serializable<TagEntry>
 		{
 		public:

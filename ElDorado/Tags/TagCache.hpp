@@ -3,13 +3,15 @@
 #include <exception>
 #include <iostream>
 #include <vector>
-#include <ElDorado\Common\Serializable.hpp>
+#include <Common\Serialization\Serializable.hpp>
 #include <ElDorado\Tags\TagEntry.hpp>
 
 namespace ElDorado
 {
 	namespace Tags
 	{
+		using namespace Common::Serialization;
+
 		class TagCache : public Serializable<TagCache>
 		{
 		public:

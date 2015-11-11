@@ -43,14 +43,20 @@
     <Filter Include="Header Files\ElDorado\Resources">
       <UniqueIdentifier>{0294cc2e-ea96-445c-9a66-91b57f646314}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ElDorado\Common">
-      <UniqueIdentifier>{6e9444bd-0575-410b-8b8c-2fa0d0852a15}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\ElDorado\V1_106708">
       <UniqueIdentifier>{695b9706-e6a9-4eb4-b948-035b491a5989}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\ElDorado\V1_106708">
       <UniqueIdentifier>{103c510c-a9a6-4ad6-b997-054d053984a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{6e9444bd-0575-410b-8b8c-2fa0d0852a15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common\Math">
+      <UniqueIdentifier>{db182cdc-3bbf-4aaa-a008-42b553cdf709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common\Serialization">
+      <UniqueIdentifier>{d902378e-2714-45df-a901-f107cf232c86}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -116,41 +122,41 @@
     <ClInclude Include="ElDorado\Strings\StringIdResolverBase.hpp">
       <Filter>Header Files\ElDorado\Strings</Filter>
     </ClInclude>
-    <ClInclude Include="ElDorado\Common\EulerAngles2D.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\EulerAngles3D.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Orientation3D.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Plane2D.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Plane3D.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Point2D.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Point3D.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Quaternion.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Serializable.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Vector2D.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ElDorado\Common\Vector3D.hpp">
-      <Filter>Header Files\ElDorado\Common</Filter>
-    </ClInclude>
     <ClInclude Include="ElDorado\V1_106708\StringIdResolver.hpp">
       <Filter>Header Files\ElDorado\V1_106708</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Math\EulerAngles2D.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Math\EulerAngles3D.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Math\Orientation3D.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Math\Plane2D.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Math\Plane3D.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Math\Point2D.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Math\Point3D.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Math\Quaternion.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Math\Vector2D.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Math\Vector3D.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Serialization\Serializable.hpp">
+      <Filter>Header Files\Common\Serialization</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

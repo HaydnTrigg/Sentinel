@@ -19,17 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ElDorado\Common\EulerAngles2D.hpp" />
-    <ClInclude Include="ElDorado\Common\EulerAngles3D.hpp" />
-    <ClInclude Include="ElDorado\Common\Orientation3D.hpp" />
-    <ClInclude Include="ElDorado\Common\Plane2D.hpp" />
-    <ClInclude Include="ElDorado\Common\Plane3D.hpp" />
-    <ClInclude Include="ElDorado\Common\Point2D.hpp" />
-    <ClInclude Include="ElDorado\Common\Point3D.hpp" />
-    <ClInclude Include="ElDorado\Common\Quaternion.hpp" />
-    <ClInclude Include="ElDorado\Common\Serializable.hpp" />
-    <ClInclude Include="ElDorado\Common\Vector2D.hpp" />
-    <ClInclude Include="ElDorado\Common\Vector3D.hpp" />
+    <ClInclude Include="Common\Math\EulerAngles2D.hpp" />
+    <ClInclude Include="Common\Math\EulerAngles3D.hpp" />
+    <ClInclude Include="Common\Math\Orientation3D.hpp" />
+    <ClInclude Include="Common\Math\Plane2D.hpp" />
+    <ClInclude Include="Common\Math\Plane3D.hpp" />
+    <ClInclude Include="Common\Math\Point2D.hpp" />
+    <ClInclude Include="Common\Math\Point3D.hpp" />
+    <ClInclude Include="Common\Math\Quaternion.hpp" />
+    <ClInclude Include="Common\Serialization\Serializable.hpp" />
+    <ClInclude Include="Common\Math\Vector2D.hpp" />
+    <ClInclude Include="Common\Math\Vector3D.hpp" />
     <ClInclude Include="ElDorado\Game\GameVersion.hpp" />
     <ClInclude Include="ElDorado\Resources\ResourceCache.hpp" />
     <ClInclude Include="ElDorado\Strings\StringId.hpp" />
