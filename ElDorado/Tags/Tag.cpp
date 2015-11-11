@@ -16,6 +16,16 @@ namespace ElDorado
 			return Value;
 		}
 
+		void Tag::Serialize(std::ostream &out)
+		{
+			out << Value;
+		}
+
+		void Tag::Deserialize(std::istream &in)
+		{
+			in.read((char *)&Value, 4);
+		}
+
 		bool Tag::operator==(const Tag &other)
 		{
 			return Value == other.Value;
@@ -24,11 +34,6 @@ namespace ElDorado
 		bool Tag::operator!=(const Tag &other)
 		{
 			return Value != other.Value;
-		}
-
-		std::istream &operator>>(std::istream &in, Tag &tag)
-		{
-			return in.read((char *)&tag.Value, 4);
 		}
 	}
 }
