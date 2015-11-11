@@ -6,7 +6,7 @@
 namespace ElDorado
 {
 	template <typename Element>
-	struct Point2D : Serializable<Point3D<Element>>
+	struct Point2D : Serializable<Point2D<Element>>
 	{
 		static const size_t ElementSize = sizeof(Element) / sizeof(char);
 

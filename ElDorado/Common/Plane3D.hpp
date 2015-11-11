@@ -7,7 +7,7 @@
 namespace ElDorado
 {
 	template <typename Element>
-	struct Plane3D
+	struct Plane3D : Serializable<Plane3D<Element>>
 	{
 		static const size_t ElementSize = sizeof(Element) / sizeof(char);
 
