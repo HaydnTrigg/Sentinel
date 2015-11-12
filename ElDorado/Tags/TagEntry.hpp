@@ -19,6 +19,8 @@ namespace ElDorado
 
 		class TagEntry : public Serializable<TagEntry>
 		{
+			friend class TagFixup;
+
 		public:
 			TagEntry(const int32_t index = 0);
 

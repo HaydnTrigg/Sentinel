@@ -7,6 +7,8 @@ namespace ElDorado
 	{
 		class TagFixup
 		{
+			friend class TagEntry;
+
 		public:
 			TagFixup(const uint32_t writeOffset = 0, const uint32_t targetOffset = 0);
 

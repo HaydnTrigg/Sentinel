@@ -65,63 +65,49 @@ namespace ElDorado
 			}
 
 			//
-			// Read data fixup pointers
+			// Read data and resource fixup pointers
 			//
 
-			uint32_t *dataFixups = new uint32_t[dataFixupCount];
+			DataFixups = std::vector<TagFixup>(dataFixupCount);
+			ResourceFixups = std::vector<TagFixup>(resourceFixupCount);
 
 			for (auto i = 0; i < dataFixupCount; i++)
-				in.read((char *)&dataFixups[i], 4);
-
-			//
-			// Read resource fixup pointers
-			//
-
-			uint32_t *resourceFixups = new uint32_t[resourceFixupCount];
+				in.read((char *)&DataFixups[i].WriteOffset, 4);
 
 			for (auto i = 0; i < resourceFixupCount; i++)
-				in.read((char *)&resourceFixups[i], 4);
+				in.read((char *)&ResourceFixups[i].WriteOffset, 4);
 
 			//
 			// Read data fixup definitions
 			//
 
-			DataFixups = std::vector<TagFixup>(dataFixupCount);
-
 			for (auto i = 0; i < dataFixupCount; i++)
 			{
 				uint32_t targetOffset = 0;
-				auto fixupOffset = dataFixups[i] - FixupPointerBase;
+				auto fixupOffset = DataFixups[i].WriteOffset - FixupPointerBase;
 				in.seekg(headerOffset + fixupOffset, std::ios::beg);
 				in.read((char *)&targetOffset, 4);
 				targetOffset -= FixupPointerBase;
 
-				DataFixups[i] = TagFixup(fixupOffset - headerSize, targetOffset - headerSize);
+				DataFixups[i].WriteOffset = fixupOffset - headerSize;
+				DataFixups[i].TargetOffset = targetOffset - headerSize;
 			}
 
 			//
 			// Read resource fixup definitions
 			//
 
-			ResourceFixups = std::vector<TagFixup>(resourceFixupCount);
-
 			for (auto i = 0; i < resourceFixupCount; i++)
 			{
 				uint32_t targetOffset = 0;
-				auto fixupOffset = resourceFixups[i] - FixupPointerBase;
+				auto fixupOffset = ResourceFixups[i].WriteOffset - FixupPointerBase;
 				in.seekg(headerOffset + fixupOffset, std::ios::beg);
 				in.read((char *)&targetOffset, 4);
 				targetOffset -= FixupPointerBase;
 
-				ResourceFixups[i] = TagFixup(fixupOffset - headerSize, targetOffset - headerSize);
+				ResourceFixups[i].WriteOffset = fixupOffset - headerSize;
+				ResourceFixups[i].TargetOffset = targetOffset - headerSize;
 			}
-
-			//
-			// Clean up
-			//
-
-			delete resourceFixups;
-			delete dataFixups;
 		}
 	}
 }

@@ -116,8 +116,5 @@ int main(int argc, char **argv)
 	in >> resourceCache;
 	in.close();
 
-	std::cout << "Press any key to continue...";
-	std::cin.get();
-
 	return 0;
 }
