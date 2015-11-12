@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common\Math\Rectangle3D.hpp" />
+    <ClInclude Include="Common\Math\Bounds.hpp" />
     <ClInclude Include="Common\Math\EulerAngles2D.hpp" />
     <ClInclude Include="Common\Math\EulerAngles3D.hpp" />
     <ClInclude Include="Common\Math\Orientation3D.hpp" />
@@ -27,6 +29,7 @@
     <ClInclude Include="Common\Math\Point2D.hpp" />
     <ClInclude Include="Common\Math\Point3D.hpp" />
     <ClInclude Include="Common\Math\Quaternion.hpp" />
+    <ClInclude Include="Common\Math\Rectangle2D.hpp" />
     <ClInclude Include="Common\Serialization\Serializable.hpp" />
     <ClInclude Include="Common\Math\Vector2D.hpp" />
     <ClInclude Include="Common\Math\Vector3D.hpp" />

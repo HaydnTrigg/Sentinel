@@ -14,7 +14,11 @@ namespace Common
 
 			Element X, Y;
 
-			Vector2D(const Element x = (Element)0, const Element y = (Element)0) :
+			Vector2D
+			(
+				const Element x = (Element)0,
+				const Element y = (Element)0
+			) :
 				X(x), Y(y)
 			{
 			}

@@ -7,31 +7,33 @@ namespace Common
 {
 	namespace Math
 	{
+		using namespace Serialization;
+
 		template <typename Element>
-		struct EulerAngles2D : Serializable<EulerAngles2D<Element>>
+		struct Bounds : Serializable<Bounds<Element>>
 		{
 			static const size_t ElementSize = sizeof(Element) / sizeof(char);
 
-			Element Yaw, Pitch;
+			Element Lower, Upper;
 
-			EulerAngles2D
+			Bounds
 			(
-				const Element yaw = (Element)0,
-				const Element pitch = (Element)0
+				const Element lower = (Element)0,
+				const Element upper = (Element)1
 			) :
-				Yaw(yaw), Pitch(pitch)
+				Lower(lower), Upper(upper)
 			{
 			}
 
 			void Serialize(std::ostream &out)
 			{
-				out << Yaw << Pitch;
+				out << Lower << Upper;
 			}
 
 			void Deserialize(std::istream &in)
 			{
-				in.read((char *)&Yaw, ElementSize);
-				in.read((char *)&Pitch, ElementSize);
+				in.read((char *)&Lower, ElementSize);
+				in.read((char *)&Upper, ElementSize);
 			}
 		};
 	}

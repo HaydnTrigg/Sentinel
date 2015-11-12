@@ -1,26 +1,29 @@
 #pragma once
 #include <cstdint>
 #include <iostream>
+#include <Common\Math\Bounds.hpp>
 #include <Common\Serialization\Serializable.hpp>
 
 namespace Common
 {
 	namespace Math
 	{
+		using namespace Serialization;
+
 		template <typename Element>
-		struct Point3D : Serializable<Point3D<Element>>
+		struct Rectangle3D : Serializable<Rectangle3D<Element>>
 		{
 			static const size_t ElementSize = sizeof(Element) / sizeof(char);
 
-			Element X, Y, Z;
+			Bounds<Element> X, Y, Z;
 
-			Point3D
+			Rectangle3D
 			(
-				const Element x = (Element)0,
-				const Element y = (Element)0,
-				const Element z = (Element)0
+				const Bounds<Element> &x = Bounds<Element>(),
+				const Bounds<Element> &y = Bounds<Element>(),
+				const Bounds<Element> &z = Bounds<Element>()
 			) :
-				X(x), Y(y), Z(z)
+				X(x), Y(y) Z(z)
 			{
 			}
 
@@ -31,9 +34,7 @@ namespace Common
 
 			void Deserialize(std::istream &in)
 			{
-				in.read((char *)&X, ElementSize);
-				in.read((char *)&Y, ElementSize);
-				in.read((char *)&Z, ElementSize);
+				in >> X >> Y >> Z;
 			}
 		};
 	}

@@ -14,7 +14,12 @@ namespace Common
 
 			Element I, J, K;
 
-			Vector3D(const Element i = (Element)0, const Element j = (Element)0, const Element k = (Element)0) :
+			Vector3D
+			(
+				const Element i = (Element)0,
+				const Element j = (Element)0,
+				const Element k = (Element)0
+			) :
 				I(i), J(j), K(k)
 			{
 			}

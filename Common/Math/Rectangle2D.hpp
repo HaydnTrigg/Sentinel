@@ -1,37 +1,39 @@
 #pragma once
 #include <cstdint>
 #include <iostream>
+#include <Common\Math\Bounds.hpp>
 #include <Common\Serialization\Serializable.hpp>
 
 namespace Common
 {
 	namespace Math
 	{
+		using namespace Serialization;
+
 		template <typename Element>
-		struct EulerAngles2D : Serializable<EulerAngles2D<Element>>
+		struct Rectangle2D : Serializable<Rectangle2D<Element>>
 		{
 			static const size_t ElementSize = sizeof(Element) / sizeof(char);
 
-			Element Yaw, Pitch;
+			Bounds<Element> X, Y;
 
-			EulerAngles2D
+			Rectangle2D
 			(
-				const Element yaw = (Element)0,
-				const Element pitch = (Element)0
+				const Bounds<Element> &x = Bounds<Element>(),
+				const Bounds<Element> &y = Bounds<Element>()
 			) :
-				Yaw(yaw), Pitch(pitch)
+				X(x), Y(y)
 			{
 			}
 
 			void Serialize(std::ostream &out)
 			{
-				out << Yaw << Pitch;
+				out << X << Y;
 			}
 
 			void Deserialize(std::istream &in)
 			{
-				in.read((char *)&Yaw, ElementSize);
-				in.read((char *)&Pitch, ElementSize);
+				in >> X >> Y;
 			}
 		};
 	}

@@ -16,7 +16,11 @@ namespace Common
 			Vector3D<Element> Normal;
 			Element D;
 
-			Plane2D(const Vector2D<Element> &normal = Vector2D<Element>(), const Element d = (Element)1) :
+			Plane2D
+			(
+				const Vector2D<Element> &normal = Vector2D<Element>(),
+				const Element d = (Element)1
+			) :
 				Normal(normal), D(d)
 			{
 			}

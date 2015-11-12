@@ -14,7 +14,11 @@ namespace Common
 
 			Element X, Y, Z;
 
-			Point2D(const Element x = (Element)0, const Element y = (Element)0) :
+			Point2D
+			(
+				const Element x = (Element)0,
+				const Element y = (Element)0
+			) :
 				X(x), Y(y)
 			{
 			}

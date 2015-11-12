@@ -1,9 +1,9 @@
 #pragma once
 #include <cstdint>
 #include <iostream>
+#include <Common\Math\Point3D.hpp>
+#include <Common\Math\Quaternion.hpp>
 #include <Common\Serialization\Serializable.hpp>
-#include <ElDorado\Common\Point3D.hpp>
-#include <ElDorado\Common\Quaternion.hpp>
 
 namespace Common
 {
@@ -18,10 +18,12 @@ namespace Common
 			Point3D<Element> Translation;
 			Element Scale;
 
-			Orientation3D(
+			Orientation3D
+			(
 				const Quaternion<Element> &rotation = Quaternion<Element>(),
 				const Point3D<Element> &translation = Point3D<Element>(),
-				const Element scale = (Element)1) :
+				const Element scale = (Element)1
+			) :
 				Rotation(rotation), Translation(translation), Scale(scale)
 			{
 			}

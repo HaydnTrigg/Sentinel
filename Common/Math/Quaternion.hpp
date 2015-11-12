@@ -16,7 +16,11 @@ namespace Common
 			Vector3D<Element> Vector;
 			Element W;
 
-			Quaternion(const Vector3D<Element> &vector = Vector3D<Element>(), const Element w = (Element)1) :
+			Quaternion
+			(
+				const Vector3D<Element> &vector = Vector3D<Element>(),
+				const Element w = (Element)1
+			) :
 				Vector(vector), W(w)
 			{
 			}

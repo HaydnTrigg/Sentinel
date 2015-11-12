@@ -14,7 +14,12 @@ namespace Common
 
 			Element Yaw, Pitch, Roll;
 
-			EulerAngles3D(const Element yaw, const Element pitch, const Element roll) :
+			EulerAngles3D
+			(
+				const Element yaw = (Element)0,
+				const Element pitch = (Element)0,
+				const Element roll = (Element)0
+			) :
 				Yaw(yaw), Pitch(pitch), Roll(roll)
 			{
 			}
