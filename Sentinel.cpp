@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 
 	if (!in)
 	{
-		std::cerr << "ERROR: Failed to open resources cache file: " << stringIdsCacheFile << std::endl;
+		std::cerr << "ERROR: Failed to open resources cache file: " << resourcesCacheFile << std::endl;
 		return 1;
 	}
 
