@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common\Math\Angle.hpp" />
     <ClInclude Include="Common\Math\Rectangle3D.hpp" />
     <ClInclude Include="Common\Math\Bounds.hpp" />
     <ClInclude Include="Common\Math\EulerAngles2D.hpp" />

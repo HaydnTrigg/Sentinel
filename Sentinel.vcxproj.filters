@@ -167,5 +167,8 @@
     <ClInclude Include="Common\Math\Rectangle2D.hpp">
       <Filter>Header Files\Common\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Common\Math\Angle.hpp">
+      <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
