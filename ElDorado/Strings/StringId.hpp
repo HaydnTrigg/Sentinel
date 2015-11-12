@@ -1,12 +1,15 @@
 #pragma once
 #include <cstdint>
 #include <iostream>
+#include <Common\Serialization\Serializable.hpp>
 
 namespace ElDorado
 {
 	namespace Strings
 	{
-		class StringId
+		using namespace Common::Serialization;
+
+		class StringId : public Serializable<StringId>
 		{
 		public:
 			static const StringId Null;
@@ -23,7 +26,8 @@ namespace ElDorado
 			bool operator==(const StringId &other);
 			bool operator!=(const StringId &other);
 
-			friend std::istream &operator>>(std::istream &in, StringId &stringId);
+			void Serialize(std::ostream &out);
+			void Deserialize(std::istream &in);
 
 		protected:
 			uint32_t Value;

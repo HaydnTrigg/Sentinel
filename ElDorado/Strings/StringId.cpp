@@ -51,9 +51,14 @@ namespace ElDorado
 			return Value != other.Value;
 		}
 
-		std::istream &operator>>(std::istream &in, StringId &stringId)
+		void StringId::Serialize(std::ostream &out)
 		{
-			return in.read((char *)&stringId.Value, 4);
+			out << Value;
+		}
+
+		void StringId::Deserialize(std::istream &in)
+		{
+			in.read((char *)&Value, 4);
 		}
 	}
 }
