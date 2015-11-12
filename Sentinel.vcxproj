@@ -36,6 +36,7 @@
     <ClInclude Include="Common\Math\Vector3D.hpp" />
     <ClInclude Include="ElDorado\Game\GameVersion.hpp" />
     <ClInclude Include="ElDorado\Resources\ResourceCache.hpp" />
+    <ClInclude Include="ElDorado\Resources\ResourceEntry.hpp" />
     <ClInclude Include="ElDorado\Strings\StringId.hpp" />
     <ClInclude Include="ElDorado\Strings\StringIdCache.hpp" />
     <ClInclude Include="ElDorado\Strings\StringIdResolverBase.hpp" />
@@ -48,6 +49,7 @@
   <ItemGroup>
     <ClCompile Include="ElDorado\Game\GameVersion.cpp" />
     <ClCompile Include="ElDorado\Resources\ResourceCache.cpp" />
+    <ClCompile Include="ElDorado\Resources\ResourceEntry.cpp" />
     <ClCompile Include="ElDorado\Strings\StringId.cpp" />
     <ClCompile Include="ElDorado\Strings\StringIdCache.cpp" />
     <ClCompile Include="ElDorado\Strings\StringIdResolverBase.cpp" />

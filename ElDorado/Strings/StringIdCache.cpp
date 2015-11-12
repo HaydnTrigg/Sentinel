@@ -80,18 +80,20 @@ namespace ElDorado
 
 			size_t dataOffset = in.tellg();
 
+			Strings = std::vector<std::string>(stringCount);
+
 			for (auto i = 0; i < stringCount; i++)
 			{
 				auto offset = stringOffsets[i];
 
 				if (offset == -1 || offset >= dataSize)
 				{
-					Strings.push_back("");
+					Strings[i] = "";
 					continue;
 				}
 
 				in.seekg(dataOffset + offset, std::ios::beg);
-				Strings.push_back(ReadString(in));
+				Strings[i] = ReadString(in);
 			}
 
 			//

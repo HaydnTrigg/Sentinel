@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <list>
+#include <vector>
 #include <Common\Serialization\Serializable.hpp>
 #include <ElDorado\Strings\StringId.hpp>
 #include <ElDorado\Strings\StringIdResolverBase.hpp>
@@ -29,7 +29,7 @@ namespace ElDorado
 			const std::string &operator[](const StringId &stringId);
 
 		protected:
-			std::list<std::string> Strings;
+			std::vector<std::string> Strings;
 			StringIdResolver &Resolver;
 		};
 	}

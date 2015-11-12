@@ -93,6 +93,9 @@
     <ClCompile Include="ElDorado\V1_106708\StringIdResolver.cpp">
       <Filter>Source Files\ElDorado\V1_106708</Filter>
     </ClCompile>
+    <ClCompile Include="ElDorado\Resources\ResourceEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ElDorado\Game\GameVersion.hpp">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="Common\Math\Angle.hpp">
       <Filter>Header Files\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="ElDorado\Resources\ResourceEntry.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
