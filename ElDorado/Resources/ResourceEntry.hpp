@@ -7,6 +7,8 @@ namespace ElDorado
 	{
 		class ResourceEntry
 		{
+			friend class ResourceCache;
+
 		public:
 			ResourceEntry(const uint32_t offset = 0, const uint32_t size = 0);
 

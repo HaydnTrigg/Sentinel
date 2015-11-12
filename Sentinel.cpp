@@ -1,15 +1,17 @@
 #include <iostream>
 #include <fstream>
 #include <ElDorado\Game\GameVersion.hpp>
+#include <ElDorado\Tags\TagCache.hpp>
 #include <ElDorado\Strings\StringIdCache.hpp>
 #include <ElDorado\Strings\StringIdResolverBase.hpp>
-#include <ElDorado\Tags\TagCache.hpp>
 #include <ElDorado\V1_106708\StringIdResolver.hpp>
+#include <ElDorado\Resources\ResourceCache.hpp>
 
 using namespace ElDorado;
 using namespace ElDorado::Game;
-using namespace ElDorado::Strings;
 using namespace ElDorado::Tags;
+using namespace ElDorado::Strings;
+using namespace ElDorado::Resources;
 
 int main(int argc, char **argv)
 {
@@ -95,6 +97,23 @@ int main(int argc, char **argv)
 	std::cout << "Reading string_ids cache..." << std::endl;
 	StringIdCache stringIdsCache(resolver);
 	in >> stringIdsCache;
+	in.close();
+
+	//
+	// Read the resources cache
+	//
+
+	in.open(resourcesCacheFile, std::ios::in | std::ios::binary);
+
+	if (!in)
+	{
+		std::cerr << "ERROR: Failed to open resources cache file: " << stringIdsCacheFile << std::endl;
+		return 1;
+	}
+
+	std::cout << "Reading resources cache..." << std::endl;
+	ResourceCache resourceCache;
+	in >> resourceCache;
 	in.close();
 
 	std::cout << "Press any key to continue...";

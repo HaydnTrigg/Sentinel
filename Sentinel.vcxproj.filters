@@ -94,7 +94,7 @@
       <Filter>Source Files\ElDorado\V1_106708</Filter>
     </ClCompile>
     <ClCompile Include="ElDorado\Resources\ResourceEntry.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ElDorado\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -174,7 +174,7 @@
       <Filter>Header Files\Common\Math</Filter>
     </ClInclude>
     <ClInclude Include="ElDorado\Resources\ResourceEntry.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\ElDorado\Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

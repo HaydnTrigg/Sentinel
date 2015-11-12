@@ -13,6 +13,8 @@ namespace ElDorado
 
 		class ResourceCache : public Serializable<ResourceCache>
 		{
+			friend class ResourceEntry;
+
 		public:
 			ResourceCache();
 
@@ -20,6 +22,8 @@ namespace ElDorado
 
 			void Serialize(std::ostream &out);
 			void Deserialize(std::istream &in);
+
+			ResourceEntry &operator[](const size_t index);
 
 		protected:
 			std::vector<ResourceEntry> Entries;
