@@ -19,6 +19,7 @@ namespace ElDorado
 
 		class TagEntry : public Serializable<TagEntry>
 		{
+			friend class TagCache;
 			friend class TagFixup;
 
 		public:

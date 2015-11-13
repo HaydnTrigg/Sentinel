@@ -52,17 +52,11 @@ namespace ElDorado
 
 			TagEntries = std::vector<TagEntry>(TagEntryCount);
 
-			for (uint32_t i = 0; i < TagEntryCount; i++)
+			for (uint32_t i = 1; i < TagEntryCount; i++)
 			{
-				TagEntry tagEntry(i);
-
-				if (i != 0)
-				{
-					in.seekg(TagHeaderOffsets[i], std::ios::beg);
-					in >> tagEntry;
-				}
-
-				TagEntries[i] = tagEntry;
+				in.seekg(TagHeaderOffsets[i], std::ios::beg);
+				in >> TagEntries[i];
+				TagEntries[i].Index = i;
 			}
 		}
 

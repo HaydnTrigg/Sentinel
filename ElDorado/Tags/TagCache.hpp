@@ -14,6 +14,8 @@ namespace ElDorado
 
 		class TagCache : public Serializable<TagCache>
 		{
+			friend class TagEntry;
+
 		public:
 			TagCache();
 
