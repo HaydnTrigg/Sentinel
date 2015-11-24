@@ -6,8 +6,8 @@ namespace Sentinel
 {
 	struct Vector2D
 	{
-		static const Vector2D Zero;
-		static const Vector2D One;
+		static const Vector2D Zero, One;
+		static const Vector2D UnitX, UnitY;
 
 		float X, Y;
 
@@ -45,11 +45,13 @@ namespace Sentinel
 		void Clamp(const Vector2D &min, const Vector2D &max);
 		static Vector2D Clamp(const Vector2D &vector2D, const Vector2D &min, const Vector2D &max);
 
-		void LerpFrom(const Vector2D &a, const Vector2D &b, const float amount = 0.5f);
+		void Lerp(const Vector2D &other, const float amount = 0.5f);
 		static Vector2D Lerp(const Vector2D &a, const Vector2D &b, const float amount = 0.5f);
 
 		bool operator==(const Vector2D &other) const;
 		bool operator!=(const Vector2D &other) const;
+
+		Vector2D &operator-();
 
 		friend Vector2D operator+(const Vector2D &lhs, const Vector2D &rhs);
 		friend Vector2D operator+(const Vector2D &lhs, const float rhs);

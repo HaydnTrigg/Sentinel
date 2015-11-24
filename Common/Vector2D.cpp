@@ -5,6 +5,9 @@ namespace Sentinel
 	const Vector2D Vector2D::Zero(0.0f, 0.0f);
 	const Vector2D Vector2D::One(1.0f, 1.0f);
 
+	const Vector2D Vector2D::UnitX(1.0f, 0.0f);
+	const Vector2D Vector2D::UnitY(0.0f, 1.0f);
+
 	Vector2D::Vector2D(const float x, const float y)
 		: X(x), Y(y) {}
 
@@ -138,9 +141,9 @@ namespace Sentinel
 			v.Y < min.Y ? min.Y : v.Y > max.Y ? max.Y : v.Y);
 	}
 
-	void Vector2D::LerpFrom(const Vector2D &a, const Vector2D &b, const float amount)
+	void Vector2D::Lerp(const Vector2D &other, const float amount)
 	{
-		operator=(Lerp(a, b, amount));
+		operator=(Lerp(*this, other, amount));
 	}
 
 	Vector2D Vector2D::Lerp(const Vector2D &a, const Vector2D &b, const float amount)
@@ -158,6 +161,13 @@ namespace Sentinel
 	{
 		return X != other.X ||
 			Y != other.Y;
+	}
+
+	Vector2D &Vector2D::operator-()
+	{
+		X = -X;
+		Y = -Y;
+		return *this;
 	}
 
 	Vector2D operator+(const Vector2D &lhs, const Vector2D &rhs)

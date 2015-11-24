@@ -149,6 +149,7 @@
     <ClInclude Include="Common\StringID.hpp" />
     <ClInclude Include="Common\Tag.hpp" />
     <ClInclude Include="Common\Vector2D.hpp" />
+    <ClInclude Include="Common\Vector3D.hpp" />
     <ClInclude Include="Tags\TagBlock.hpp" />
     <ClInclude Include="Tags\TagData.hpp" />
     <ClInclude Include="Tags\TagDefinition.hpp" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Common\StringID.cpp" />
     <ClCompile Include="Common\Vector2D.cpp" />
+    <ClCompile Include="Common\Vector3D.cpp" />
     <ClCompile Include="Tags\TagBlock.cpp" />
     <ClCompile Include="Tags\TagData.cpp" />
     <ClCompile Include="Tags\TagDefinition.cpp" />
