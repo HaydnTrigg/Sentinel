@@ -146,30 +146,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Common\StringID.hpp" />
-    <ClInclude Include="Common\Tag.hpp" />
-    <ClInclude Include="Common\Vector2D.hpp" />
-    <ClInclude Include="Common\Vector3D.hpp" />
-    <ClInclude Include="Tags\TagBlock.hpp" />
-    <ClInclude Include="Tags\TagData.hpp" />
-    <ClInclude Include="Tags\TagDefinition.hpp" />
-    <ClInclude Include="Tags\TagField.hpp" />
-    <ClInclude Include="Tags\TagFixup.hpp" />
-    <ClInclude Include="Tags\TagInstance.hpp" />
-    <ClInclude Include="Tags\TagReference.hpp" />
+    <ClInclude Include="Blam\CSeries\ColorRGB.hpp" />
+    <ClInclude Include="Blam\CSeries\StringID.hpp" />
+    <ClInclude Include="Blam\CSeries\Tag.hpp" />
+    <ClInclude Include="Blam\CSeries\Vector2D.hpp" />
+    <ClInclude Include="Blam\CSeries\Vector3D.hpp" />
+    <ClInclude Include="Blam\TagFiles\TagField.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Common\StringID.cpp" />
-    <ClCompile Include="Common\Vector2D.cpp" />
-    <ClCompile Include="Common\Vector3D.cpp" />
-    <ClCompile Include="Tags\TagBlock.cpp" />
-    <ClCompile Include="Tags\TagData.cpp" />
-    <ClCompile Include="Tags\TagDefinition.cpp" />
-    <ClCompile Include="Tags\TagFixup.cpp" />
-    <ClCompile Include="Tags\TagInstance.cpp" />
-    <ClCompile Include="Tags\TagReference.cpp" />
+    <ClCompile Include="Blam\CSeries\ColorRGB_Float.cpp" />
+    <ClCompile Include="Blam\CSeries\ColorRGB_UInt8.cpp" />
+    <ClCompile Include="Blam\CSeries\StringID.cpp" />
+    <ClCompile Include="Blam\CSeries\Vector2D_Float.cpp" />
+    <ClCompile Include="Blam\CSeries\Vector2D_Int32.cpp" />
+    <ClCompile Include="Blam\CSeries\Vector3D_Float.cpp" />
+    <ClCompile Include="Blam\CSeries\Vector3D_Int32.cpp" />
     <ClCompile Include="Sentinel.cpp" />
-    <ClCompile Include="Common\Tag.cpp" />
+    <ClCompile Include="Blam\CSeries\Tag.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

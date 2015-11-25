@@ -1,6 +1,6 @@
 #include "StringID.hpp"
 
-namespace Sentinel
+namespace Blam
 {
 	const StringID StringID::Null(0);
 

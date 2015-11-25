@@ -1,6 +1,6 @@
 #include "Tag.hpp"
 
-namespace Sentinel
+namespace Blam
 {
 	const Tag Tag::Null((uint32_t)-1);
 

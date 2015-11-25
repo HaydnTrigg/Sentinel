@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <iostream>
 
-namespace Sentinel
+namespace Blam
 {
 	struct StringID
 	{

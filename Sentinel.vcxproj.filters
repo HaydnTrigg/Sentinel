@@ -15,37 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Tags\TagBlock.hpp">
+    <ClInclude Include="Blam\CSeries\StringID.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tags\TagData.hpp">
+    <ClInclude Include="Blam\CSeries\Tag.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tags\TagInstance.hpp">
+    <ClInclude Include="Blam\CSeries\Vector3D.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tags\TagReference.hpp">
+    <ClInclude Include="Blam\TagFiles\TagField.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Common\StringID.hpp">
+    <ClInclude Include="Blam\CSeries\ColorRGB.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Common\Tag.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tags\TagFixup.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tags\TagDefinition.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tags\TagField.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Vector2D.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Vector3D.hpp">
+    <ClInclude Include="Blam\CSeries\Vector2D.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,34 +38,28 @@
     <ClCompile Include="Sentinel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tags\TagBlock.cpp">
+    <ClCompile Include="Blam\CSeries\StringID.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tags\TagData.cpp">
+    <ClCompile Include="Blam\CSeries\Tag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tags\TagReference.cpp">
+    <ClCompile Include="Blam\CSeries\Vector2D_Int32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tags\TagInstance.cpp">
+    <ClCompile Include="Blam\CSeries\Vector2D_Float.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Common\StringID.cpp">
+    <ClCompile Include="Blam\CSeries\Vector3D_Int32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Common\Tag.cpp">
+    <ClCompile Include="Blam\CSeries\Vector3D_Float.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tags\TagFixup.cpp">
+    <ClCompile Include="Blam\CSeries\ColorRGB_UInt8.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tags\TagDefinition.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\Vector2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\Vector3D.cpp">
+    <ClCompile Include="Blam\CSeries\ColorRGB_Float.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
