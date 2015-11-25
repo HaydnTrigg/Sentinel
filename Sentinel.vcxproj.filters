@@ -33,6 +33,15 @@
     <ClInclude Include="Blam\CSeries\Vector2D.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Blam\CSeries\ColorARGB.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Blam\CSeries\Rectangle2D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Blam\CSeries\Bounds.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sentinel.cpp">
@@ -60,6 +69,36 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Blam\CSeries\ColorRGB_Float.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\ColorARGB_Float.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\ColorARGB_UInt8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Rectangle2D_Int16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Bounds_Int8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Bounds_Int16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Bounds_Int32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Bounds_UInt8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Bounds_UInt16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Bounds_UInt32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Bounds_Float.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

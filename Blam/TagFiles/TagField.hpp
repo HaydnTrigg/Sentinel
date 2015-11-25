@@ -30,7 +30,7 @@ namespace Blam
 		EulerAngles3D,
 		Plane2D,
 		Plane3D,
-		Rectangle2D_Int32,
+		Rectangle2D_Int16,
 		ColorRGB_UInt8,
 		ColorRGB_Float,
 		ColorARGB_UInt8,
