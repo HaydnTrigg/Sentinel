@@ -232,6 +232,99 @@ namespace Blam
 			return *this;
 		}
 
+		inline friend Vector3D<Component> operator-(const Vector3D<Component> &lhs, const Vector3D<Component> &rhs)
+		{
+			return Vector3D<Component>(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z);
+		}
+
+		inline friend Vector3D<Component> operator-(const Vector3D<Component> &lhs, const Component rhs)
+		{
+			return Vector3D<Component>(lhs.X - rhs, lhs.Y - rhs, lhs.Z - rhs);
+		}
+
+		inline friend Vector3D<Component> operator-(const Component lhs, const Vector3D<Component> &rhs)
+		{
+			return Vector3D<Component>(lhs - rhs.X, lhs - rhs.Y, lhs - rhs.Z);
+		}
+
+		inline Vector3D<Component> &operator-=(const Vector3D<Component> &other)
+		{
+			X -= other.X;
+			Y -= other.Y;
+			Z -= other.Z;
+			return *this;
+		}
+
+		inline Vector3D<Component> &operator-=(const Component other)
+		{
+			X -= other;
+			Y -= other;
+			Z -= other;
+			return *this;
+		}
+
+		inline friend Vector3D<Component> operator*(const Vector3D<Component> &lhs, const Vector3D<Component> &rhs)
+		{
+			return Vector3D<Component>(lhs.X * rhs.X, lhs.Y * rhs.Y, lhs.Z * rhs.Z);
+		}
+
+		inline friend Vector3D<Component> operator*(const Vector3D<Component> &lhs, const Component rhs)
+		{
+			return Vector3D<Component>(lhs.X * rhs, lhs.Y * rhs, lhs.Z * rhs);
+		}
+
+		inline friend Vector3D<Component> operator*(const Component lhs, const Vector3D<Component> &rhs)
+		{
+			return Vector3D<Component>(lhs * rhs.X, lhs * rhs.Y, lhs * rhs.Z);
+		}
+
+		inline Vector3D<Component> &operator*=(const Vector3D<Component> &other)
+		{
+			X *= other.X;
+			Y *= other.Y;
+			Z *= other.Z;
+			return *this;
+		}
+
+		inline Vector3D<Component> &operator*=(const Component other)
+		{
+			X *= other;
+			Y *= other;
+			Z *= other;
+			return *this;
+		}
+
+		inline friend Vector3D<Component> operator/(const Vector3D<Component> &lhs, const Vector3D<Component> &rhs)
+		{
+			return Vector3D<Component>(lhs.X / rhs.X, lhs.Y / rhs.Y, lhs.Z / rhs.Z);
+		}
+
+		inline friend Vector3D<Component> operator/(const Vector3D<Component> &lhs, const Component rhs)
+		{
+			return Vector3D<Component>(lhs.X / rhs, lhs.Y / rhs, lhs.Z / rhs);
+		}
+
+		inline friend Vector3D<Component> operator/(const Component lhs, const Vector3D<Component> &rhs)
+		{
+			return Vector3D<Component>(lhs / rhs.X, lhs / rhs.Y, lhs / rhs.Z);
+		}
+
+		inline Vector3D<Component> &operator/=(const Vector3D<Component> &other)
+		{
+			X /= other.X;
+			Y /= other.Y;
+			Z /= other.Z;
+			return *this;
+		}
+
+		inline Vector3D<Component> &operator/=(const Component other)
+		{
+			X /= other;
+			Y /= other;
+			Z /= other;
+			return *this;
+		}
+
 		inline friend std::istream &operator>>(std::istream &in, Vector3D<Component> &vector3D)
 		{
 			return in
