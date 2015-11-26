@@ -296,7 +296,7 @@ namespace Blam
 		inline friend std::istream &operator>>(std::istream &in, Vector2D<Component> &vector2D)
 		{
 			return in
-				.read((char *)&vector2D.X, ComponentSize);
+				.read((char *)&vector2D.X, ComponentSize)
 				.read((char *)&vector2D.Y, ComponentSize);
 		}
 

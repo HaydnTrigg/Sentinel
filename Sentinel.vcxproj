@@ -146,10 +146,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Blam\CSeries\Angle.hpp" />
     <ClInclude Include="Blam\CSeries\Bounds.hpp" />
     <ClInclude Include="Blam\CSeries\ColorARGB.hpp" />
+    <ClInclude Include="Blam\CSeries\ColorHSV.hpp" />
     <ClInclude Include="Blam\CSeries\ColorRGB.hpp" />
+    <ClInclude Include="Blam\CSeries\Orientation3D.hpp" />
+    <ClInclude Include="Blam\CSeries\Plane2D.hpp" />
+    <ClInclude Include="Blam\CSeries\Plane3D.hpp" />
+    <ClInclude Include="Blam\CSeries\Quaternion.hpp" />
     <ClInclude Include="Blam\CSeries\Rectangle2D.hpp" />
+    <ClInclude Include="Blam\CSeries\Rectangle3D.hpp" />
     <ClInclude Include="Blam\CSeries\StringID.hpp" />
     <ClInclude Include="Blam\CSeries\Tag.hpp" />
     <ClInclude Include="Blam\CSeries\Vector2D.hpp" />
@@ -157,6 +164,8 @@
     <ClInclude Include="Blam\TagFiles\TagField.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Blam\CSeries\Angle.cpp" />
+    <ClCompile Include="Blam\CSeries\Bounds_Angle.cpp" />
     <ClCompile Include="Blam\CSeries\Bounds_Float.cpp" />
     <ClCompile Include="Blam\CSeries\Bounds_Int16.cpp" />
     <ClCompile Include="Blam\CSeries\Bounds_Int32.cpp" />
@@ -166,14 +175,19 @@
     <ClCompile Include="Blam\CSeries\Bounds_UInt8.cpp" />
     <ClCompile Include="Blam\CSeries\ColorARGB_Float.cpp" />
     <ClCompile Include="Blam\CSeries\ColorARGB_UInt8.cpp" />
+    <ClCompile Include="Blam\CSeries\ColorHSV_Float.cpp" />
     <ClCompile Include="Blam\CSeries\ColorRGB_Float.cpp" />
     <ClCompile Include="Blam\CSeries\ColorRGB_UInt8.cpp" />
+    <ClCompile Include="Blam\CSeries\Orientation3D.cpp" />
+    <ClCompile Include="Blam\CSeries\Plane2D.cpp" />
+    <ClCompile Include="Blam\CSeries\Quaternion.cpp" />
+    <ClCompile Include="Blam\CSeries\Rectangle2D_Float.cpp" />
     <ClCompile Include="Blam\CSeries\Rectangle2D_Int16.cpp" />
+    <ClCompile Include="Blam\CSeries\Rectangle3D_Float.cpp" />
     <ClCompile Include="Blam\CSeries\StringID.cpp" />
     <ClCompile Include="Blam\CSeries\Vector2D_Float.cpp" />
-    <ClCompile Include="Blam\CSeries\Vector2D_Int32.cpp" />
+    <ClCompile Include="Blam\CSeries\Vector2D_Int16.cpp" />
     <ClCompile Include="Blam\CSeries\Vector3D_Float.cpp" />
-    <ClCompile Include="Blam\CSeries\Vector3D_Int32.cpp" />
     <ClCompile Include="Sentinel.cpp" />
     <ClCompile Include="Blam\CSeries\Tag.cpp" />
   </ItemGroup>

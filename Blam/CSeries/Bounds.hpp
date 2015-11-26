@@ -1,28 +1,32 @@
 #pragma once
 #include <cstdint>
+#include <iostream>
 
 namespace Blam
 {
-	template <typename Value>
+	template <typename Component>
 	struct Bounds
 	{
-		static const size_t ValueSize = sizeof(Value) / sizeof(char);
+		static const size_t ValueSize = sizeof(Component) / sizeof(char);
 
-		Value Lower, Upper;
+		Component Lower, Upper;
 
-		Bounds(const Value lower, const Value upper);
-		inline Bounds() : Bounds((Value)0, (Value)1) {}
+		Bounds(const Component lower, const Component upper);
+		inline Bounds() : Bounds((Component)0, (Component)1) {}
 
-		inline bool operator==(const Bounds<Value> &other) const
+		inline bool operator==(const Bounds<Component> &other) const
 		{
 			return Lower == other.Lower &&
 				Upper == other.Upper;
 		}
 
-		inline bool operator!=(const Bounds<Value> &other) const
+		inline bool operator!=(const Bounds<Component> &other) const
 		{
 			return Lower != other.Lower ||
 				Upper != other.Upper;
 		}
+
+		friend std::istream &operator>>(std::istream &in, Bounds<Component> &bounds);
+		friend std::ostream &operator<<(std::ostream &out, Bounds<Component> &bounds);
 	};
 }

@@ -42,6 +42,27 @@
     <ClInclude Include="Blam\CSeries\Bounds.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Blam\CSeries\Quaternion.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Blam\CSeries\Rectangle3D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Blam\CSeries\Orientation3D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Blam\CSeries\Angle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Blam\CSeries\Plane2D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Blam\CSeries\Plane3D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Blam\CSeries\ColorHSV.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sentinel.cpp">
@@ -53,13 +74,7 @@
     <ClCompile Include="Blam\CSeries\Tag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Blam\CSeries\Vector2D_Int32.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Blam\CSeries\Vector2D_Float.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Blam\CSeries\Vector3D_Int32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Blam\CSeries\Vector3D_Float.cpp">
@@ -99,6 +114,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Blam\CSeries\Bounds_Float.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Vector2D_Int16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Quaternion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Rectangle3D_Float.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Orientation3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Angle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Bounds_Angle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Plane2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\ColorHSV_Float.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blam\CSeries\Rectangle2D_Float.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

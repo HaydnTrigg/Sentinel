@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>
+#include <iostream>
+#include <Blam\CSeries\Bounds.hpp>
 
 namespace Blam
 {
@@ -8,25 +10,24 @@ namespace Blam
 	{
 		static const size_t ComponentSize = sizeof(Component) / sizeof(char);
 
-		Component Top, Left, Bottom, Right;
+		Bounds<Component> X, Y;
 
-		Rectangle2D(const Component top, const Component left, const Component bottom, const Component right);
-		inline Rectangle2D() : Rectangle2D((Component)0, (Component)0, (Component)0, (Component)0) {}
+		Rectangle2D(const Bounds<Component> &x, const Bounds<Component> &y);
+		inline Rectangle2D() : Rectangle2D(Bounds<Component>(), Bounds<Component>()) {}
 
 		inline bool operator==(const Rectangle2D<Component> &other) const
 		{
-			return Top == other.Top &&
-				Left == other.Left &&
-				Bottom == other.Bottom &&
-				Right == other.Right;
+			return X == other.X &&
+				Y == other.Y;
 		}
 
 		inline bool operator!=(const Rectangle2D<Component> &other) const
 		{
-			return Top != other.Top ||
-				Left != other.Left ||
-				Bottom != other.Bottom ||
-				Right != other.Right;
+			return X != other.X ||
+				Y != other.Y;
 		}
+
+		friend std::istream &operator>>(std::istream &in, Rectangle2D<Component> &rectangle2D);
+		friend std::ostream &operator<<(std::ostream &out, Rectangle2D<Component> &rectangle2D);
 	};
 }

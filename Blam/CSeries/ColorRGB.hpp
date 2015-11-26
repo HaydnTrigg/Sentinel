@@ -4,15 +4,13 @@
 
 namespace Blam
 {
-	template <typename Value>
+	template <typename Component>
 	struct ColorRGB
 	{
-		const size_t ValueSize = sizeof(Value) / sizeof(char);
+		Component Red, Green, Blue;
 
-		Value Red, Green, Blue;
-
-		ColorRGB(const Value red, const Value green, const Value blue);
-		inline ColorRGB() : ColorRGB((Value)0, (Value)0, (Value)0) {}
+		ColorRGB(const Component red, const Component green, const Component blue);
+		inline ColorRGB() : ColorRGB((Component)0, (Component)0, (Component)0) {}
 
 		inline bool operator==(const ColorRGB &other) const
 		{
@@ -28,13 +26,7 @@ namespace Blam
 				Blue != other.Blue;
 		}
 
-		inline friend std::istream &operator>>(std::istream &in, ColorRGB<Value> &colorRGB)
-		{
-			return in
-				.read((char *)&colorRGB.Red, ValueSize)
-				.read((char *)&colorRGB.Green, ValueSize)
-				.read((char *)&colorRGB.Blue, ValueSize)
-				.seekg(ValueSize, in.cur);
-		}
+		friend std::istream &operator>>(std::istream &in, ColorRGB<Component> &colorRGB);
+		friend std::ostream &operator<<(std::ostream &out, ColorRGB<Component> &colorRGB);
 	};
 }

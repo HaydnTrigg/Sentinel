@@ -1,19 +1,20 @@
 #pragma once
 #include <cstdint>
+#include <iostream>
 
 namespace Blam
 {
-	template <typename Value>
+	template <typename Component>
 	struct ColorARGB
 	{
-		static const size_t ValueSize = sizeof(Value) / sizeof(char);
+		static const size_t ValueSize = sizeof(Component) / sizeof(char);
 
-		Value Alpha, Red, Green, Blue;
+		Component Alpha, Red, Green, Blue;
 
-		ColorARGB(const Value alpha, const Value red, const Value green, const Value blue);
-		inline ColorARGB() : ColorARGB((Value)1, (Value)0, (Value)0, (Value)0) {}
+		ColorARGB(const Component alpha, const Component red, const Component green, const Component blue);
+		inline ColorARGB() : ColorARGB((Component)1, (Component)0, (Component)0, (Component)0) {}
 
-		inline bool operator==(const ColorARGB<Value> &other) const
+		inline bool operator==(const ColorARGB<Component> &other) const
 		{
 			return Alpha == other.Alpha &&
 				Red == other.Red &&
@@ -21,12 +22,15 @@ namespace Blam
 				Blue == other.Blue;
 		}
 
-		inline bool operator!=(const ColorARGB<Value> &other) const
+		inline bool operator!=(const ColorARGB<Component> &other) const
 		{
 			return Alpha != other.Alpha ||
 				Red != other.Red ||
 				Green != other.Green ||
 				Blue != other.Blue;
 		}
+
+		friend std::istream &operator>>(std::istream &in, ColorARGB<Component> &colorARGB);
+		friend std::ostream &operator<<(std::ostream &out, ColorARGB<Component> &colorARGB);
 	};
 }
