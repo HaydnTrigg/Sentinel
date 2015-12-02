@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8421CEC0-06EE-4589-A315-7487E3C66465}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Blam</RootNamespace>
+    <AssemblyName>BlamCore</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LZ4, Version=1.0.9.93, Culture=neutral, PublicKeyToken=62e1b5ec1eec9bdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\lz4net.1.0.9.93\lib\net4-client\LZ4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\Angle.cs" />
+    <Compile Include="Common\ArrayUtil.cs" />
+    <Compile Include="Common\DdsHeader.cs" />
+    <Compile Include="Common\Half.cs" />
+    <Compile Include="Common\HalfHelper.cs" />
+    <Compile Include="Common\NamingConvention.cs" />
+    <Compile Include="Common\Range.cs" />
+    <Compile Include="Common\SimpleJSON.cs" />
+    <Compile Include="Common\Vector2.cs" />
+    <Compile Include="Common\Vector3.cs" />
+    <Compile Include="Common\Vector4.cs" />
+    <Compile Include="Game\GameLanguage.cs" />
+    <Compile Include="Objects\GameObject.cs" />
+    <Compile Include="Scenario\ScenarioDefinition.cs" />
+    <Compile Include="Tags\TagInstance.cs" />
+    <Compile Include="Common\Tag.cs" />
+    <Compile Include="IO\ProcessMemoryStream.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Bitmaps\BitmapDdsExtractor.cs" />
+    <Compile Include="Bitmaps\BitmapDdsFormatDetection.cs" />
+    <Compile Include="Bitmaps\BitmapDdsInjector.cs" />
+    <Compile Include="Bitmaps\BitmapFlags.cs" />
+    <Compile Include="Bitmaps\BitmapFormat.cs" />
+    <Compile Include="Bitmaps\BitmapTextureResourceDefinition.cs" />
+    <Compile Include="Bitmaps\BitmapType.cs" />
+    <Compile Include="Cache\D3DPointer.cs" />
+    <Compile Include="Physics\BlenderPhmoReader.cs" />
+    <Compile Include="Models\GeometryReference.cs" />
+    <Compile Include="Models\IndexBufferStream.cs" />
+    <Compile Include="Models\IVertexStream.cs" />
+    <Compile Include="Models\Mesh.cs" />
+    <Compile Include="Models\MeshFlags.cs" />
+    <Compile Include="Models\MeshReader.cs" />
+    <Compile Include="Models\ObjExtractor.cs" />
+    <Compile Include="Physics\PhysicsModelBuilder.cs" />
+    <Compile Include="Models\PrimitiveType.cs" />
+    <Compile Include="Models\PrtType.cs" />
+    <Compile Include="Models\RenderGeometryResourceDefinition.cs" />
+    <Compile Include="Models\RenderModelBuilder.cs" />
+    <Compile Include="Models\Vertex.cs" />
+    <Compile Include="Models\VertexBufferFormat.cs" />
+    <Compile Include="Models\VertexCompressor.cs" />
+    <Compile Include="Models\VertexElementStream.cs" />
+    <Compile Include="Models\VertexStreamFactory.cs" />
+    <Compile Include="Models\VertexType.cs" />
+    <Compile Include="Cache\ResourceAddress.cs" />
+    <Compile Include="Cache\ResourceCache.cs" />
+    <Compile Include="Cache\ResourceDataManager.cs" />
+    <Compile Include="Cache\ResourceDataReference.cs" />
+    <Compile Include="Cache\ResourceReference.cs" />
+    <Compile Include="Shaders\ShaderCompiler.cs" />
+    <Compile Include="Shaders\ShaderConverter.cs" />
+    <Compile Include="Sound\SoundResourceDefinition.cs" />
+    <Compile Include="Cache\IDataBlock.cs" />
+    <Compile Include="Cache\ISerializationContext.cs" />
+    <Compile Include="Game\MaxVersionAttribute.cs" />
+    <Compile Include="Game\MinVersionAttribute.cs" />
+    <Compile Include="Cache\ResourceSerializationContext.cs" />
+    <Compile Include="Cache\TagDeserializer.cs" />
+    <Compile Include="Tags\TagFieldAttribute.cs" />
+    <Compile Include="Cache\TagFieldEnumerator.cs" />
+    <Compile Include="Cache\TagSerializationContext.cs" />
+    <Compile Include="Cache\TagSerializer.cs" />
+    <Compile Include="Tags\TagDefinitionAttribute.cs" />
+    <Compile Include="Tags\TagDefinition.cs" />
+    <Compile Include="IO\StreamUtil.cs" />
+    <Compile Include="Common\StringID.cs" />
+    <Compile Include="Cache\StringIDsCache.cs" />
+    <Compile Include="Cache\StringIDResolverBase.cs" />
+    <Compile Include="Cache\TagCache.cs" />
+    <Compile Include="Tags\TagList.cs" />
+    <Compile Include="Game\Achievements.cs" />
+    <Compile Include="AI\AiDialogueGlobals.cs" />
+    <Compile Include="AI\AiGlobals.cs" />
+    <Compile Include="Objects\Antenna.cs" />
+    <Compile Include="Effects\AreaScreenEffect.cs" />
+    <Compile Include="Units\ArmorSounds.cs" />
+    <Compile Include="Effects\BeamSystem.cs" />
+    <Compile Include="Rasterizer\Bink.cs" />
+    <Compile Include="Units\Biped.cs" />
+    <Compile Include="Bitmaps\Bitmap.cs" />
+    <Compile Include="Effects\BreakableSurface.cs" />
+    <Compile Include="Cache\CacheFileGlobalTags.cs" />
+    <Compile Include="Camera\CameraFxSettings.cs" />
+    <Compile Include="Camera\CameraTrack.cs" />
+    <Compile Include="Effects\Camo.cs" />
+    <Compile Include="AI\Character.cs" />
+    <Compile Include="Structures\ChocolateMountainNew.cs" />
+    <Compile Include="Interface\ChudAnimationDefinition.cs" />
+    <Compile Include="Interface\ChudDefinition.cs" />
+    <Compile Include="Interface\ChudGlobalsDefinition.cs" />
+    <Compile Include="Interface\ChudWidgetParallaxData.cs" />
+    <Compile Include="Physics\Cloth.cs" />
+    <Compile Include="Physics\CollisionDamage.cs" />
+    <Compile Include="Physics\CollisionModel.cs" />
+    <Compile Include="Bitmaps\ColorTable.cs" />
+    <Compile Include="Effects\ContrailSystem.cs" />
+    <Compile Include="Objects\Crate.cs" />
+    <Compile Include="AI\Creature.cs" />
+    <Compile Include="Effects\DamageEffect.cs" />
+    <Compile Include="Effects\DamageResponseDefinition.cs" />
+    <Compile Include="Effects\DecalSystem.cs" />
+    <Compile Include="Effects\DecoratorSet.cs" />
+    <Compile Include="Devices\Device.cs" />
+    <Compile Include="Devices\DeviceControl.cs" />
+    <Compile Include="Devices\DeviceMachine.cs" />
+    <Compile Include="Units\Dialogue.cs" />
+    <Compile Include="Effects\Effect.cs" />
+    <Compile Include="Effects\EffectGlobals.cs" />
+    <Compile Include="Effects\EffectScenery.cs" />
+    <Compile Include="Items\Equipment.cs" />
+    <Compile Include="AI\Flock.cs" />
+    <Compile Include="AI\Formation.cs" />
+    <Compile Include="Game\GameEngineSettingsDefinition.cs" />
+    <Compile Include="Game\GameProgression.cs" />
+    <Compile Include="Bitmaps\GfxTexturesList.cs" />
+    <Compile Include="Shaders\GlobalPixelShader.cs" />
+    <Compile Include="Game\Globals.cs" />
+    <Compile Include="Shaders\GlobalVertexShader.cs" />
+    <Compile Include="Interface\GuiBitmapWidgetDefinition.cs" />
+    <Compile Include="Interface\GuiButtonKeyDefinition.cs" />
+    <Compile Include="Interface\GuiDatasourceDefinition.cs" />
+    <Compile Include="Interface\GuiGroupWidgetDefinition.cs" />
+    <Compile Include="Interface\GuiListWidgetDefinition.cs" />
+    <Compile Include="Interface\GuiModelWidgetDefinition.cs" />
+    <Compile Include="Interface\GuiScreenWidgetDefinition.cs" />
+    <Compile Include="Interface\GuiSkinDefinition.cs" />
+    <Compile Include="Interface\GuiTextWidgetDefinition.cs" />
+    <Compile Include="Interface\GuiWidgetAnimationCollectionDefinition.cs" />
+    <Compile Include="Interface\GuiWidgetAnimationDefinition.cs" />
+    <Compile Include="Interface\GuiWidgetColorAnimationDefinition.cs" />
+    <Compile Include="Interface\GuiWidgetPositionAnimationDefinition.cs" />
+    <Compile Include="Interface\GuiWidgetRotationAnimationDefinition.cs" />
+    <Compile Include="Interface\GuiWidgetScaleAnimationDefinition.cs" />
+    <Compile Include="Interface\GuiWidgetSpriteAnimationDefinition.cs" />
+    <Compile Include="Interface\GuiWidgetTextureCoordinateAnimationDefinition.cs" />
+    <Compile Include="Input\InputGlobals.cs" />
+    <Compile Include="Items\Item.cs" />
+    <Compile Include="Effects\LeafSystem.cs" />
+    <Compile Include="Effects\LensFlare.cs" />
+    <Compile Include="Rasterizer\Light.cs" />
+    <Compile Include="Rasterizer\LightVolumeSystem.cs" />
+    <Compile Include="Effects\MaterialEffects.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\ModelAnimationGraph.cs" />
+    <Compile Include="AI\Muffin.cs" />
+    <Compile Include="Text\MultilingualUnicodeStringList.cs" />
+    <Compile Include="Game\MultiplayerGlobals.cs" />
+    <Compile Include="Game\MultiplayerVariantSettingsInterfaceDefinition.cs" />
+    <Compile Include="Effects\Particle.cs" />
+    <Compile Include="Effects\ParticleModel.cs" />
+    <Compile Include="Effects\ParticlePhysics.cs" />
+    <Compile Include="Rasterizer\PerformanceThrottles.cs" />
+    <Compile Include="Physics\PhysicsModel.cs" />
+    <Compile Include="Shaders\PixelShader.cs" />
+    <Compile Include="Game\PodiumSettings.cs" />
+    <Compile Include="Effects\PointPhysics.cs" />
+    <Compile Include="Items\Projectile.cs" />
+    <Compile Include="Cache\RasterizerCacheFileGlobals.cs" />
+    <Compile Include="Rasterizer\RasterizerGlobals.cs" />
+    <Compile Include="Shaders\RenderMethod.cs" />
+    <Compile Include="Shaders\RenderMethodDefinition.cs" />
+    <Compile Include="Shaders\RenderMethodOption.cs" />
+    <Compile Include="Shaders\RenderMethodTemplate.cs" />
+    <Compile Include="Models\RenderModel.cs" />
+    <Compile Include="Rasterizer\RenderWaterRipple.cs" />
+    <Compile Include="Text\SandboxTextValuePairDefinition.cs" />
+    <Compile Include="Structures\ScenarioLightmap.cs" />
+    <Compile Include="Structures\ScenarioLightmapBSPData.cs" />
+    <Compile Include="Structures\ScenarioStructureBSP.cs" />
+    <Compile Include="Objects\Scenery.cs" />
+    <Compile Include="Shaders\Shader.cs" />
+    <Compile Include="Shaders\ShaderCustom.cs" />
+    <Compile Include="Shaders\ShaderDecal.cs" />
+    <Compile Include="Shaders\ShaderFoliage.cs" />
+    <Compile Include="Shaders\ShaderHalogram.cs" />
+    <Compile Include="Shaders\ShaderScreen.cs" />
+    <Compile Include="Shaders\ShaderTerrain.cs" />
+    <Compile Include="Shaders\ShaderWater.cs" />
+    <Compile Include="Shaders\ShaderZonly.cs" />
+    <Compile Include="Effects\ShieldImpact.cs" />
+    <Compile Include="Scenario\SkyAtmParameters.cs" />
+    <Compile Include="Sound\Sound.cs" />
+    <Compile Include="Sound\SoundClasses.cs" />
+    <Compile Include="Sound\SoundDialogueConstants.cs" />
+    <Compile Include="Sound\SoundEffectCollection.cs" />
+    <Compile Include="Sound\SoundEffectTemplate.cs" />
+    <Compile Include="Sound\SoundEnvironment.cs" />
+    <Compile Include="Sound\SoundGlobalPropagation.cs" />
+    <Compile Include="Sound\SoundLooping.cs" />
+    <Compile Include="Sound\SoundMix.cs" />
+    <Compile Include="Objects\SoundScenery.cs" />
+    <Compile Include="Sound\SoundUiSounds.cs" />
+    <Compile Include="AI\SquadTemplate.cs" />
+    <Compile Include="Structures\StructureDesign.cs" />
+    <Compile Include="AI\Style.cs" />
+    <Compile Include="Game\SurvivalModeGlobals.cs" />
+    <Compile Include="Rasterizer\TextureRenderList.cs" />
+    <Compile Include="Text\TextValuePairDefinition.cs" />
+    <Compile Include="Units\Unit.cs" />
+    <Compile Include="Interface\UserInterfaceGlobalsDefinition.cs" />
+    <Compile Include="Interface\UserInterfaceSharedGlobalsDefinition.cs" />
+    <Compile Include="Interface\UserInterfaceSoundsDefinition.cs" />
+    <Compile Include="Units\Vehicle.cs" />
+    <Compile Include="Shaders\VertexShader.cs" />
+    <Compile Include="Cache\VFilesList.cs" />
+    <Compile Include="Effects\VisionMode.cs" />
+    <Compile Include="Items\Weapon.cs" />
+    <Compile Include="Effects\Wind.cs" />
+    <Compile Include="Game\V11_1_498295\StringIDResolver.cs" />
+    <Compile Include="Game\V1_106708\StringIDResolver.cs" />
+    <Compile Include="Game\V1_106708\VertexStream.cs" />
+    <Compile Include="Game\V1_235640\VertexStream.cs" />
+    <Compile Include="Game\GameVersions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
