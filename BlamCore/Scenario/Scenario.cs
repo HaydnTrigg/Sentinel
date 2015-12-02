@@ -8,7 +8,7 @@ namespace Blam.Scenario
 {
     [TagDefinition(Name = "scenario", Group = "scnr", Size = 0x824, MaxVersion = GameVersion.V10_1_449175_Live)]
     [TagDefinition(Name = "scenario", Group = "scnr", Size = 0x834, MinVersion = GameVersion.V11_1_498295_Live)]
-    public class ScenarioDefinition
+    public class Scenario
     {
         public MapTypeValue MapType;
         public ushort Flags;

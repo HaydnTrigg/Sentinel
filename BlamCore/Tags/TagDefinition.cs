@@ -64,8 +64,8 @@ namespace Blam.Tags
 		public TagDefinition(Type structureType, GameVersion version)
 		{
 			Version = version;
-			Analyze(structureType, version);
             Structure = GetStructureAttribute(structureType, version);
+            Analyze(structureType, version);
 
             if (Structure == null)
                 throw new InvalidOperationException("No TagStructure attribute which matches the target version was found on " + structureType.Name);

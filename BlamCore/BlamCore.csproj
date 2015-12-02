@@ -61,7 +61,7 @@
     <Compile Include="Common\Vector4.cs" />
     <Compile Include="Game\GameLanguage.cs" />
     <Compile Include="Objects\GameObject.cs" />
-    <Compile Include="Scenario\ScenarioDefinition.cs" />
+    <Compile Include="Scenario\Scenario.cs" />
     <Compile Include="Tags\TagInstance.cs" />
     <Compile Include="Common\Tag.cs" />
     <Compile Include="IO\ProcessMemoryStream.cs" />

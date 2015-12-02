@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using static System.BitConverter;
 using static System.Text.Encoding;
 
@@ -32,13 +33,20 @@ namespace Blam.Common
 		/// Constructs a tag from a string representation.
 		/// </summary>
 		/// <param name="value">The representation of the tag.</param>
-		public Tag(string value)
-            : this(ToUInt32(ASCII.GetBytes(value), 0))
+		public Tag(string value, Type definitionType = null)
         {
+            var bytes = new List<byte>(ASCII.GetBytes(value));
+            bytes.Reverse();
+            Value = ToUInt32(bytes.ToArray(), 0);
+            DefinitionType = definitionType;
         }
         
-        public override string ToString() =>
-            ASCII.GetString(GetBytes(Value));
+        public override string ToString()
+        {
+            var bytes = new List<byte>(GetBytes(Value));
+            bytes.Reverse();
+            return ASCII.GetString(bytes.ToArray());
+        }
 
         public bool Equals(Tag other) =>
             Value.Equals(other.Value);
