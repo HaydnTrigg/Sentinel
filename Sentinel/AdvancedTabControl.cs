@@ -93,7 +93,7 @@ namespace Sentinel
             predraggedTab = null;
 
             TabPage pointedTab = getPointedTab(e.Location);
-            if (this.AllowClose && pointedTab != null)
+            if (this.AllowClose && pointedTab != null && pointedTab.Tag != null)
             {
                 if (e.Button == MouseButtons.Right)
                 {
