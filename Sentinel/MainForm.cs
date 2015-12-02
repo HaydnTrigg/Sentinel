@@ -60,7 +60,13 @@ namespace Sentinel
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            tabControl.TabPages.RemoveAt(tabControl.SelectedIndex);
+            SetWindowTitle();
+        }
 
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

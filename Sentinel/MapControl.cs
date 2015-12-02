@@ -99,13 +99,17 @@ namespace Sentinel
                 scenarioIndex = reader.ReadInt32();
             }
 
-            MapTags = new Dictionary<int, TagInstance>();
-            LoadDependencies(scenarioIndex);
-
+            var mapTags = new Dictionary<int, TagInstance>();
+            LoadDependencies(scenarioIndex, ref mapTags);
+            LoadDependencies(TagsData.Tags.FindFirstInGroup(new Tag("matg")).Index, ref mapTags);
+            LoadDependencies(TagsData.Tags.FindFirstInGroup(new Tag("mulg")).Index, ref mapTags);
+            
             var tagGroups = new Dictionary<Tag, List<TagInstance>>();
 
-            foreach (var tag in TagsData.Tags)
+            foreach (var entry in mapTags)
             {
+                var tag = entry.Value;
+
                 if (tag == null)
                     continue;
 
@@ -120,10 +124,18 @@ namespace Sentinel
             foreach (var entry in tagGroups)
             {
                 var groupNode = new TreeNode(entry.Key.ToString());
+                bool groupNameSet = false;
+
                 foreach (var instance in entry.Value)
                 {
                     if (!tagNames.ContainsKey(instance.Index))
                         tagNames[instance.Index] = string.Format("0x{0:X8}", instance.Index);
+                    if (!groupNameSet)
+                    {
+                        groupNameSet = true;
+                        groupNode.Text += string.Format(" - {0}",
+                            StringIDsData.GetString(instance.GroupName));
+                    }
                     var instanceNode = new TreeNode(tagNames[instance.Index]);
                     instanceNode.Tag = instance;
                     groupNode.Nodes.Add(instanceNode);
@@ -159,10 +171,8 @@ namespace Sentinel
 
             return result;
         }
-
-        public Dictionary<int, TagInstance> MapTags { get; set; }
-
-        private void LoadDependencies(int index)
+        
+        private void LoadDependencies(int index, ref Dictionary<int, TagInstance> tags)
         {
             var queue = new List<int> { index };
 
@@ -172,10 +182,10 @@ namespace Sentinel
 
                 foreach (var entry in queue)
                 {
-                    if (!MapTags.ContainsKey(entry))
+                    if (!tags.ContainsKey(entry))
                     {
-                        MapTags[entry] = TagsData.Tags[entry];
-                        foreach (var dependency in MapTags[entry].Dependencies)
+                        tags[entry] = TagsData.Tags[entry];
+                        foreach (var dependency in tags[entry].Dependencies)
                             if (!nextQueue.Contains(dependency))
                                 nextQueue.Add(dependency);
                     }
