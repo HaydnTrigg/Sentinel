@@ -33,9 +33,8 @@
             this.tagToolStrip = new System.Windows.Forms.ToolStrip();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.engineVersionLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolTabControl = new System.Windows.Forms.TabControl();
+            this.toolTabControl = new Sentinel.AdvancedTabControl();
             this.tagInfoPage = new System.Windows.Forms.TabPage();
-            this.tagEditorPage = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.split)).BeginInit();
             this.split.Panel1.SuspendLayout();
             this.split.Panel2.SuspendLayout();
@@ -69,6 +68,7 @@
             this.tagTreeView.Name = "tagTreeView";
             this.tagTreeView.Size = new System.Drawing.Size(267, 569);
             this.tagTreeView.TabIndex = 1;
+            this.tagTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tagTreeView_AfterSelect);
             // 
             // tagToolStrip
             // 
@@ -98,7 +98,6 @@
             // toolTabControl
             // 
             this.toolTabControl.Controls.Add(this.tagInfoPage);
-            this.toolTabControl.Controls.Add(this.tagEditorPage);
             this.toolTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolTabControl.Location = new System.Drawing.Point(0, 0);
             this.toolTabControl.Name = "toolTabControl";
@@ -115,16 +114,6 @@
             this.tagInfoPage.TabIndex = 0;
             this.tagInfoPage.Text = "Tag Info";
             this.tagInfoPage.UseVisualStyleBackColor = true;
-            // 
-            // tagEditorPage
-            // 
-            this.tagEditorPage.Location = new System.Drawing.Point(4, 25);
-            this.tagEditorPage.Name = "tagEditorPage";
-            this.tagEditorPage.Padding = new System.Windows.Forms.Padding(3);
-            this.tagEditorPage.Size = new System.Drawing.Size(566, 565);
-            this.tagEditorPage.TabIndex = 1;
-            this.tagEditorPage.Text = "Tag Editor";
-            this.tagEditorPage.UseVisualStyleBackColor = true;
             // 
             // MapControl
             // 
@@ -155,8 +144,7 @@
         private System.Windows.Forms.ToolStrip tagToolStrip;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel engineVersionLabel;
-        private System.Windows.Forms.TabControl toolTabControl;
+        private Sentinel.AdvancedTabControl toolTabControl;
         private System.Windows.Forms.TabPage tagInfoPage;
-        private System.Windows.Forms.TabPage tagEditorPage;
     }
 }

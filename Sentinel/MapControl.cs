@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.BitConverter;
-using static System.Text.Encoding;
 
 using Blam.Cache;
 using Blam.Common;
@@ -27,6 +21,7 @@ namespace Sentinel
 
         public FileInfo TagsCacheInfo { get; set; }
         public TagCache TagsData { get; set; }
+        public Dictionary<int, string> TagNames { get; set; }
 
         public FileInfo StringIDsCacheInfo { get; set; }
         public StringIDsCache StringIDsData { get; set; }
@@ -119,7 +114,7 @@ namespace Sentinel
                 tagGroups[tag.GroupTag].Add(tag);
             }
 
-            var tagNames = GetTagNames();
+            TagNames = GetTagNames();
 
             foreach (var entry in tagGroups)
             {
@@ -128,15 +123,15 @@ namespace Sentinel
 
                 foreach (var instance in entry.Value)
                 {
-                    if (!tagNames.ContainsKey(instance.Index))
-                        tagNames[instance.Index] = string.Format("0x{0:X8}", instance.Index);
+                    if (!TagNames.ContainsKey(instance.Index))
+                        TagNames[instance.Index] = string.Format("0x{0:X8}", instance.Index);
                     if (!groupNameSet)
                     {
                         groupNameSet = true;
                         groupNode.Text += string.Format(" - {0}",
                             StringIDsData.GetString(instance.GroupName));
                     }
-                    var instanceNode = new TreeNode(tagNames[instance.Index]);
+                    var instanceNode = new TreeNode(TagNames[instance.Index]);
                     instanceNode.Tag = instance;
                     groupNode.Nodes.Add(instanceNode);
                 }
@@ -193,6 +188,26 @@ namespace Sentinel
 
                 queue = nextQueue;
             }
+        }
+        
+        private void tagTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Tag == null)
+                return;
+
+            var tagInstance = (TagInstance)e.Node.Tag;
+            var tagName = TagNames[tagInstance.Index];
+
+            if (tagName.Contains('\\'))
+            {
+                var index = tagName.LastIndexOf('\\') + 1;
+                tagName = tagName.Substring(index, tagName.Length - index);
+            }
+
+            var tagEditPage = new TabPage(tagName + "." + StringIDsData.GetString(tagInstance.GroupName));
+            tagEditPage.Tag = tagInstance;
+            toolTabControl.TabPages.Add(tagEditPage);
+            toolTabControl.SelectedTab = tagEditPage;
         }
     }
 }
