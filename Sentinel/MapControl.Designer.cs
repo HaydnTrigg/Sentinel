@@ -67,6 +67,7 @@
             this.tagTreeView.Size = new System.Drawing.Size(267, 569);
             this.tagTreeView.TabIndex = 1;
             this.tagTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tagTreeView_AfterSelect);
+            this.tagTreeView.DoubleClick += new System.EventHandler(this.tagTreeView_DoubleClick);
             // 
             // tagToolStrip
             // 

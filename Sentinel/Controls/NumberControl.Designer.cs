@@ -47,7 +47,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(251, 28);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(406, 28);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // nameLabel
@@ -56,16 +56,17 @@
             this.nameLabel.Dock = System.Windows.Forms.DockStyle.Left;
             this.nameLabel.Location = new System.Drawing.Point(3, 3);
             this.nameLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.nameLabel.MinimumSize = new System.Drawing.Size(200, 0);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(45, 22);
+            this.nameLabel.Size = new System.Drawing.Size(200, 22);
             this.nameLabel.TabIndex = 0;
             this.nameLabel.Text = "Name";
-            this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // valueBox
             // 
             this.valueBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.valueBox.Location = new System.Drawing.Point(54, 3);
+            this.valueBox.Location = new System.Drawing.Point(209, 3);
             this.valueBox.Name = "valueBox";
             this.valueBox.Size = new System.Drawing.Size(194, 22);
             this.valueBox.TabIndex = 1;
@@ -79,7 +80,7 @@
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "NumberControl";
-            this.Size = new System.Drawing.Size(254, 31);
+            this.Size = new System.Drawing.Size(409, 31);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

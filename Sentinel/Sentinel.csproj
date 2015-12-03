@@ -78,6 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TabCancelEventArgs.cs" />
     <Compile Include="TabEventArgs.cs" />
+    <Compile Include="TagUtils.cs" />
     <EmbeddedResource Include="Controls\NumberControl.resx">
       <DependentUpon>NumberControl.cs</DependentUpon>
     </EmbeddedResource>

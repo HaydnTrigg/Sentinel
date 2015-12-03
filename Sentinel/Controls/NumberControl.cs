@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Sentinel.Controls
 {
@@ -17,12 +18,19 @@ namespace Sentinel.Controls
             InitializeComponent();
         }
 
-        public NumberControl(string valueName, string valueText = "")
+        public NumberControl(object owner, FieldInfo fieldInfo)
         {
             InitializeComponent();
-            ValueName = valueName;
-            ValueText = valueText;
+            Owner = owner;
+            Info = fieldInfo;
+            ValueName = Info.Name;
+            var value = Info.GetValue(Owner);
+            ValueText = value == null ? "<NULL>" : value.ToString();
         }
+
+        public object Owner { get; set; } = null;
+
+        public FieldInfo Info { get; set; } = null;
 
         public string ValueName
         {

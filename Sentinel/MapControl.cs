@@ -21,7 +21,9 @@ namespace Sentinel
 
         public FileInfo TagsCacheInfo { get; set; }
         public TagCache TagsData { get; set; }
+
         public Dictionary<int, string> TagNames { get; set; }
+        public Dictionary<Tag, List<TagInstance>> TagGroups { get; set; }
 
         public FileInfo StringIDsCacheInfo { get; set; }
         public StringIDsCache StringIDsData { get; set; }
@@ -94,12 +96,14 @@ namespace Sentinel
                 scenarioIndex = reader.ReadInt32();
             }
 
+            TagNames = GetTagNames();
+
             var mapTags = new Dictionary<int, TagInstance>();
             LoadDependencies(scenarioIndex, ref mapTags);
             LoadDependencies(TagsData.Tags.FindFirstInGroup(new Tag("matg")).Index, ref mapTags);
             LoadDependencies(TagsData.Tags.FindFirstInGroup(new Tag("mulg")).Index, ref mapTags);
             
-            var tagGroups = new Dictionary<Tag, List<TagInstance>>();
+            TagGroups = new Dictionary<Tag, List<TagInstance>>();
 
             foreach (var entry in mapTags)
             {
@@ -108,15 +112,13 @@ namespace Sentinel
                 if (tag == null)
                     continue;
 
-                if (!tagGroups.ContainsKey(tag.GroupTag))
-                    tagGroups[tag.GroupTag] = new List<TagInstance>();
+                if (!TagGroups.ContainsKey(tag.GroupTag))
+                    TagGroups[tag.GroupTag] = new List<TagInstance>();
 
-                tagGroups[tag.GroupTag].Add(tag);
+                TagGroups[tag.GroupTag].Add(tag);
             }
 
-            TagNames = GetTagNames();
-
-            foreach (var entry in tagGroups)
+            foreach (var entry in TagGroups)
             {
                 var groupNode = new TreeNode(entry.Key.ToString());
                 bool groupNameSet = false;
@@ -189,7 +191,7 @@ namespace Sentinel
                 queue = nextQueue;
             }
         }
-        
+
         private void tagTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Tag == null)
@@ -216,50 +218,51 @@ namespace Sentinel
             }
 
             var tagEditPage = new TabPage(tagName + "." + StringIDsData.GetString(tagInstance.GroupName));
+            tagEditPage.AutoScroll = true;
+            tagEditPage.HorizontalScroll.Enabled = true;
+            tagEditPage.VerticalScroll.Enabled = true;
+            tagEditPage.BackColor = System.Drawing.Color.White;
             tagEditPage.Tag = tagInstance;
-            tagEditPage.BackColor = System.Drawing.Color.Transparent;
+
             toolTabControl.TabPages.Add(tagEditPage);
             toolTabControl.SelectedTab = tagEditPage;
-            
-            if (tagInstance.GroupTag == new Blam.Common.Tag("scnr"))
+
+            using (var cacheStream = TagsCacheInfo.OpenRead())
             {
-                using (var cacheStream = TagsCacheInfo.OpenRead())
+                var context = new TagSerializationContext(cacheStream, TagsData, StringIDsData, tagInstance);
+                var deserializer = new TagDeserializer(Version);
+                var type = TagUtils.TagGroupTypes[tagInstance.GroupTag.ToString()];
+                var definition = deserializer.Deserialize(context, type);
+
+                var enumerator = new TagFieldEnumerator(new TagDefinition(type, Version));
+
+                var tagInfoControl = new Controls.TagInfoControl(
+                    string.Format("0x{0:X8}", tagInstance.Index),
+                    string.Format("0x{0:X8}", tagInstance.DataOffset),
+                    string.Format("0x{0:X8}", tagInstance.DataSize));
+
+                tagEditPage.Controls.Add(tagInfoControl);
+                tagInfoControl.BringToFront();
+
+                var currentPoint = new System.Drawing.Point(0, tagInfoControl.Height);
+
+                while (enumerator.Next())
                 {
-                    var context = new TagSerializationContext(cacheStream, TagsData, StringIDsData, tagInstance);
-                    var deserializer = new TagDeserializer(Version);
-                    var scenario = deserializer.Deserialize<Scenario>(context);
+                    var control = new Controls.NumberControl(definition, enumerator.Field);
 
-                    var enumerator = new TagFieldEnumerator(new TagDefinition(typeof(Scenario), Version));
+                    control.Location = currentPoint;
+                    currentPoint.Y += control.Height;
+                    tagEditPage.Controls.Add(control);
+                    control.BringToFront();
 
-                    var tagInfoControl = new Controls.TagInfoControl(
-                        string.Format("0x{0:X8}", tagInstance.Index),
-                        string.Format("0x{0:X8}", tagInstance.DataOffset),
-                        string.Format("0x{0:X8}", tagInstance.DataSize));
-
-                    tagEditPage.Controls.Add(tagInfoControl);
-                    tagInfoControl.BringToFront();
-                    tagInfoControl.Width = 1000;
-                    var currentPoint = new System.Drawing.Point(0, tagInfoControl.Height);
-
-                    while (enumerator.Next())
-                    {
-                        var value = enumerator.Field.GetValue(scenario);
-
-                        var control = new Controls.NumberControl(
-                            enumerator.Field.Name,
-                            value == null ? "" : value.ToString());
-
-                        control.Location = currentPoint;
-                        currentPoint.Y += control.Height;
-                        tagEditPage.Controls.Add(control);
-                        control.BringToFront();
-                    }
-
-                    tagEditPage.AutoScroll = true;
-                    tagEditPage.HorizontalScroll.Enabled = true;
-                    tagEditPage.VerticalScroll.Enabled = true;
+                    Application.DoEvents();
                 }
             }
+        }
+
+        private void tagTreeView_DoubleClick(object sender, EventArgs e)
+        {
+            tagTreeView_AfterSelect(sender, new TreeViewEventArgs(tagTreeView.SelectedNode));
         }
     }
 }
