@@ -31,9 +31,9 @@
             this.split = new System.Windows.Forms.SplitContainer();
             this.tagTreeView = new System.Windows.Forms.TreeView();
             this.tagToolStrip = new System.Windows.Forms.ToolStrip();
-            this.toolTabControl = new Sentinel.Controls.AdvancedTabControl();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.engineVersionLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolTabControl = new Sentinel.Controls.AdvancedTabControl();
             ((System.ComponentModel.ISupportInitialize)(this.split)).BeginInit();
             this.split.Panel1.SuspendLayout();
             this.split.Panel2.SuspendLayout();
@@ -51,12 +51,13 @@
             // 
             this.split.Panel1.Controls.Add(this.tagTreeView);
             this.split.Panel1.Controls.Add(this.tagToolStrip);
+            this.split.Panel1MinSize = 300;
             // 
             // split.Panel2
             // 
             this.split.Panel2.Controls.Add(this.toolTabControl);
             this.split.Size = new System.Drawing.Size(845, 594);
-            this.split.SplitterDistance = 267;
+            this.split.SplitterDistance = 300;
             this.split.TabIndex = 0;
             // 
             // tagTreeView
@@ -64,7 +65,7 @@
             this.tagTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tagTreeView.Location = new System.Drawing.Point(0, 25);
             this.tagTreeView.Name = "tagTreeView";
-            this.tagTreeView.Size = new System.Drawing.Size(267, 569);
+            this.tagTreeView.Size = new System.Drawing.Size(300, 569);
             this.tagTreeView.TabIndex = 1;
             this.tagTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tagTreeView_AfterSelect);
             this.tagTreeView.DoubleClick += new System.EventHandler(this.tagTreeView_DoubleClick);
@@ -74,18 +75,9 @@
             this.tagToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.tagToolStrip.Location = new System.Drawing.Point(0, 0);
             this.tagToolStrip.Name = "tagToolStrip";
-            this.tagToolStrip.Size = new System.Drawing.Size(267, 25);
+            this.tagToolStrip.Size = new System.Drawing.Size(300, 25);
             this.tagToolStrip.TabIndex = 0;
             this.tagToolStrip.Text = "toolStrip1";
-            // 
-            // toolTabControl
-            // 
-            this.toolTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolTabControl.Location = new System.Drawing.Point(0, 0);
-            this.toolTabControl.Name = "toolTabControl";
-            this.toolTabControl.SelectedIndex = 0;
-            this.toolTabControl.Size = new System.Drawing.Size(574, 594);
-            this.toolTabControl.TabIndex = 0;
             // 
             // statusStrip
             // 
@@ -102,6 +94,15 @@
             // 
             this.engineVersionLabel.Name = "engineVersionLabel";
             this.engineVersionLabel.Size = new System.Drawing.Size(0, 17);
+            // 
+            // toolTabControl
+            // 
+            this.toolTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolTabControl.Location = new System.Drawing.Point(0, 0);
+            this.toolTabControl.Name = "toolTabControl";
+            this.toolTabControl.SelectedIndex = 0;
+            this.toolTabControl.Size = new System.Drawing.Size(541, 594);
+            this.toolTabControl.TabIndex = 0;
             // 
             // MapControl
             // 

@@ -249,7 +249,12 @@ namespace Sentinel
 
                 while (enumerator.Next())
                 {
-                    var control = new Controls.NumberControl(definition, enumerator.Field);
+                    Control control = null;
+
+                    if (enumerator.Field.FieldType == typeof(Vector3))
+                        control = new Controls.Vector3Control(definition, enumerator.Field);
+                    else
+                        control = new Controls.NumberControl(definition, enumerator.Field);
 
                     control.Location = currentPoint;
                     currentPoint.Y += control.Height;

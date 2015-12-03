@@ -15,18 +15,14 @@ namespace Blam.Objects
         public byte Padding;
         public ushort Flags;
         public float BoundingRadius;
-        public float BoundingOffsetX;
-        public float BoundingOffsetY;
-        public float BoundingOffsetZ;
+        public Vector3 BoundingOffset;
         public float AccelerationScale;
         public LightmapShadowModeSizeValue LightmapShadowModeSize;
         public SweetenerSizeValue SweetenerSize;
         public WaterDensityValue WaterDensity;
         public int Unknown;
         public float DynamicLightSphereRadius;
-        public float DynamicLightSphereOffsetX;
-        public float DynamicLightSphereOffsetY;
-        public float DynamicLightSphereOffsetZ;
+        public Vector3 DynamicLightSphereOffset;
         public StringID DefaultModelVariant;
         public TagInstance Model;
         [MaxVersion(GameVersion.V10_1_449175_Live)]
