@@ -31,7 +31,7 @@
             this.split = new System.Windows.Forms.SplitContainer();
             this.tagTreeView = new System.Windows.Forms.TreeView();
             this.tagToolStrip = new System.Windows.Forms.ToolStrip();
-            this.toolTabControl = new Sentinel.AdvancedTabControl();
+            this.toolTabControl = new Sentinel.Controls.AdvancedTabControl();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.engineVersionLabel = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.split)).BeginInit();
@@ -131,6 +131,6 @@
         private System.Windows.Forms.ToolStrip tagToolStrip;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel engineVersionLabel;
-        private Sentinel.AdvancedTabControl toolTabControl;
+        private Sentinel.Controls.AdvancedTabControl toolTabControl;
     }
 }

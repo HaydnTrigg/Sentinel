@@ -102,7 +102,8 @@ namespace Sentinel
             LoadDependencies(scenarioIndex, ref mapTags);
             LoadDependencies(TagsData.Tags.FindFirstInGroup(new Tag("matg")).Index, ref mapTags);
             LoadDependencies(TagsData.Tags.FindFirstInGroup(new Tag("mulg")).Index, ref mapTags);
-            
+            LoadDependencies(TagsData.Tags.FindFirstInGroup(new Tag("cfgt")).Index, ref mapTags);
+
             TagGroups = new Dictionary<Tag, List<TagInstance>>();
 
             foreach (var entry in mapTags)

@@ -5,7 +5,7 @@ using Blam.Objects;
 
 namespace Blam.Units
 {
-    [TagDefinition(Name = "unit", Group = "unit", Size = 0x2C8)]
+    [TagDefinition(Group = "unit", Size = 0x2C8)]
 	public abstract class Unit : GameObject
 	{
 		public uint FlagsWarningHalo4Values;

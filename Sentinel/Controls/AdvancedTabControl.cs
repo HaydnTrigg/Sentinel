@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
 
-namespace Sentinel
+namespace Sentinel.Controls
 {
     public delegate void TabEventHandler(object sender, TabEventArgs e);
     public delegate void TabCancelEventHandler(object sender, TabCancelEventArgs e);
@@ -145,12 +145,24 @@ namespace Sentinel
             tabCtxm.MenuItems.Clear();
 
             if (this.AllowClose)
-                tabCtxm.MenuItems.Add("Close", closeTab);
+            {
+                tabCtxm.MenuItems.Add("&Close", closeTab);
+                if (this.TabCount > 0)
+                    tabCtxm.MenuItems.Add("Close &All", closeAllTabs);
+            }
         }
 
         private void closeTab(object sender, EventArgs e)
         {
             this.OnTabClosing(new TabCancelEventArgs(contextmenuTab));
+            contextmenuTab = null;
+        }
+
+        private void closeAllTabs(object sender, EventArgs e)
+        {
+            foreach (var page in TabPages)
+                this.OnTabClosing(new TabCancelEventArgs(page as TabPage));
+
             contextmenuTab = null;
         }
 

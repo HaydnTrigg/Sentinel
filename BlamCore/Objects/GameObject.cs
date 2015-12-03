@@ -5,7 +5,7 @@ using Blam.Tags;
 
 namespace Blam.Objects
 {
-    [TagDefinition(Name = "object", Group = "obje", Size = 0x120)]
+    [TagDefinition(Group = "obje", Size = 0x120)]
     public abstract class GameObject
     {
         [MaxVersion(GameVersion.V10_1_449175_Live)]

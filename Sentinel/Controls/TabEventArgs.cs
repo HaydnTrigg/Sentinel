@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Sentinel
+namespace Sentinel.Controls
 {
     public class TabEventArgs : EventArgs
     {

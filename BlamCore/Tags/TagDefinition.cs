@@ -12,101 +12,107 @@ namespace Blam.Tags
     public class TagDefinition
     {
         /// <summary>
-        /// Gets the engine version that was used to construct the info object.
+        /// Constructs a <see cref="TagDefinition"/> object which contains info about a tag structure type.
         /// </summary>
-        public GameVersion Version { get; } = GameVersion.Unknown;
-
-        /// <summary>
-        /// Gets the structure types in the structure's inheritance hierarchy in order from child to base.
-        /// Types which do not have a matching TagStructure attribute will not be included in this list.
-        /// </summary>
-        public List<Type> Types { get; } = new List<Type>();
-
-        /// <summary>
-        /// Gets the total size of the structure, including parent structures.
-        /// </summary>
-        public uint TotalSize { get; private set; } = 0;
-
-        /// <summary>
-        /// Gets the current <see cref="TagDefinitionAttribute"/>.
-        /// </summary>
-        public TagDefinitionAttribute Structure { get; }
-
-        /// <summary>
-        /// Gets the group tag for the structure, or -1 if none.
-        /// </summary>
-        public Tag GroupTag { get; private set; } = Tag.Null;
-
-        /// <summary>
-        /// Gets the parent group tag for the structure, or -1 if none.
-        /// </summary>
-        public Tag ParentGroupTag { get; private set; } = Tag.Null;
-
-        /// <summary>
-        /// Gets the grandparent group tag for the structure, or -1 if none.
-        /// </summary>
-        public Tag GrandparentGroupTag { get; private set; } = Tag.Null;
+        /// <param name="structureType">The tag structure type to analyze.</param>
+        public TagDefinition(Type structureType)
+            : this(structureType, GameVersion.Unknown)
+        {
+        }
 
         /// <summary>
         /// Constructs a <see cref="TagDefinition"/> object which contains info about a tag structure type.
         /// </summary>
         /// <param name="structureType">The tag structure type to analyze.</param>
-        public TagDefinition(Type structureType)
-			: this(structureType, GameVersion.Unknown)
-		{
-		}
-
-		/// <summary>
-		/// Constructs a <see cref="TagDefinition"/> object which contains info about a tag structure type.
-		/// </summary>
-		/// <param name="structureType">The tag structure type to analyze.</param>
-		/// <param name="version">The engine version to compare attributes against.</param>
-		public TagDefinition(Type structureType, GameVersion version)
-		{
-			Version = version;
-            Structure = GetStructureAttribute(structureType, version);
+        /// <param name="version">The engine version to compare attributes against.</param>
+        public TagDefinition(Type structureType, GameVersion version)
+        {
+            Version = version;
+            GroupTag = new Tag(Tag.Null.Value);
+            ParentGroupTag = new Tag(Tag.Null.Value);
+            GrandparentGroupTag = new Tag(Tag.Null.Value);
             Analyze(structureType, version);
-
-            if (Structure == null)
-                throw new InvalidOperationException("No TagStructure attribute which matches the target version was found on " + structureType.Name);
         }
 
+        /// <summary>
+        /// Gets the engine version that was used to construct the info object.
+        /// </summary>
+        public GameVersion Version { get; private set; }
+
+        /// <summary>
+        /// Gets the structure types in the structure's inheritance hierarchy in order from child to base.
+        /// Types which do not have a matching TagStructure attribute will not be included in this list.
+        /// </summary>
+        public List<Type> Types { get; private set; }
+
+        /// <summary>
+        /// Gets the total size of the structure, including parent structures.
+        /// </summary>
+        public uint TotalSize { get; private set; }
+
+        /// <summary>
+        /// Gets the current <see cref="TagDefinitionAttribute"/>.
+        /// </summary>
+        public TagDefinitionAttribute Structure { get; private set; }
+
+        /// <summary>
+        /// Gets the group tag for the structure, or -1 if none.
+        /// </summary>
+        public Tag GroupTag { get; private set; }
+
+        /// <summary>
+        /// Gets the parent group tag for the structure, or -1 if none.
+        /// </summary>
+        public Tag ParentGroupTag { get; private set; }
+
+        /// <summary>
+        /// Gets the grandparent group tag for the structure, or -1 if none.
+        /// </summary>
+        public Tag GrandparentGroupTag { get; private set; }
+
         private void Analyze(Type mainType, GameVersion version)
-		{
-            for (var type = mainType; type != null; type = type.BaseType)
+        {
+            // Get the attribute for the main structure type
+            Structure = GetStructureAttribute(mainType, version);
+            if (Structure == null)
+                throw new InvalidOperationException("No TagStructure attribute which matches the target version was found on " + mainType.Name);
+
+            // Scan through the type's inheritance hierarchy and analyze each TagStructure attribute
+            var currentType = mainType;
+            Types = new List<Type>();
+            while (currentType != null)
             {
-                var attrib = (type != mainType) ? GetStructureAttribute(type, version) : Structure;
-
-                if (attrib == null)
-                    continue;
-
-                Types.Add(type);
-                TotalSize += attrib.Size;
-
-                if (attrib.Group == null)
-                    continue;
-
-                if (GroupTag == Tag.Null)
-                    GroupTag = new Tag(attrib.Group);
-                else if (ParentGroupTag == Tag.Null)
-                    ParentGroupTag = new Tag(attrib.Group);
-                else if (GrandparentGroupTag == Tag.Null)
-                    GrandparentGroupTag = new Tag(attrib.Group);
+                var attrib = (currentType != mainType) ? GetStructureAttribute(currentType, version) : Structure;
+                if (attrib != null)
+                {
+                    Types.Add(currentType);
+                    TotalSize += attrib.Size;
+                    if (attrib.Group != null)
+                    {
+                        if (GroupTag.Value == Tag.Null.Value)
+                            GroupTag = new Tag(attrib.Group);
+                        else if (ParentGroupTag.Value == Tag.Null.Value)
+                            ParentGroupTag = new Tag(attrib.Group);
+                        else if (GrandparentGroupTag.Value == Tag.Null.Value)
+                            GrandparentGroupTag = new Tag(attrib.Group);
+                    }
+                }
+                currentType = currentType.BaseType;
             }
-		}
+        }
 
-		private static TagDefinitionAttribute GetStructureAttribute(Type type, GameVersion version)
-		{
-			// First match against any TagStructureAttributes that have version restrictions
-			var attrib = type.GetCustomAttributes(typeof(TagDefinitionAttribute), false)
-				.Cast<TagDefinitionAttribute>()
-				.Where(a => a.MinVersion != GameVersion.Unknown || a.MaxVersion != GameVersion.Unknown)
-				.FirstOrDefault(a => GameVersions.IsBetween(version, a.MinVersion, a.MaxVersion));
+        private static TagDefinitionAttribute GetStructureAttribute(Type type, GameVersion version)
+        {
+            // First match against any TagDefinitionAttributes that have version restrictions
+            var attrib = type.GetCustomAttributes(typeof(TagDefinitionAttribute), false)
+                .Cast<TagDefinitionAttribute>()
+                .Where(a => a.MinVersion != GameVersion.Unknown || a.MaxVersion != GameVersion.Unknown)
+                .FirstOrDefault(a => GameVersions.IsBetween(version, a.MinVersion, a.MaxVersion));
 
-			// If nothing was found, find the first attribute without any version restrictions
-			return attrib ?? type.GetCustomAttributes(typeof(TagDefinitionAttribute), false)
-				.Cast<TagDefinitionAttribute>()
-				.FirstOrDefault(a => a.MinVersion == GameVersion.Unknown && a.MaxVersion == GameVersion.Unknown);
-		}
-	}
+            // If nothing was found, find the first attribute without any version restrictions
+            return attrib ?? type.GetCustomAttributes(typeof(TagDefinitionAttribute), false)
+                .Cast<TagDefinitionAttribute>()
+                .FirstOrDefault(a => a.MinVersion == GameVersion.Unknown && a.MaxVersion == GameVersion.Unknown);
+        }
+    }
 }

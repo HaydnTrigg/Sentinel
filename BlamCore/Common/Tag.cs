@@ -1,71 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
-using static System.BitConverter;
-using static System.Text.Encoding;
+using System.Text;
 
 namespace Blam.Common
 {
     /// <summary>
-    /// Represents a tag; a 4-character identifier.
+    /// Represents a magic number which looks like a string.
     /// </summary>
-    public struct Tag : IComparable<Tag>, IEquatable<Tag>
+    public struct Tag : IComparable<Tag>
     {
-        public static Tag Null { get; } = new Tag("ÿÿÿÿ");
-
+        public static readonly Tag Null = new Tag("ÿÿÿÿ");
         /// <summary>
-        /// The value of the tag.
+        /// Constructs a magic number from an integer.
         /// </summary>
-        public UInt32 Value { get; }
-
-        public Type DefinitionType { get; }
-
-        /// <summary>
-        /// Constructs a tag from a UInt32.
-        /// </summary>
-        /// <param name="value">The value of the tag.</param>
-        public Tag(UInt32 value, Type definitionType = null)
-		{
-			Value = value;
-            DefinitionType = definitionType;
-		}
-
-		/// <summary>
-		/// Constructs a tag from a string representation.
-		/// </summary>
-		/// <param name="value">The representation of the tag.</param>
-		public Tag(string value, Type definitionType = null)
+        /// <param name="val">The integer.</param>
+        public Tag(uint val)
         {
-            var bytes = new List<byte>(ASCII.GetBytes(value));
-            bytes.Reverse();
-            Value = ToUInt32(bytes.ToArray(), 0);
-            DefinitionType = definitionType;
+            Value = val;
         }
-        
+
+        /// <summary>
+        /// Constructs a magic number from a string.
+        /// </summary>
+        /// <param name="str">The string.</param>
+        public Tag(string str)
+        {
+            var bytes = Encoding.ASCII.GetBytes(str);
+            Value = 0;
+            foreach (var b in bytes)
+            {
+                Value <<= 8;
+                Value |= b;
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the magic number as an integer.
+        /// </summary>
+        public readonly uint Value;
+
+        /// <summary>
+        /// Converts the magic number into its string representation.
+        /// </summary>
+        /// <returns>The string that the magic number looks like.</returns>
         public override string ToString()
         {
-            var bytes = new List<byte>(GetBytes(Value));
-            bytes.Reverse();
-            return ASCII.GetString(bytes.ToArray());
+            var i = 4;
+            var chars = new char[4];
+            var val = Value;
+            while (val > 0)
+            {
+                i--;
+                chars[i] = (char)(val & 0xFF);
+                val >>= 8;
+            }
+            return (i < 4) ? new string(chars, i, chars.Length - i) : "";
         }
 
-        public bool Equals(Tag other) =>
-            Value.Equals(other.Value);
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Tag))
+                return false;
+            var other = (Tag)obj;
+            return (Value == other.Value);
+        }
 
-        public override bool Equals(object obj) =>
-            obj is Tag ?
-                Equals((Tag)obj) :
-            false;
+        public static bool operator ==(Tag a, Tag b)
+        {
+            return a.Equals(b);
+        }
 
-        public static bool operator ==(Tag a, Tag b) =>
-            a.Equals(b);
+        public static bool operator !=(Tag a, Tag b)
+        {
+            return !(a == b);
+        }
 
-		public static bool operator !=(Tag a, Tag b) =>
-            !a.Equals(b);
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
+        }
 
-        public override int GetHashCode() =>
-            Value.GetHashCode();
-
-        public int CompareTo(Tag other) =>
-            Value.CompareTo(other.Value);
+        public int CompareTo(Tag other)
+        {
+            return Value.CompareTo(other.Value);
+        }
     }
 }
