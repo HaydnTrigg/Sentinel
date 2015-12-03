@@ -43,6 +43,12 @@ namespace Sentinel
 
         private void SetWindowTitle()
         {
+            if (tabControl.TabCount == 0)
+            {
+                Text = "Sentinel";
+                return;
+            }
+
             var mapControl = (MapControl)tabControl.SelectedTab.Controls[0];
             Text = string.Format("Sentinel - {0}", mapControl.MapInfo.FullName);
         }
@@ -54,6 +60,9 @@ namespace Sentinel
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (tabControl.TabCount == 0)
+                return;
+
             tabControl.TabPages.RemoveAt(tabControl.SelectedIndex);
             SetWindowTitle();
         }

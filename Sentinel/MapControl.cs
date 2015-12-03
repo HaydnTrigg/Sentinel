@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -8,8 +8,8 @@ using System.Windows.Forms;
 using Blam.Cache;
 using Blam.Common;
 using Blam.Game;
+using Blam.Scenario;
 using Blam.Tags;
-using System.Globalization;
 
 namespace Sentinel
 {
@@ -45,9 +45,9 @@ namespace Sentinel
 
             DatFiles = directory.GetFiles("*.dat").ToList();
 
-            var tagCacheInfo = DatFiles.Find(file => file.Name == "tags.dat");
+            TagsCacheInfo = DatFiles.Find(file => file.Name == "tags.dat");
 
-            using (var tagCacheStream = tagCacheInfo.OpenRead())
+            using (var tagCacheStream = TagsCacheInfo.OpenRead())
                 TagsData = new TagCache(tagCacheStream);
 
             GameVersion closestVersion;
@@ -68,7 +68,7 @@ namespace Sentinel
                 Version = closestVersion;
             }
 
-            var stringIDsCacheInfo = DatFiles.Find(file => file.Name == "string_ids.dat");
+            StringIDsCacheInfo = DatFiles.Find(file => file.Name == "string_ids.dat");
 
             StringIDResolverBase stringIDsResolver = null;
 
@@ -77,7 +77,7 @@ namespace Sentinel
             else
                 stringIDsResolver = new Blam.Game.V1_106708.StringIDResolver();
 
-            using (var stringIDsCacheStream = stringIDsCacheInfo.OpenRead())
+            using (var stringIDsCacheStream = StringIDsCacheInfo.OpenRead())
                 StringIDsData = new StringIDsCache(stringIDsCacheStream, stringIDsResolver);
 
             Int32 scenarioIndex = -1;
@@ -196,6 +196,17 @@ namespace Sentinel
                 return;
 
             var tagInstance = (TagInstance)e.Node.Tag;
+
+            foreach (var entry in toolTabControl.TabPages)
+            {
+                var tabPage = (TabPage)entry;
+                if (tabPage.Tag == tagInstance)
+                {
+                    toolTabControl.SelectedTab = tabPage;
+                    return;
+                }
+            }
+
             var tagName = TagNames[tagInstance.Index];
 
             if (tagName.Contains('\\'))
@@ -206,8 +217,49 @@ namespace Sentinel
 
             var tagEditPage = new TabPage(tagName + "." + StringIDsData.GetString(tagInstance.GroupName));
             tagEditPage.Tag = tagInstance;
+            tagEditPage.BackColor = System.Drawing.Color.Transparent;
             toolTabControl.TabPages.Add(tagEditPage);
             toolTabControl.SelectedTab = tagEditPage;
+            
+            if (tagInstance.GroupTag == new Blam.Common.Tag("scnr"))
+            {
+                using (var cacheStream = TagsCacheInfo.OpenRead())
+                {
+                    var context = new TagSerializationContext(cacheStream, TagsData, StringIDsData, tagInstance);
+                    var deserializer = new TagDeserializer(Version);
+                    var scenario = deserializer.Deserialize<Scenario>(context);
+
+                    var enumerator = new TagFieldEnumerator(new TagDefinition(typeof(Scenario), Version));
+
+                    var tagInfoControl = new Controls.TagInfoControl(
+                        string.Format("0x{0:X8}", tagInstance.Index),
+                        string.Format("0x{0:X8}", tagInstance.DataOffset),
+                        string.Format("0x{0:X8}", tagInstance.DataSize));
+
+                    tagEditPage.Controls.Add(tagInfoControl);
+                    tagInfoControl.BringToFront();
+                    tagInfoControl.Width = 1000;
+                    var currentPoint = new System.Drawing.Point(0, tagInfoControl.Height);
+
+                    while (enumerator.Next())
+                    {
+                        var value = enumerator.Field.GetValue(scenario);
+
+                        var control = new Controls.NumberControl(
+                            enumerator.Field.Name,
+                            value == null ? "" : value.ToString());
+
+                        control.Location = currentPoint;
+                        currentPoint.Y += control.Height;
+                        tagEditPage.Controls.Add(control);
+                        control.BringToFront();
+                    }
+
+                    tagEditPage.AutoScroll = true;
+                    tagEditPage.HorizontalScroll.Enabled = true;
+                    tagEditPage.VerticalScroll.Enabled = true;
+                }
+            }
         }
     }
 }

@@ -50,6 +50,18 @@
     <Compile Include="AdvancedTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\NumberControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\NumberControl.Designer.cs">
+      <DependentUpon>NumberControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TagInfoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TagInfoControl.Designer.cs">
+      <DependentUpon>TagInfoControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +78,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TabCancelEventArgs.cs" />
     <Compile Include="TabEventArgs.cs" />
+    <EmbeddedResource Include="Controls\NumberControl.resx">
+      <DependentUpon>NumberControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TagInfoControl.resx">
+      <DependentUpon>TagInfoControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

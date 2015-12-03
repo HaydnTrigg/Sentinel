@@ -31,16 +31,14 @@
             this.split = new System.Windows.Forms.SplitContainer();
             this.tagTreeView = new System.Windows.Forms.TreeView();
             this.tagToolStrip = new System.Windows.Forms.ToolStrip();
+            this.toolTabControl = new Sentinel.AdvancedTabControl();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.engineVersionLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolTabControl = new Sentinel.AdvancedTabControl();
-            this.tagInfoPage = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.split)).BeginInit();
             this.split.Panel1.SuspendLayout();
             this.split.Panel2.SuspendLayout();
             this.split.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            this.toolTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // split
@@ -79,6 +77,15 @@
             this.tagToolStrip.TabIndex = 0;
             this.tagToolStrip.Text = "toolStrip1";
             // 
+            // toolTabControl
+            // 
+            this.toolTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolTabControl.Location = new System.Drawing.Point(0, 0);
+            this.toolTabControl.Name = "toolTabControl";
+            this.toolTabControl.SelectedIndex = 0;
+            this.toolTabControl.Size = new System.Drawing.Size(574, 594);
+            this.toolTabControl.TabIndex = 0;
+            // 
             // statusStrip
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -94,26 +101,6 @@
             // 
             this.engineVersionLabel.Name = "engineVersionLabel";
             this.engineVersionLabel.Size = new System.Drawing.Size(0, 17);
-            // 
-            // toolTabControl
-            // 
-            this.toolTabControl.Controls.Add(this.tagInfoPage);
-            this.toolTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolTabControl.Location = new System.Drawing.Point(0, 0);
-            this.toolTabControl.Name = "toolTabControl";
-            this.toolTabControl.SelectedIndex = 0;
-            this.toolTabControl.Size = new System.Drawing.Size(574, 594);
-            this.toolTabControl.TabIndex = 0;
-            // 
-            // tagInfoPage
-            // 
-            this.tagInfoPage.Location = new System.Drawing.Point(4, 25);
-            this.tagInfoPage.Name = "tagInfoPage";
-            this.tagInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.tagInfoPage.Size = new System.Drawing.Size(566, 565);
-            this.tagInfoPage.TabIndex = 0;
-            this.tagInfoPage.Text = "Tag Info";
-            this.tagInfoPage.UseVisualStyleBackColor = true;
             // 
             // MapControl
             // 
@@ -131,7 +118,6 @@
             this.split.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.toolTabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -145,6 +131,5 @@
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel engineVersionLabel;
         private Sentinel.AdvancedTabControl toolTabControl;
-        private System.Windows.Forms.TabPage tagInfoPage;
     }
 }
