@@ -106,8 +106,6 @@ namespace Sentinel.Controls
 
             var mapTags = new Dictionary<int, TagInstance>();
             LoadDependencies(scenarioIndex, ref mapTags);
-            LoadDependencies(tagsData.Tags.FindFirstInGroup(new Tag("matg")).Index, ref mapTags);
-            LoadDependencies(tagsData.Tags.FindFirstInGroup(new Tag("mulg")).Index, ref mapTags);
             LoadDependencies(tagsData.Tags.FindFirstInGroup(new Tag("cfgt")).Index, ref mapTags);
 
             TagGroups = new Dictionary<Tag, List<TagInstance>>();
