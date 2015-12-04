@@ -191,9 +191,7 @@ namespace Blam.Units
             public uint Unknown9;
             public uint Unknown10;
             public uint Unknown11;
-            public float TranslationI;
-            public float TranslationJ;
-            public float TranslationK;
+            public Vector3 Translation;
             public float TranslationRadius;
         }
 
@@ -221,13 +219,9 @@ namespace Blam.Units
             public uint Unknown4;
             public uint Unknown5;
             public uint Unknown6;
-            public float BottomI;
-            public float BottomJ;
-            public float BottomK;
+            public Vector3 Bottom;
             public float BottomRadius;
-            public float TopI;
-            public float TopJ;
-            public float TopK;
+            public Vector3 Top;
             public float TopRadius;
         }
 
@@ -264,9 +258,7 @@ namespace Blam.Units
             public uint Unknown9;
             public uint Unknown10;
             public uint Unknown11;
-            public float TranslationI;
-            public float TranslationJ;
-            public float TranslationK;
+            public Vector3 Translation;
             public float TranslationRadius;
         }
 

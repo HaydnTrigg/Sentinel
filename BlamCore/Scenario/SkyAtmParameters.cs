@@ -60,9 +60,7 @@ namespace Blam.Scenario
 			public float FogIntensity2;
 			public float StartDistance;
 			public float EndDistance;
-			public float FogVelocityX;
-			public float FogVelocityY;
-			public float FogVelocityZ;
+            public Vector3 FogVelocity;
 			public TagInstance WeatherEffect;
 			public uint Unknown7;
 			public uint Unknown8;

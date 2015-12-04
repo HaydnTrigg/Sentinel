@@ -31,12 +31,9 @@ namespace Blam.Interface
 		public List<Alert> Alerts;
 		public List<Dialog> Dialogs;
 		public List<GlobalDataSource> GlobalDataSources;
-		public float WidescreenBitmapScaleX;
-		public float WidescreenBitmapScaleY;
-		public float StandardBitmapScaleX;
-		public float StandardBitmapScaleY;
-		public float MenuBlurX;
-		public float MenuBlurY;
+        public Vector2 WidescreenBitmapScale;
+        public Vector2 StandardBitmapScale;
+        public Vector2 MenuBlur;
 		public List<UiWidgetBiped> UiWidgetBipeds;
 		public StringID UnknownPlayer1;
 		public StringID UnknownPlayer2;

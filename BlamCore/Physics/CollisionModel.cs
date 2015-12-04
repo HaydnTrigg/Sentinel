@@ -116,9 +116,7 @@ namespace Blam.Physics
 					[TagDefinition(Size = 0x10)]
 					public class Vertex
 					{
-						public float PointX;
-						public float PointY;
-						public float PointZ;
+                        public Vector3 Point;
 						public short FirstEdge;
 						public short Unknown;
 					}
@@ -171,9 +169,7 @@ namespace Blam.Physics
 					public int Count;
 					public int Offset;
 					public uint Unknown;
-					public float OffsetX;
-					public float OffsetY;
-					public float OffsetZ;
+                    public Vector3 OffsetPoint;
 					public float OffsetScale;
 					public uint Unknown2;
 					public int DataSize;
@@ -199,9 +195,7 @@ namespace Blam.Physics
 		{
 			public short Node;
 			public ushort Flags;
-			public float CenterX;
-			public float CenterY;
-			public float CenterZ;
+            public Vector3 Center;
 			public float Radius;
 		}
 

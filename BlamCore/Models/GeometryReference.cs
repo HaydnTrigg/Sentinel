@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Blam.Tags;
 using Blam.Cache;
+using Blam.Common;
 
 namespace Blam.Models
 {
@@ -126,54 +127,29 @@ namespace Blam.Models
 		public short Unknown0;
 		public short Unknown2;
 
-		/// <summary>
-		/// The minimum X value in the uncompressed geometry.
-		/// </summary>
-		public float PositionMinX;
+        /// <summary>
+        /// The range of X coordinates in the uncompressed geometry.
+        /// </summary>
+        public Range<float> XRange;
 
-		/// <summary>
-		/// The maximum X value in the uncompressed geometry.
-		/// </summary>
-		public float PositionMaxX;
+        /// <summary>
+        /// The range of Y coordinates in the uncompressed geometry.
+        /// </summary>
+        public Range<float> YRange;
 
-		/// <summary>
-		/// The minimum Y value in the uncompressed geometry.
-		/// </summary>
-		public float PositionMinY;
+        /// <summary>
+        /// The range of Z coordinates in the uncompressed geometry.
+        /// </summary>
+        public Range<float> ZRange;
 
-		/// <summary>
-		/// The maximum Y value in the uncompressed geometry.
-		/// </summary>
-		public float PositionMaxY;
+        /// <summary>
+        /// The range of U coordinates in the uncompressed geometry.
+        /// </summary>
+        public Range<float> URange;
 
-		/// <summary>
-		/// The minimum Z value in the uncompressed geometry.
-		/// </summary>
-		public float PositionMinZ;
-
-		/// <summary>
-		/// The maximum Z value in the uncompressed geometry.
-		/// </summary>
-		public float PositionMaxZ;
-
-		/// <summary>
-		/// The minimum U value in the uncompressed geometry.
-		/// </summary>
-		public float TextureMinU;
-
-		/// <summary>
-		/// The maximum U value in the uncompressed geometry.
-		/// </summary>
-		public float TextureMaxU;
-
-		/// <summary>
-		/// The minimum V value in the uncompressed geometry.
-		/// </summary>
-		public float TextureMinV;
-
-		/// <summary>
-		/// The maximum V value in the uncompressed geometry.
-		/// </summary>
-		public float TextureMaxV;
+        /// <summary>
+        /// The range of V coordinates in the uncompressed geometry.
+        /// </summary>
+        public Range<float> VRange;
 	}
 }

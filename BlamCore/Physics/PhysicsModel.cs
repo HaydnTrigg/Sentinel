@@ -222,9 +222,7 @@ namespace Blam.Physics
 			public short Region;
 			public short Permutations;
 			public short Unknown;
-			public float BoundingSphereOffsetX;
-			public float BoundingSphereOffsetY;
-			public float BoundingSphereOffsetZ;
+            public Vector3 BoundingSphereOffset;
 			public float BoundingSphereRadius;
 			public ushort Flags;
 			public MotionTypeValue MotionType;
@@ -233,9 +231,7 @@ namespace Blam.Physics
 			public float InertiaTensorScale;
 			public float LinearDampening;
 			public float AngularDampening;
-			public float CenterOfMassOffsetX;
-			public float CenterOfMassOffsetY;
-			public float CenterOfMassOffsetZ;
+            public Vector3 CenterOfMassOffset;
 			public uint Unknown2;
 			public uint Unknown3;
 			public uint Unknown4;

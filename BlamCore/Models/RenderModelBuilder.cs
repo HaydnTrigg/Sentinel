@@ -357,20 +357,28 @@ namespace Blam.Models
 				}
 
 				if (positions != null)
-				{
-					result.PositionMinX = Math.Min(result.PositionMinX, positions.Min(v => v.X));
-					result.PositionMinY = Math.Min(result.PositionMinY, positions.Min(v => v.Y));
-					result.PositionMinZ = Math.Min(result.PositionMinZ, positions.Min(v => v.Z));
-					result.PositionMaxX = Math.Max(result.PositionMaxX, positions.Max(v => v.X));
-					result.PositionMaxY = Math.Max(result.PositionMaxY, positions.Max(v => v.Y));
-					result.PositionMaxZ = Math.Max(result.PositionMaxZ, positions.Max(v => v.Z));
+                {
+                    result.XRange = new Range<float>(
+                        Math.Min(result.XRange.Min, positions.Min(v => v.X)),
+                        Math.Max(result.XRange.Max, positions.Max(v => v.X)));
+
+                    result.YRange = new Range<float>(
+                        Math.Min(result.YRange.Min, positions.Min(v => v.Y)),
+                        Math.Max(result.YRange.Max, positions.Max(v => v.Y)));
+
+                    result.ZRange = new Range<float>(
+                        Math.Min(result.XRange.Min, positions.Min(v => v.Z)),
+                        Math.Max(result.XRange.Max, positions.Max(v => v.Z)));
 				}
 				if (texCoords != null)
-				{
-					result.TextureMinU = Math.Min(result.TextureMinU, texCoords.Min(v => v.X));
-					result.TextureMinV = Math.Min(result.TextureMinV, texCoords.Min(v => v.Y));
-					result.TextureMaxU = Math.Max(result.TextureMaxU, texCoords.Max(v => v.X));
-					result.TextureMaxV = Math.Max(result.TextureMaxV, texCoords.Max(v => v.Y));
+                {
+                    result.URange = new Range<float>(
+                        Math.Min(result.URange.Min, texCoords.Min(v => v.X)),
+                        Math.Max(result.URange.Max, texCoords.Max(v => v.X)));
+
+                    result.VRange = new Range<float>(
+                        Math.Min(result.VRange.Min, texCoords.Min(v => v.Y)),
+                        Math.Max(result.VRange.Max, texCoords.Max(v => v.Y)));
 				}
 			}
 			_model.Geometry.Compression = new List<GeometryCompressionInfo> { result };

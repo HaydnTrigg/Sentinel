@@ -28,9 +28,7 @@ namespace Blam.Interface
 			public class AnimationBlock
 			{
 				public int FrameNumber;
-				public float PositionX;
-				public float PositionY;
-				public float PositionZ;
+                public Vector3 Position;
 			}
 		}
 
@@ -60,8 +58,7 @@ namespace Blam.Interface
 			public class AnimationBlock
 			{
 				public int FrameNumber;
-				public float StretchX;
-				public float StretchY;
+                public Vector2 Stretch;
 			}
 		}
 
@@ -117,11 +114,9 @@ namespace Blam.Interface
 			public class AnimationBlock
 			{
 				public int FrameNumber;
-				public float Movement1X;
-				public float Movement1Y;
-				public float Movement2X;
-				public float Movement2Y;
-			}
+                public Vector2 Movement1;
+                public Vector2 Movement2;
+            }
 		}
 	}
 }

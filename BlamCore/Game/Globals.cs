@@ -506,8 +506,7 @@ namespace Blam.Rasterizer
 			public float MagnetismFriction;
 			public float MagnetismAdhesion;
 			public float InconsequentialTargetScale;
-			[MaxVersion(GameVersion.V10_1_449175_Live)] public float CrosshairLocationX;
-			[MaxVersion(GameVersion.V10_1_449175_Live)] public float CrosshairLocationY;
+            [MaxVersion(GameVersion.V10_1_449175_Live)] public Vector2 CrosshairPosition;
 			[MinVersion(GameVersion.V11_1_498295_Live)] public List<CrosshairLocation> CrosshairLocations;
 			public float SecondsToStart;
 			public float SecondsToFullSpeed;
@@ -778,9 +777,7 @@ namespace Blam.Rasterizer
 			public float SneakSideways;
 			public float SneakAcceleration;
 			public float AirborneAcceleration;
-			public float GrenadeOriginX;
-			public float GrenadeOriginY;
-			public float GrenadeOriginZ;
+            public Vector3 GrenadeOrigin;
 			public float StunMovementPenalty;
 			public float StunTurningPenalty;
 			public float StunJumpingPenalty;

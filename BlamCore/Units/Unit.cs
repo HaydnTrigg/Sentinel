@@ -275,9 +275,7 @@ namespace Blam.Units
 		public class Posture
 		{
 			public StringID Name;
-			public float PillOffsetI;
-			public float PillOffsetJ;
-			public float PillOffsetK;
+            public Vector3 PillOffset;
 		}
 
 		[TagDefinition(Size = 0x10)]
@@ -345,9 +343,7 @@ namespace Blam.Units
 			public StringID DetachWeaponString;
 			public float PingScale;
 			public float TurnoverTime;
-			public float AccelerationRangeI;
-			public float AccelerationRangeJ;
-			public float AccelerationRangeK;
+            public Vector3 AccelerationRange;
 			public float AccelerationActionScale;
 			public float AccelerationAttachScale;
 			public float AiScariness;

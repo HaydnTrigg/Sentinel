@@ -20,8 +20,7 @@ namespace Blam.Interface
 		public short Unknown4;
 		public float CampaignMedalScale;
 		public float CampaignMedalSpacing;
-		public float CampaignMedalOffsetX;
-		public float CampaignMedalOffsetY;
+		public Vector2 CampaignMedalOffset;
 		public float MetagameScoreboardTopY;
 		public float MetagameScoreboardSpacing;
 		public TagInstance UnitDamageGrid;
@@ -176,8 +175,7 @@ namespace Blam.Interface
 				public float WarpDirection;
 				public uint ResolutionWidth;
 				public uint ResolutionHeight;
-				public float MotionSensorOffsetX;
-				public float MotionSensorOffsetY;
+				public Vector2 MotionSensorOffset;
 				public float MotionSensorRadius;
 				public float MotionSensorScale;
 				public float HorizontalScale;

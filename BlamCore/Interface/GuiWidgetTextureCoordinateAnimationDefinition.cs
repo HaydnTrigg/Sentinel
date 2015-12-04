@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Blam.Tags;
+using Blam.Common;
 
 namespace Blam.Interface
 {
@@ -16,8 +17,7 @@ namespace Blam.Interface
 		public class AnimationDefinitionBlock
 		{
 			public uint Frame;
-			public float CoordinateX;
-			public float CoordinateY;
+			public Vector2 Coordinate;
 			public uint Unknown;
 			public uint Unknown2;
 			public uint Unknown3;

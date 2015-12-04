@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Blam.Tags;
+using Blam.Common;
 
 namespace Blam.Interface
 {
@@ -16,10 +17,8 @@ namespace Blam.Interface
 			public uint Frame;
 			public AnchorValue Anchor;
 			public short Unknown;
-			public float CustomAnchorX;
-			public float CustomAnchorY;
-			public float XScale;
-			public float YScale;
+            public Vector2 CustomAnchor;
+			public Vector2 Scale;
 			public uint Unknown2;
 			public uint Unknown3;
 			public uint Unknown4;

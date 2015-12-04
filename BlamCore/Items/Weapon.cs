@@ -451,7 +451,7 @@ namespace Blam.Items
 			public List<DualMovingPenaltyFunctionBlock> DualMovingPenaltyFunction;
 			public List<DualTurningPenaltyFunctionBlock> DualTurningPenaltyFunction;
 			public float DualErrorAngleMaximumRotation;
-			public List<FirstPersonOffset> FirstPersonOffsets;
+			public List<Vector3> FirstPersonOffsets;
 			public DamageReportingTypeValue DamageReportingType;
 			public sbyte Unknown3;
 			public short Unknown4;
@@ -551,15 +551,7 @@ namespace Blam.Items
 			{
 				public byte[] Function;
 			}
-
-			[TagDefinition(Size = 0xC)]
-			public class FirstPersonOffset
-			{
-				public float FirstPersonOffsetX;
-				public float FirstPersonOffsetY;
-				public float FirstPersonOffsetZ;
-			}
-
+            
 			public enum DamageReportingTypeValue : sbyte
 			{
 				GuardiansUnknown,

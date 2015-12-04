@@ -88,12 +88,9 @@ namespace Blam.Interface
 			{
 				public AnchorValue Anchor;
 				public short Unknown;
-				public float MirrorOffsetX;
-				public float MirrorOffsetY;
-				public float OffsetX;
-				public float OffsetY;
-				public float ScaleX;
-				public float ScaleY;
+                public Vector2 MirrorOffset;
+                public Vector2 Offset;
+				public Vector2 Scale;
 
 				public enum AnchorValue : short
 				{
@@ -948,14 +945,11 @@ namespace Blam.Interface
 				{
 					public AnchorValue Anchor;
 					public short Unknown;
-					public float MirrorOffsetX;
-					public float MirrorOffsetY;
-					public float OffsetX;
-					public float OffsetY;
-					public float ScaleX;
-					public float ScaleY;
+                    public Vector2 MirrorOffset;
+                    public Vector2 Offset;
+                    public Vector2 Scale;
 
-					public enum AnchorValue : short
+                    public enum AnchorValue : short
 					{
 						TopLeft,
 						TopRight,
@@ -1797,14 +1791,11 @@ namespace Blam.Interface
 				{
 					public AnchorValue Anchor;
 					public short Unknown;
-					public float MirrorOffsetX;
-					public float MirrorOffsetY;
-					public float OffsetX;
-					public float OffsetY;
-					public float ScaleX;
-					public float ScaleY;
+                    public Vector2 MirrorOffset;
+                    public Vector2 Offset;
+                    public Vector2 Scale;
 
-					public enum AnchorValue : short
+                    public enum AnchorValue : short
 					{
 						TopLeft,
 						TopRight,

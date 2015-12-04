@@ -599,9 +599,7 @@ namespace Blam.Models
 			public short FirstChildNode;
 			public short NextSiblingNode;
 			public short ImportNodeIndex;
-			public float DefaultTranslationX;
-			public float DefaultTranslationY;
-			public float DefaultTranslationZ;
+            public Vector3 DefaultTranslation;
             public Vector4 DefaultRotation;
 			public float DefaultScale;
             public Vector3 InverseForward;
@@ -615,9 +613,7 @@ namespace Blam.Models
 		{
 			public TypeValue Type;
 			public short Unknown;
-			public float OffsetX;
-			public float OffsetY;
-			public float OffsetZ;
+            public Vector3 Offset;
 			public float Radius;
 
 			public enum TypeValue : short

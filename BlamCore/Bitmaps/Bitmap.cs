@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Blam.Tags;
 using Blam.Game;
 using Blam.Cache;
+using Blam.Common;
 
 namespace Blam.Bitmaps
 {
@@ -135,8 +136,7 @@ namespace Blam.Bitmaps
 				public float Right;
 				public float Top;
 				public float Bottom;
-				public float RegistrationPointX;
-				public float RegistrationPointY;
+                public Vector2 RegistrationPoint;
 			}
 		}
 
