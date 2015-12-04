@@ -70,6 +70,7 @@
             this.valueBox.Name = "valueBox";
             this.valueBox.Size = new System.Drawing.Size(194, 22);
             this.valueBox.TabIndex = 1;
+            this.valueBox.TextChanged += new System.EventHandler(this.valueBox_TextChanged);
             // 
             // NumberControl
             // 

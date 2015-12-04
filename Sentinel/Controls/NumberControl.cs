@@ -13,35 +13,99 @@ namespace Sentinel.Controls
 {
     public partial class NumberControl : UserControl
     {
-        public NumberControl()
-        {
-            InitializeComponent();
-        }
+        public object Owner { get; set; }
+
+        public FieldInfo Info { get; set; }
+
+        public object Value { get; set; }
 
         public NumberControl(object owner, FieldInfo fieldInfo)
         {
-            InitializeComponent();
             Owner = owner;
             Info = fieldInfo;
-            ValueName = Info.Name;
+
+            InitializeComponent();
+
+            Load += NumberControl_Load;
+        }
+
+        private void NumberControl_Load(object sender, EventArgs e)
+        {
+            nameLabel.Text = Info.Name;
+
             var value = Info.GetValue(Owner);
-            ValueText = value == null ? "<NULL>" : value.ToString();
+
+            if (value == null)
+            {
+                value = Activator.CreateInstance(Info.FieldType);
+                Info.SetValue(Owner, value);
+            }
+
+            Value = value;
+            valueBox.Text = Value.ToString();
         }
 
-        public object Owner { get; set; } = null;
-
-        public FieldInfo Info { get; set; } = null;
-
-        public string ValueName
+        private void valueBox_TextChanged(object sender, EventArgs e)
         {
-            get { return nameLabel.Text; }
-            set { nameLabel.Text = value; }
-        }
+            if (Info.FieldType == typeof(sbyte))
+            {
+                sbyte value;
+                if (!sbyte.TryParse(valueBox.Text, out value))
+                    valueBox.Text = Value.ToString();
+                else
+                    Value = value;
+            }
+            else if (Info.FieldType == typeof(byte))
+            {
+                byte value;
+                if (!byte.TryParse(valueBox.Text, out value))
+                    valueBox.Text = Value.ToString();
+                else
+                    Value = value;
+            }
+            else if (Info.FieldType == typeof(short))
+            {
+                short value;
+                if (!short.TryParse(valueBox.Text, out value))
+                    valueBox.Text = Value.ToString();
+                else
+                    Value = value;
+            }
+            else if (Info.FieldType == typeof(ushort))
+            {
+                ushort value;
+                if (!ushort.TryParse(valueBox.Text, out value))
+                    valueBox.Text = Value.ToString();
+                else
+                    Value = value;
+            }
+            else if (Info.FieldType == typeof(int))
+            {
+                int value;
+                if (!int.TryParse(valueBox.Text, out value))
+                    valueBox.Text = Value.ToString();
+                else
+                    Value = value;
+            }
+            else if (Info.FieldType == typeof(uint))
+            {
+                uint value;
+                if (!uint.TryParse(valueBox.Text, out value))
+                    valueBox.Text = Value.ToString();
+                else
+                    Value = value;
+            }
+            else if (Info.FieldType == typeof(float))
+            {
+                float value;
+                if (!float.TryParse(valueBox.Text, out value))
+                    valueBox.Text = Value.ToString();
+                else
+                    Value = value;
+            }
+            else return;
 
-        public string ValueText
-        {
-            get { return valueBox.Text; }
-            set { valueBox.Text = value; }
+            Info.SetValue(Owner, Value);
         }
     }
 }

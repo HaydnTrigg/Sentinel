@@ -14,68 +14,48 @@ namespace Sentinel.Controls
 {
     public partial class Vector3Control : UserControl
     {
-        public Vector3Control()
-        {
-            InitializeComponent();
-        }
-
-        public Vector3Control(object owner, FieldInfo fieldInfo)
-        {
-            InitializeComponent();
-            Owner = owner;
-            Info = fieldInfo;
-            ValueName = Info.Name;
-
-            var value = Info.GetValue(Owner);
-            if (value == null)
-            {
-                value = new Vector3();
-                Info.SetValue(owner, value);
-            }
-
-            Value = (Vector3)value;
-            XValueText = Value.X.ToString();
-            YValueText = Value.Y.ToString();
-            ZValueText = Value.Z.ToString();
-        }
-
         public object Owner { get; set; } = null;
 
         public Vector3 Value { get; set; } = new Vector3();
 
         public FieldInfo Info { get; set; } = null;
-
-        public string ValueName
+        
+        public Vector3Control(object owner, FieldInfo fieldInfo)
         {
-            get { return nameLabel.Text; }
-            set { nameLabel.Text = value + " X:"; }
+            Owner = owner;
+            Info = fieldInfo;
+
+            InitializeComponent();
+
+            Load += Vector3Control_Load;
         }
 
-        public string XValueText
+        private void Vector3Control_Load(object sender, EventArgs e)
         {
-            get { return xValueBox.Text; }
-            set { xValueBox.Text = value; }
-        }
+            nameLabel.Text = Info.Name;
 
-        public string YValueText
-        {
-            get { return yValueBox.Text; }
-            set { yValueBox.Text = value; }
-        }
+            var value = Info.GetValue(Owner);
 
-        public string ZValueText
-        {
-            get { return zValueBox.Text; }
-            set { zValueBox.Text = value; }
-        }
+            if (value == null)
+            {
+                value = new Vector3();
+                Info.SetValue(Owner, value);
+            }
 
+            Value = (Vector3)value;
+
+            xValueBox.Text = Value.X.ToString();
+            yValueBox.Text = Value.Y.ToString();
+            zValueBox.Text = Value.Z.ToString();
+        }
+        
         private void xValueBox_TextChanged(object sender, EventArgs e)
         {
             var oldValue = Value;
             float xValue = 0.0f;
 
-            if (!float.TryParse(YValueText, out xValue))
-                YValueText = Value.Y.ToString();
+            if (!float.TryParse(xValueBox.Text, out xValue))
+                xValueBox.Text = Value.X.ToString();
             else
                 Value = new Vector3(xValue, Value.Y, Value.Z);
 
@@ -88,8 +68,8 @@ namespace Sentinel.Controls
             var oldValue = Value;
             float yValue = 0.0f;
 
-            if (!float.TryParse(YValueText, out yValue))
-                YValueText = Value.Y.ToString();
+            if (!float.TryParse(yValueBox.Text, out yValue))
+                yValueBox.Text = Value.Y.ToString();
             else
                 Value = new Vector3(Value.X, yValue, Value.Z);
 
@@ -102,8 +82,8 @@ namespace Sentinel.Controls
             var oldValue = Value;
             float zValue = 0.0f;
 
-            if (!float.TryParse(ZValueText, out zValue))
-                ZValueText = Value.Z.ToString();
+            if (!float.TryParse(zValueBox.Text, out zValue))
+                zValueBox.Text = Value.Z.ToString();
             else
                 Value = new Vector3(Value.X, Value.Y, zValue);
 
