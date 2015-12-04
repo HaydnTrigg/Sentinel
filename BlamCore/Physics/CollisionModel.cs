@@ -64,10 +64,7 @@ namespace Blam.Physics
 					[TagDefinition(Size = 0x10)]
 					public class Plane
 					{
-						public float PlaneI;
-						public float PlaneJ;
-						public float PlaneK;
-						public float PlaneD;
+                        public Vector4 Value;
 					}
 
 					[TagDefinition(Size = 0x8)]
@@ -89,9 +86,7 @@ namespace Blam.Physics
 					[TagDefinition(Size = 0x10)]
 					public class Bsp2dNode
 					{
-						public float PlaneI;
-						public float PlaneJ;
-						public float PlaneD;
+                        public Vector3 Plane2D;
 						public short LeftChild;
 						public short RightChild;
 					}

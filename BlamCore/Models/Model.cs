@@ -602,23 +602,12 @@ namespace Blam.Models
 			public float DefaultTranslationX;
 			public float DefaultTranslationY;
 			public float DefaultTranslationZ;
-			public float DefaultRotationI;
-			public float DefaultRotationJ;
-			public float DefaultRotationK;
-			public float DefaultRotationW;
+            public Vector4 DefaultRotation;
 			public float DefaultScale;
-			public float InverseForwardI;
-			public float InverseForwardJ;
-			public float InverseForwardK;
-			public float InverseLeftI;
-			public float InverseLeftJ;
-			public float InverseLeftK;
-			public float InverseUpI;
-			public float InverseUpJ;
-			public float InverseUpK;
-			public float InversePositionX;
-			public float InversePositionY;
-			public float InversePositionZ;
+            public Vector3 InverseForward;
+            public Vector3 InverseLeft;
+            public Vector3 InverseUp;
+            public Vector3 InversePosition;
 		}
 
 		[TagDefinition(Size = 0x14)]

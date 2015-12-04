@@ -11,7 +11,7 @@ using Blam.Game;
 using Blam.Scenario;
 using Blam.Tags;
 
-namespace Sentinel
+namespace Sentinel.Controls
 {
     public partial class MapControl : UserControl
     {

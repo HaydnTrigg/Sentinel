@@ -1,4 +1,4 @@
-﻿namespace Sentinel
+﻿namespace Sentinel.Controls
 {
     partial class MapControl
     {

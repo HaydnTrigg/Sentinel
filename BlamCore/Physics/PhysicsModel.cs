@@ -247,21 +247,13 @@ namespace Blam.Physics
 			public ShapeTypeValue ShapeType;
 			public short ShapeIndex;
 			public float Mass;
-			public float CenterOfMassI;
-			public float CenterOfMassJ;
-			public float CenterOfMassK;
+            public Vector3 CenterOfMass;
 			public float CenterOfMassRadius;
-			public float InertiaTensorXI;
-			public float InertiaTensorXJ;
-			public float InertiaTensorXK;
+            public Vector3 InertiaTensorX;
 			public float InertiaTensorXRadius;
-			public float InertiaTensorYI;
-			public float InertiaTensorYJ;
-			public float InertiaTensorYK;
+            public Vector3 InertiaTensorY;
 			public float InertiaTensorYRadius;
-			public float InertiaTensorZI;
-			public float InertiaTensorZJ;
-			public float InertiaTensorZK;
+            public Vector3 InertiaTensorZ;
 			public float InertiaTensorZRadius;
 			public float BoundingSpherePad;
 			public uint Unknown10;
@@ -352,9 +344,7 @@ namespace Blam.Physics
 			public uint Unknown9;
 			public uint Unknown10;
 			public uint Unknown11;
-			public float TranslationI;
-			public float TranslationJ;
-			public float TranslationK;
+            public Vector3 Translation;
 			public float TranslationRadius;
 		}
 
@@ -382,13 +372,9 @@ namespace Blam.Physics
 			public uint Unknown4;
 			public uint Unknown5;
 			public uint Unknown6;
-			public float BottomI;
-			public float BottomJ;
-			public float BottomK;
+            public Vector3 Bottom;
 			public float BottomRadius;
-			public float TopI;
-			public float TopJ;
-			public float TopK;
+            public Vector3 Top;
 			public float TopRadius;
 		}
 
@@ -416,9 +402,7 @@ namespace Blam.Physics
 			public uint Unknown4;
 			public uint Unknown5;
 			public uint Unknown6;
-			public float HalfExtentsI;
-			public float HalfExtentsJ;
-			public float HalfExtentsK;
+            public Vector3 HalfExtents;
 			public float HalfExtentsRadius;
 			public int Unknown7;
 			public short Size2;
@@ -429,21 +413,13 @@ namespace Blam.Physics
 			public uint Unknown9;
 			public uint Unknown10;
 			public uint Unknown11;
-			public float RotationII;
-			public float RotationIJ;
-			public float RotationIK;
+            public Vector3 RotationI;
 			public float RotationIRadius;
-			public float RotationJI;
-			public float RotationJJ;
-			public float RotationJK;
+            public Vector3 RotationJ;
 			public float RotationJRadius;
-			public float RotationKI;
-			public float RotationKJ;
-			public float RotationKK;
+            public Vector3 RotationK;
 			public float RotationKRadius;
-			public float TranslationI;
-			public float TranslationJ;
-			public float TranslationK;
+            public Vector3 Translation;
 			public float TranslationRadius;
 		}
 
@@ -513,14 +489,10 @@ namespace Blam.Physics
 			public uint Unknown4;
 			public uint Unknown5;
 			public uint Unknown6;
-			public float AabbHalfExtentsI;
-			public float AabbHalfExtentsJ;
-			public float AabbHalfExtentsK;
-			public float AabbHalfExtentsRadius;
-			public float AabbCenterI;
-			public float AabbCenterJ;
-			public float AabbCenterK;
-			public float AabbCenterRadius;
+            public Vector3 AABBHalfExtents;
+			public float AABBHalfExtentsRadius;
+            public Vector3 AABBCenter;
+			public float AABBCenterRadius;
 			public uint Unknown7;
 			public int FourVectorsSize;
 			public uint FourVectorsCapacity;
@@ -534,18 +506,12 @@ namespace Blam.Physics
 		[TagDefinition(Size = 0x30)]
 		public class PolyhedronFourVector
 		{
-			public float FourVectorsXI;
-			public float FourVectorsXJ;
-			public float FourVectorsXK;
+            public Vector3 FourVectorsX;
 			public float FourVectorsXRadius;
-			public float FourVectorsYI;
-			public float FourVectorsYJ;
-			public float FourVectorsYK;
-			public float FourVectorsYRadius;
-			public float FourVectorsZI;
-			public float FourVectorsZJ;
-			public float FourVectorsZK;
-			public float FourVectorsZRadius;
+            public Vector3 FourVectorsY;
+            public float FourVectorsYRadius;
+            public Vector3 FourVectorsZ;
+            public float FourVectorsZRadius;
 		}
 
 		[TagDefinition(Size = 0x10)]
@@ -649,83 +615,37 @@ namespace Blam.Physics
 		}
 
 		[TagDefinition(Size = 0x78)]
-		public class HingeConstraint
+		public abstract class Constraint
 		{
 			public StringID Name;
 			public short NodeA;
 			public short NodeB;
 			public float AScale;
-			public float AForwardI;
-			public float AForwardJ;
-			public float AForwardK;
-			public float ALeftI;
-			public float ALeftJ;
-			public float ALeftK;
-			public float AUpI;
-			public float AUpJ;
-			public float AUpK;
-			public float APositionX;
-			public float APositionY;
-			public float APositionZ;
+            public Vector3 AForward;
+            public Vector3 ALeft;
+            public Vector3 AUp;
+            public Vector3 APosition;
 			public float BScale;
-			public float BForwardI;
-			public float BForwardJ;
-			public float BForwardK;
-			public float BLeftI;
-			public float BLeftJ;
-			public float BLeftK;
-			public float BUpI;
-			public float BUpJ;
-			public float BUpK;
-			public float BPositionI;
-			public float BPositionJ;
-			public float BPositionK;
+            public Vector3 BForward;
+            public Vector3 BLeft;
+            public Vector3 BUp;
+            public Vector3 BPosition;
 			public short EdgeIndex;
 			public short Unknown;
 			public uint Unknown2;
 		}
 
+        [TagDefinition(Size = 0x78)]
+        public class HingeConstraint : Constraint
+        {
+        }
+
 		[TagDefinition(Size = 0x94)]
 		public class RagdollConstraint
-		{
-			public StringID Name;
-			public short NodeA;
-			public short NodeB;
-			public float AScale;
-			public float AForwardI;
-			public float AForwardJ;
-			public float AForwardK;
-			public float ALeftI;
-			public float ALeftJ;
-			public float ALeftK;
-			public float AUpI;
-			public float AUpJ;
-			public float AUpK;
-			public float APositionX;
-			public float APositionY;
-			public float APositionZ;
-			public float BScale;
-			public float BForwardI;
-			public float BForwardJ;
-			public float BForwardK;
-			public float BLeftI;
-			public float BLeftJ;
-			public float BLeftK;
-			public float BUpI;
-			public float BUpJ;
-			public float BUpK;
-			public float BPositionX;
-			public float BPositionY;
-			public float BPositionZ;
-			public short EdgeIndex;
-			public short Unknown;
-			public uint Unknown2;
-			public float MinTwist;
-			public float MaxTwist;
-			public float MinCone;
-			public float MaxCone;
-			public float MinPlane;
-			public float MaxPlane;
+        {
+            public Range<float> Twist;
+            public Range<float> Cone;
+            public Range<float> Plane;
 			public float MaxFrictionTorque;
 		}
 
@@ -760,43 +680,10 @@ namespace Blam.Physics
 		}
 
 		[TagDefinition(Size = 0x84)]
-		public class LimitedHingeConstraint
+		public class LimitedHingeConstraint : Constraint
 		{
-			public StringID Name;
-			public short NodeA;
-			public short NodeB;
-			public float AScale;
-			public float AForwardI;
-			public float AForwardJ;
-			public float AForwardK;
-			public float ALeftI;
-			public float ALeftJ;
-			public float ALeftK;
-			public float AUpI;
-			public float AUpJ;
-			public float AUpK;
-			public float APositionX;
-			public float APositionY;
-			public float APositionZ;
-			public float BScale;
-			public float BForwardI;
-			public float BForwardJ;
-			public float BForwardK;
-			public float BLeftI;
-			public float BLeftJ;
-			public float BLeftK;
-			public float BUpI;
-			public float BUpJ;
-			public float BUpK;
-			public float BPositionX;
-			public float BPositionY;
-			public float BPositionZ;
-			public short EdgeIndex;
-			public short Unknown;
-			public uint Unknown2;
 			public float LimitFriction;
-			public Angle LimitMinAngle;
-			public Angle LimitMaxAngle;
+			public Range<Angle> LimitAngles;
 		}
 
 		[TagDefinition(Size = 0x2C)]

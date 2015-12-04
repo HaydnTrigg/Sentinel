@@ -120,12 +120,9 @@ namespace Blam.Items
 		public TagInstance AgedMaterialEffects;
 		public float HammerAgePerUse;
 		public uint UnknownSwordAgePerUse;
-		public float FirstPersonWeaponOffsetI;
-		public float FirstPersonWeaponOffsetJ;
-		public float FirstPersonWeaponOffsetK;
+		public Vector3 FirstPersonWeaponOffset;
 		[MinVersion(GameVersion.V11_1_498295_Live)] public List<NewFirstPersonWeaponOffset> NewFirstPersonWeaponOffsets;
-		public float FirstPersonScopeSizeI;
-		public float FirstPersonScopeSizeJ;
+		public Vector2 FirstPersonScopeSize;
 		public float ThirdPersonPitchBoundsMin;
 		public float ThirdPersonPitchBoundsMax;
 		public float ZoomTransitionTime;
@@ -666,9 +663,7 @@ namespace Blam.Items
 		[TagDefinition(Size = 0xC)]
 		public class NewFirstPersonWeaponOffset
 		{
-			public float OffsetI;
-			public float OffsetJ;
-			public float OffsetK;
+			public Vector3 Offset;
 		}
 	}
 }

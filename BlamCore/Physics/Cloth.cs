@@ -46,11 +46,8 @@ namespace Blam.Physics
 		[TagDefinition(Size = 0x14)]
 		public class Vertex
 		{
-			public float InitialPositionX;
-			public float InitialPositionY;
-			public float InitialPositionZ;
-			public float UvI;
-			public float UvJ;
+            public Vector3 InitialPosition;
+            public Vector2 UV;
 		}
 
 		[TagDefinition(Size = 0x2)]

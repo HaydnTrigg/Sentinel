@@ -81,9 +81,7 @@ namespace Blam.Effects
 				public Angle AngularVelocityBoundsMax;
 				public float RadiusModifierBoundsMin;
 				public float RadiusModifierBoundsMax;
-				public float OriginOffsetX;
-				public float OriginOffsetY;
-				public float OriginOffsetZ;
+                public Vector3 OriginOffset;
 				public Angle OriginRotationI;
 				public Angle OriginRotationJ;
 				public uint AScalesValues;

@@ -41,9 +41,9 @@
             this.nameLabel.Dock = System.Windows.Forms.DockStyle.Left;
             this.nameLabel.Location = new System.Drawing.Point(3, 3);
             this.nameLabel.Margin = new System.Windows.Forms.Padding(3);
-            this.nameLabel.MinimumSize = new System.Drawing.Size(375, 0);
+            this.nameLabel.MinimumSize = new System.Drawing.Size(350, 0);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(375, 24);
+            this.nameLabel.Size = new System.Drawing.Size(350, 24);
             this.nameLabel.TabIndex = 0;
             this.nameLabel.Text = "Name";
             this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -51,7 +51,7 @@
             // valueBox
             // 
             this.valueBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.valueBox.Location = new System.Drawing.Point(384, 3);
+            this.valueBox.Location = new System.Drawing.Point(359, 3);
             this.valueBox.Name = "valueBox";
             this.valueBox.Size = new System.Drawing.Size(194, 22);
             this.valueBox.TabIndex = 1;
@@ -72,7 +72,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(681, 30);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(656, 30);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // modeBox
@@ -83,7 +83,7 @@
             this.modeBox.Items.AddRange(new object[] {
             "Degrees",
             "Radians"});
-            this.modeBox.Location = new System.Drawing.Point(584, 3);
+            this.modeBox.Location = new System.Drawing.Point(559, 3);
             this.modeBox.Name = "modeBox";
             this.modeBox.Size = new System.Drawing.Size(94, 24);
             this.modeBox.TabIndex = 2;
@@ -98,7 +98,7 @@
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "AngleControl";
-            this.Size = new System.Drawing.Size(684, 33);
+            this.Size = new System.Drawing.Size(659, 33);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

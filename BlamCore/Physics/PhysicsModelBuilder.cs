@@ -57,7 +57,7 @@ namespace Blam.Physics
 			//create a rigidbody for the phmo
 			var rigidbody = new PhysicsModel.RigidBody();
 			rigidbody.Mass = 100f; //probably not important
-			rigidbody.CenterOfMassK = 0.25f; //probably not important
+            rigidbody.CenterOfMass = new Vector3(0.0f, 0.0f, 0.25f); //probably not important
 			rigidbody.ShapeIndex = 0; //important
 			rigidbody.MotionType = MotionTypeValue.Keyframed; // keyframed movement for now.
 
@@ -242,16 +242,14 @@ namespace Blam.Physics
 			poly.Count = 128; // uncertain as to what this does.
 			poly.Offset = 32 + index * 128;
 
-			//The axis-aligned fields are used to optimise collisions
-			// with other physics objects. If they are set incorrectly,
-			// other objects will pass through this object. 
-			poly.AabbCenterI = center[0].AsFloat;
-			poly.AabbCenterJ = center[1].AsFloat;
-			poly.AabbCenterK = center[2].AsFloat;
+            //The axis-aligned fields are used to optimise collisions
+            // with other physics objects. If they are set incorrectly,
+            // other objects will pass through this object. 
+            poly.AABBCenter = new Vector3(
+                center[0].AsFloat, center[1].AsFloat, center[2].AsFloat);
 
-			poly.AabbHalfExtentsI = extents[0].AsFloat;
-			poly.AabbHalfExtentsJ = extents[1].AsFloat;
-			poly.AabbHalfExtentsK = extents[2].AsFloat;
+            poly.AABBHalfExtents = new Vector3(
+                extents[0].AsFloat, extents[1].AsFloat, extents[2].AsFloat);
 
 			//The field 'Radius' is strange. When the byte at 0x18 of
 			// the main-struct is assigned a value x > 0, the 'radius'
@@ -348,22 +346,31 @@ namespace Blam.Physics
 
 				var fourvert = new PhysicsModel.PolyhedronFourVector();
 
-				//The plugin had these named incorrectly, the four vectors are really
-				//four vertices, with the coordinates grouped (four X's, four Y's, four Z's)
-				//This is likely done for SIMD. If the number of vertices aren't a multiple
-				//of four, usually the last vertex is copied several times.
-				fourvert.FourVectorsXI = v0.AsArray[0].AsFloat;
-				fourvert.FourVectorsXJ = v1.AsArray[0].AsFloat;
-				fourvert.FourVectorsXK = v2.AsArray[0].AsFloat;
+                //The plugin had these named incorrectly, the four vectors are really
+                //four vertices, with the coordinates grouped (four X's, four Y's, four Z's)
+                //This is likely done for SIMD. If the number of vertices aren't a multiple
+                //of four, usually the last vertex is copied several times.
+
+                fourvert.FourVectorsX = new Vector3(
+                    v0.AsArray[0].AsFloat,
+                    v1.AsArray[0].AsFloat,
+                    v2.AsArray[0].AsFloat);
+
 				fourvert.FourVectorsXRadius = v3.AsArray[0].AsFloat;
-				fourvert.FourVectorsYI = v0.AsArray[1].AsFloat;
-				fourvert.FourVectorsYJ = v1.AsArray[1].AsFloat;
-				fourvert.FourVectorsYK = v2.AsArray[1].AsFloat;
-				fourvert.FourVectorsYRadius = v3.AsArray[1].AsFloat;
-				fourvert.FourVectorsZI = v0.AsArray[2].AsFloat;
-				fourvert.FourVectorsZJ = v1.AsArray[2].AsFloat;
-				fourvert.FourVectorsZK = v2.AsArray[2].AsFloat;
-				fourvert.FourVectorsZRadius = v3.AsArray[2].AsFloat;
+
+                fourvert.FourVectorsY = new Vector3(
+                    v0.AsArray[1].AsFloat,
+                    v1.AsArray[1].AsFloat,
+                    v2.AsArray[1].AsFloat);
+
+                fourvert.FourVectorsYRadius = v3.AsArray[1].AsFloat;
+
+                fourvert.FourVectorsZ = new Vector3(
+                    v0.AsArray[2].AsFloat,
+                    v1.AsArray[2].AsFloat,
+                    v2.AsArray[2].AsFloat);
+
+                fourvert.FourVectorsZRadius = v3.AsArray[2].AsFloat;
 
 				phmo.PolyhedronFourVectors.Add(fourvert);
 			}

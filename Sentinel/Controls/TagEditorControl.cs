@@ -13,7 +13,7 @@ using Blam.Game;
 using Blam.Cache;
 using System.IO;
 
-namespace Sentinel
+namespace Sentinel.Controls
 {
     public partial class TagEditorControl : UserControl
     {
@@ -59,10 +59,14 @@ namespace Sentinel
             {
                 Control control = null;
 
-                if (enumerator.Field.FieldType == typeof(Vector3))
-                    control = new Controls.Vector3Control(Value, enumerator.Field);
-                else if (enumerator.Field.FieldType == typeof(Angle))
+                if (enumerator.Field.FieldType == typeof(Angle))
                     control = new Controls.AngleControl(Value, enumerator.Field);
+                else if (enumerator.Field.FieldType == typeof(Vector2))
+                    control = new Controls.Vector2Control(Value, enumerator.Field);
+                else if (enumerator.Field.FieldType == typeof(Vector3))
+                    control = new Controls.Vector3Control(Value, enumerator.Field);
+                else if (enumerator.Field.FieldType == typeof(Vector4))
+                    control = new Controls.Vector4Control(Value, enumerator.Field);
                 else
                     control = new Controls.NumberControl(Value, enumerator.Field);
                 

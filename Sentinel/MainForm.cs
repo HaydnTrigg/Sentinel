@@ -32,7 +32,7 @@ namespace Sentinel
 
                 var mapPage = new TabPage(mapInfo.Name);
                 mapPage.Tag = mapInfo;
-                mapPage.Controls.Add(new MapControl(mapInfo));
+                mapPage.Controls.Add(new Controls.MapControl(mapInfo));
                 mapPage.Controls[0].Dock = DockStyle.Fill;
 
                 tabControl.TabPages.Add(MapPages[mapInfo.FullName] = mapPage);
@@ -49,7 +49,7 @@ namespace Sentinel
                 return;
             }
 
-            var mapControl = (MapControl)tabControl.SelectedTab.Controls[0];
+            var mapControl = (Controls.MapControl)tabControl.SelectedTab.Controls[0];
             Text = string.Format("Sentinel - {0}", mapControl.MapInfo.FullName);
         }
 
