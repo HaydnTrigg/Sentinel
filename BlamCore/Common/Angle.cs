@@ -52,7 +52,18 @@ namespace Blam.Common
 			return Radians == other.Radians;
 		}
 
-		public override string ToString()
+        public override bool Equals(object obj) =>
+            obj is Angle ?
+                Radians == ((Angle)obj).Radians :
+            false;
+
+        public static bool operator ==(Angle a, Angle b) =>
+            a.Equals(b);
+
+        public static bool operator !=(Angle a, Angle b) =>
+            !a.Equals(b);
+
+        public override string ToString()
 		{
 			return string.Format("{0}deg ({1}rad)", Degrees, Radians);
 		}

@@ -1,6 +1,6 @@
 using Blam.Tags;
 
-namespace Blam.Rasterizer
+namespace Blam.Sound
 {
     [TagDefinition(Name = "sound_global_propagation", Group = "sgp!", Size = 0x50)]
 	public class SoundGlobalPropagation

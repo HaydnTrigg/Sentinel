@@ -1,6 +1,6 @@
 using Blam.Tags;
 
-namespace Blam.Rasterizer
+namespace Blam.Sound
 {
     [TagDefinition(Name = "sound_mix", Group = "snmx", Size = 0x80)]
 	public class SoundMix

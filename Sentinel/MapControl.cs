@@ -17,17 +17,11 @@ namespace Sentinel
     {
         public FileInfo MapInfo { get; set; }
         public List<FileInfo> DatFiles { get; set; }
-        public GameVersion Version { get; set; }
-
-        public FileInfo TagsCacheInfo { get; set; }
-        public TagCache TagsData { get; set; }
-
-        public Dictionary<int, string> TagNames { get; set; }
-        public Dictionary<Tag, List<TagInstance>> TagGroups { get; set; }
-
-        public FileInfo StringIDsCacheInfo { get; set; }
-        public StringIDsCache StringIDsData { get; set; }
         
+        public Dictionary<Tag, List<TagInstance>> TagGroups { get; set; }
+        
+        public OpenCacheInfo CacheInfo { get; set; }
+
         public MapControl()
         {
             MapInfo = null;
@@ -47,19 +41,20 @@ namespace Sentinel
 
             DatFiles = directory.GetFiles("*.dat").ToList();
 
-            TagsCacheInfo = DatFiles.Find(file => file.Name == "tags.dat");
+            var tagsCacheInfo = DatFiles.Find(file => file.Name == "tags.dat");
 
-            using (var tagCacheStream = TagsCacheInfo.OpenRead())
-                TagsData = new TagCache(tagCacheStream);
+            TagCache tagsData;
+            using (var tagCacheStream = tagsCacheInfo.OpenRead())
+                tagsData = new TagCache(tagCacheStream);
 
             GameVersion closestVersion;
-            Version = GameVersions.DetectVersion(TagsData, out closestVersion);
+            var version = GameVersions.DetectVersion(tagsData, out closestVersion);
 
-            if (Version != GameVersion.Unknown)
+            if (version != GameVersion.Unknown)
             {
-                var buildDate = DateTime.FromFileTime(TagsData.Timestamp);
+                var buildDate = DateTime.FromFileTime(tagsData.Timestamp);
                 engineVersionLabel.Text = string.Format("Halo Online {0} {1} ({2})",
-                    GameVersions.GetVersionString(Version),
+                    GameVersions.GetVersionString(version),
                     buildDate.ToShortDateString(),
                     buildDate.ToShortTimeString());
             }
@@ -67,20 +62,21 @@ namespace Sentinel
             {
                 engineVersionLabel.Text = string.Format("Halo Online UNKNOWN ({0}?)",
                     GameVersions.GetVersionString(closestVersion));
-                Version = closestVersion;
+                version = closestVersion;
             }
 
-            StringIDsCacheInfo = DatFiles.Find(file => file.Name == "string_ids.dat");
+            var stringIDsCacheInfo = DatFiles.Find(file => file.Name == "string_ids.dat");
 
             StringIDResolverBase stringIDsResolver = null;
 
-            if (GameVersions.Compare(Version, GameVersion.V11_1_498295_Live) >= 0)
+            if (GameVersions.Compare(version, GameVersion.V11_1_498295_Live) >= 0)
                 stringIDsResolver = new Blam.Game.V11_1_498295.StringIDResolver();
             else
                 stringIDsResolver = new Blam.Game.V1_106708.StringIDResolver();
 
-            using (var stringIDsCacheStream = StringIDsCacheInfo.OpenRead())
-                StringIDsData = new StringIDsCache(stringIDsCacheStream, stringIDsResolver);
+            StringIDsCache stringIDsData;
+            using (var stringIDsCacheStream = stringIDsCacheInfo.OpenRead())
+                stringIDsData = new StringIDsCache(stringIDsCacheStream, stringIDsResolver);
 
             Int32 scenarioIndex = -1;
 
@@ -96,13 +92,23 @@ namespace Sentinel
                 scenarioIndex = reader.ReadInt32();
             }
 
-            TagNames = GetTagNames();
+            var tagNames = GetTagNames(version);
+
+            CacheInfo = new OpenCacheInfo
+            {
+                TagCacheInfo = tagsCacheInfo,
+                TagCacheData = tagsData,
+                TagNames = tagNames,
+                StringIDsCacheInfo = stringIDsCacheInfo,
+                StringIDsCacheData = stringIDsData,
+                Version = version
+            };
 
             var mapTags = new Dictionary<int, TagInstance>();
             LoadDependencies(scenarioIndex, ref mapTags);
-            LoadDependencies(TagsData.Tags.FindFirstInGroup(new Tag("matg")).Index, ref mapTags);
-            LoadDependencies(TagsData.Tags.FindFirstInGroup(new Tag("mulg")).Index, ref mapTags);
-            LoadDependencies(TagsData.Tags.FindFirstInGroup(new Tag("cfgt")).Index, ref mapTags);
+            LoadDependencies(tagsData.Tags.FindFirstInGroup(new Tag("matg")).Index, ref mapTags);
+            LoadDependencies(tagsData.Tags.FindFirstInGroup(new Tag("mulg")).Index, ref mapTags);
+            LoadDependencies(tagsData.Tags.FindFirstInGroup(new Tag("cfgt")).Index, ref mapTags);
 
             TagGroups = new Dictionary<Tag, List<TagInstance>>();
 
@@ -126,15 +132,15 @@ namespace Sentinel
 
                 foreach (var instance in entry.Value)
                 {
-                    if (!TagNames.ContainsKey(instance.Index))
-                        TagNames[instance.Index] = string.Format("0x{0:X8}", instance.Index);
+                    if (!tagNames.ContainsKey(instance.Index))
+                        tagNames[instance.Index] = string.Format("0x{0:X8}", instance.Index);
                     if (!groupNameSet)
                     {
                         groupNameSet = true;
                         groupNode.Text += string.Format(" - {0}",
-                            StringIDsData.GetString(instance.GroupName));
+                            stringIDsData.GetString(instance.GroupName));
                     }
-                    var instanceNode = new TreeNode(TagNames[instance.Index]);
+                    var instanceNode = new TreeNode(tagNames[instance.Index]);
                     instanceNode.Tag = instance;
                     groupNode.Nodes.Add(instanceNode);
                 }
@@ -144,11 +150,11 @@ namespace Sentinel
             tagTreeView.Sort();
         }
 
-        public Dictionary<int, string> GetTagNames()
+        public Dictionary<int, string> GetTagNames(GameVersion version)
         {
             FileInfo csvFile = null;
 
-            if (GameVersions.Compare(Version, GameVersion.V11_1_498295_Live) >= 0)
+            if (GameVersions.Compare(version, GameVersion.V11_1_498295_Live) >= 0)
                 csvFile = new FileInfo(Application.StartupPath + "\\tagnames_11.1.498295 Live.csv");
             else
                 csvFile = new FileInfo(Application.StartupPath + "\\tagnames_1.106708 cert_ms23.csv");
@@ -182,7 +188,7 @@ namespace Sentinel
                 {
                     if (!tags.ContainsKey(entry))
                     {
-                        tags[entry] = TagsData.Tags[entry];
+                        tags[entry] = CacheInfo.TagCacheData.Tags[entry];
                         foreach (var dependency in tags[entry].Dependencies)
                             if (!nextQueue.Contains(dependency))
                                 nextQueue.Add(dependency);
@@ -210,7 +216,7 @@ namespace Sentinel
                 }
             }
 
-            var tagName = TagNames[tagInstance.Index];
+            var tagName = CacheInfo.TagNames[tagInstance.Index];
 
             if (tagName.Contains('\\'))
             {
@@ -218,52 +224,18 @@ namespace Sentinel
                 tagName = tagName.Substring(index, tagName.Length - index);
             }
 
-            var tagEditPage = new TabPage(tagName + "." + StringIDsData.GetString(tagInstance.GroupName));
-            tagEditPage.AutoScroll = true;
-            tagEditPage.HorizontalScroll.Enabled = true;
-            tagEditPage.VerticalScroll.Enabled = true;
+            var tagEditPage = new TabPage(tagName + "." + CacheInfo.StringIDsCacheData.GetString(tagInstance.GroupName));
             tagEditPage.BackColor = System.Drawing.Color.White;
             tagEditPage.Tag = tagInstance;
-
+            
             toolTabControl.TabPages.Add(tagEditPage);
             toolTabControl.SelectedTab = tagEditPage;
 
-            using (var cacheStream = TagsCacheInfo.OpenRead())
-            {
-                var context = new TagSerializationContext(cacheStream, TagsData, StringIDsData, tagInstance);
-                var deserializer = new TagDeserializer(Version);
-                var type = TagUtils.TagGroupTypes[tagInstance.GroupTag.ToString()];
-                var definition = deserializer.Deserialize(context, type);
+            var tagEditor = new TagEditorControl(CacheInfo, tagInstance);
+            tagEditor.Dock = DockStyle.Fill;
 
-                var enumerator = new TagFieldEnumerator(new TagDefinition(type, Version));
+            tagEditPage.Controls.Add(tagEditor);
 
-                var tagInfoControl = new Controls.TagInfoControl(
-                    string.Format("0x{0:X8}", tagInstance.Index),
-                    string.Format("0x{0:X8}", tagInstance.DataOffset),
-                    string.Format("0x{0:X8}", tagInstance.DataSize));
-
-                tagEditPage.Controls.Add(tagInfoControl);
-                tagInfoControl.BringToFront();
-
-                var currentPoint = new System.Drawing.Point(0, tagInfoControl.Height);
-
-                while (enumerator.Next())
-                {
-                    Control control = null;
-
-                    if (enumerator.Field.FieldType == typeof(Vector3))
-                        control = new Controls.Vector3Control(definition, enumerator.Field);
-                    else
-                        control = new Controls.NumberControl(definition, enumerator.Field);
-
-                    control.Location = currentPoint;
-                    currentPoint.Y += control.Height;
-                    tagEditPage.Controls.Add(control);
-                    control.BringToFront();
-
-                    Application.DoEvents();
-                }
-            }
         }
 
         private void tagTreeView_DoubleClick(object sender, EventArgs e)

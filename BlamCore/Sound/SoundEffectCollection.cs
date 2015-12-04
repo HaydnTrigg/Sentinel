@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Blam.Tags;
 using Blam.Common;
 
-namespace Blam.Rasterizer
+namespace Blam.Sound
 {
     [TagDefinition(Name = "sound_effect_collection", Group = "sfx+", Size = 0x10)]
 	public class SoundEffectCollection

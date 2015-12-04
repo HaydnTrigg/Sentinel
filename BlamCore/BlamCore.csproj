@@ -108,7 +108,7 @@
     <Compile Include="Cache\ResourceSerializationContext.cs" />
     <Compile Include="Cache\TagDeserializer.cs" />
     <Compile Include="Tags\TagFieldAttribute.cs" />
-    <Compile Include="Cache\TagFieldEnumerator.cs" />
+    <Compile Include="Tags\TagFieldEnumerator.cs" />
     <Compile Include="Cache\TagSerializationContext.cs" />
     <Compile Include="Cache\TagSerializer.cs" />
     <Compile Include="Tags\TagDefinitionAttribute.cs" />
@@ -124,6 +124,7 @@
     <Compile Include="AI\AiGlobals.cs" />
     <Compile Include="Objects\Antenna.cs" />
     <Compile Include="Effects\AreaScreenEffect.cs" />
+    <Compile Include="Tags\TagUtils.cs" />
     <Compile Include="Units\ArmorSounds.cs" />
     <Compile Include="Effects\BeamSystem.cs" />
     <Compile Include="Rasterizer\Bink.cs" />

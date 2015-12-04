@@ -52,7 +52,7 @@ namespace Blam.Cache
 			Tag.GroupTag = info.GroupTag;
 			Tag.ParentGroupTag = info.ParentGroupTag;
 			Tag.GrandparentGroupTag = info.GrandparentGroupTag;
-			Tag.GroupName = (info.Structure.Name != null) ? _stringIds.GetStringId(info.Structure.Name) : StringID.Null;
+			Tag.GroupName = (info.Attribute.Name != null) ? _stringIds.GetStringId(info.Attribute.Name) : StringID.Null;
 		}
 
 		public void EndSerialize(TagDefinition info, byte[] data, uint mainStructOffset)

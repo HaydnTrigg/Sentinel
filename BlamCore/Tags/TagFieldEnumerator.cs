@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Blam.Cache
+namespace Blam.Tags
 {
     /// <summary>
     /// Allows easy enumeration over a tag structure's elements and filtering by version.
@@ -25,6 +25,15 @@ namespace Blam.Cache
         {
             Info = info;
             Begin();
+        }
+
+        /// <summary>
+        /// Constructs a tag field enumerator for a tag instance's definition type.
+        /// </summary>
+        /// <param name="instance">The tag instance containing the fields to enumerate.</param>
+        public TagFieldEnumerator(TagInstance instance, GameVersion version)
+            : this(new TagDefinition(TagUtils.TagGroupTypes[instance.GroupTag.ToString()], version))
+        {
         }
 
         /// <summary>

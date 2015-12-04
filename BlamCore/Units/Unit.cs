@@ -45,9 +45,7 @@ namespace Blam.Units
 		public StringID AssasinationToolStowAnchor;
 		public StringID AssasinationToolHandMarker;
 		public StringID AssasinationToolMarker;
-		public float AccelerationRangeI;
-		public float AccelerationRangeJ;
-		public float AccelerationRangeK;
+        public Vector3 AccelerationRange;
 		public float AccelerationActionScale;
 		public float AccelerationAttachScale;
 		public float SoftPingThreshold;

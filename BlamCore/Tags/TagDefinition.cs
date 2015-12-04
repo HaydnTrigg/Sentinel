@@ -33,7 +33,7 @@ namespace Blam.Tags
             GrandparentGroupTag = new Tag(Tag.Null.Value);
             Analyze(structureType, version);
         }
-
+        
         /// <summary>
         /// Gets the engine version that was used to construct the info object.
         /// </summary>
@@ -53,7 +53,7 @@ namespace Blam.Tags
         /// <summary>
         /// Gets the current <see cref="TagDefinitionAttribute"/>.
         /// </summary>
-        public TagDefinitionAttribute Structure { get; private set; }
+        public TagDefinitionAttribute Attribute { get; private set; }
 
         /// <summary>
         /// Gets the group tag for the structure, or -1 if none.
@@ -73,8 +73,8 @@ namespace Blam.Tags
         private void Analyze(Type mainType, GameVersion version)
         {
             // Get the attribute for the main structure type
-            Structure = GetStructureAttribute(mainType, version);
-            if (Structure == null)
+            Attribute = GetStructureAttribute(mainType, version);
+            if (Attribute == null)
                 throw new InvalidOperationException("No TagStructure attribute which matches the target version was found on " + mainType.Name);
 
             // Scan through the type's inheritance hierarchy and analyze each TagStructure attribute
@@ -82,7 +82,7 @@ namespace Blam.Tags
             Types = new List<Type>();
             while (currentType != null)
             {
-                var attrib = (currentType != mainType) ? GetStructureAttribute(currentType, version) : Structure;
+                var attrib = (currentType != mainType) ? GetStructureAttribute(currentType, version) : Attribute;
                 if (attrib != null)
                 {
                     Types.Add(currentType);

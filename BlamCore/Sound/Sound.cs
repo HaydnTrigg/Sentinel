@@ -4,7 +4,7 @@ using Blam.Tags;
 using Blam.Game;
 using Blam.Cache;
 
-namespace Blam.Rasterizer
+namespace Blam.Sound
 {
     [TagDefinition(Name = "sound", Group = "snd!", Size = 0xD8, MaxVersion = GameVersion.V10_1_449175_Live)]
 	[TagDefinition(Name = "sound", Group = "snd!", Size = 0xD4, MinVersion = GameVersion.V11_1_498295_Live)]

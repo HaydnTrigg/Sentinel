@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Blam.Tags;
 
-namespace Blam.Rasterizer
+namespace Blam.Sound
 {
     [TagDefinition(Name = "sound_ui_sounds", Group = "sus!", Size = 0x10)]
 	public class SoundUiSounds

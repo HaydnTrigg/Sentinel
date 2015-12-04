@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Blam.Tags;
 using Blam.Common;
 
-namespace Blam.Rasterizer
+namespace Blam.Sound
 {
     [TagDefinition(Name = "sound_effect_template", Group = "<fx>", Size = 0x20)]
 	public class SoundEffectTemplate

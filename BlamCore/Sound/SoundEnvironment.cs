@@ -1,6 +1,6 @@
 using Blam.Tags;
 
-namespace Blam.Rasterizer
+namespace Blam.Sound
 {
     [TagDefinition(Name = "sound_environment", Group = "snde", Size = 0x50)]
 	public class SoundEnvironment

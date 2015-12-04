@@ -25,8 +25,15 @@ namespace Sentinel.Controls
             Owner = owner;
             Info = fieldInfo;
             ValueName = Info.Name;
+
             var value = Info.GetValue(Owner);
-            Value = value == null ? new Vector3() : (Vector3)value;
+            if (value == null)
+            {
+                value = new Vector3();
+                Info.SetValue(owner, value);
+            }
+
+            Value = (Vector3)value;
             XValueText = Value.X.ToString();
             YValueText = Value.Y.ToString();
             ZValueText = Value.Z.ToString();
@@ -41,7 +48,7 @@ namespace Sentinel.Controls
         public string ValueName
         {
             get { return nameLabel.Text; }
-            set { nameLabel.Text = value; }
+            set { nameLabel.Text = value + " X:"; }
         }
 
         public string XValueText
@@ -60,6 +67,48 @@ namespace Sentinel.Controls
         {
             get { return zValueBox.Text; }
             set { zValueBox.Text = value; }
+        }
+
+        private void xValueBox_TextChanged(object sender, EventArgs e)
+        {
+            var oldValue = Value;
+            float xValue = 0.0f;
+
+            if (!float.TryParse(YValueText, out xValue))
+                YValueText = Value.Y.ToString();
+            else
+                Value = new Vector3(xValue, Value.Y, Value.Z);
+
+            if (oldValue != Value)
+                Info.SetValue(Owner, Value);
+        }
+
+        private void yValueBox_TextChanged(object sender, EventArgs e)
+        {
+            var oldValue = Value;
+            float yValue = 0.0f;
+
+            if (!float.TryParse(YValueText, out yValue))
+                YValueText = Value.Y.ToString();
+            else
+                Value = new Vector3(Value.X, yValue, Value.Z);
+
+            if (oldValue != Value)
+                Info.SetValue(Owner, Value);
+        }
+
+        private void zValueBox_TextChanged(object sender, EventArgs e)
+        {
+            var oldValue = Value;
+            float zValue = 0.0f;
+
+            if (!float.TryParse(ZValueText, out zValue))
+                ZValueText = Value.Z.ToString();
+            else
+                Value = new Vector3(Value.X, Value.Y, zValue);
+
+            if (oldValue != Value)
+                Info.SetValue(Owner, Value);
         }
     }
 }

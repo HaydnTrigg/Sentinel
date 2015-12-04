@@ -1,4 +1,6 @@
-﻿using Blam.AI;
+﻿using System;
+using System.Collections.Generic;
+using Blam.AI;
 using Blam.Bitmaps;
 using Blam.Cache;
 using Blam.Camera;
@@ -17,13 +19,9 @@ using Blam.Shaders;
 using Blam.Structures;
 using Blam.Text;
 using Blam.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Blam.Sound;
 
-namespace Sentinel
+namespace Blam.Tags
 {
     public static class TagUtils
     {
@@ -122,7 +120,7 @@ namespace Sentinel
             { "sbsp", typeof(ScenarioStructureBSP) },
             { "scen", typeof(Scenery) },
             { "scn3", typeof(GuiScreenWidgetDefinition) },
-            { "scnr", typeof(Scenario) },
+            { "scnr", typeof(Scenario.Scenario) },
             { "sddt", typeof(StructureDesign) },
             { "sefc", typeof(AreaScreenEffect) },
             { "sfx+", typeof(SoundEffectCollection) },
@@ -133,7 +131,7 @@ namespace Sentinel
             { "skya", typeof(SkyAtmParameters) },
             { "smdt", typeof(SurvivalModeGlobals) },
             { "sncl", typeof(SoundClasses) },
-            { "snd!", typeof(Sound) },
+            { "snd!", typeof(Sound.Sound) },
             { "snde", typeof(SoundEnvironment) },
             { "snmx", typeof(SoundMix) },
             { "spk!", typeof(SoundDialogueConstants) },

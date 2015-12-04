@@ -1,6 +1,6 @@
 using Blam.Tags;
 
-namespace Blam.Rasterizer
+namespace Blam.Sound
 {
     [TagDefinition(Name = "sound_dialogue_constants", Group = "spk!", Size = 0x30)]
 	public class SoundDialogueConstants

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Blam.Common;
 using Blam.Tags;
 
-namespace Blam.Rasterizer
+namespace Blam.Sound
 {
     [TagDefinition(Name = "sound_looping", Group = "lsnd", Size = 0x40)]
 	public class SoundLooping
