@@ -123,6 +123,8 @@ namespace Sentinel.Controls
                 TagGroups[tag.GroupTag].Add(tag);
             }
 
+            tagTreeView.SuspendLayout();
+
             foreach (var entry in TagGroups)
             {
                 var groupNode = new TreeNode(entry.Key.ToString());
@@ -146,6 +148,7 @@ namespace Sentinel.Controls
             }
 
             tagTreeView.Sort();
+            tagTreeView.ResumeLayout();
         }
 
         public Dictionary<int, string> GetTagNames(GameVersion version)
@@ -231,6 +234,8 @@ namespace Sentinel.Controls
 
             var tagEditor = new TagEditorControl(CacheInfo, tagInstance);
             tagEditor.Dock = DockStyle.Fill;
+
+            Application.DoEvents();
 
             tagEditPage.Controls.Add(tagEditor);
 

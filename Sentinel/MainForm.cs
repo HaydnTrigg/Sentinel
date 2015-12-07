@@ -71,5 +71,15 @@ namespace Sentinel
         {
             Application.Exit();
         }
+
+        private void MainForm_ResizeBegin(object sender, EventArgs e)
+        {
+            SuspendLayout();
+        }
+
+        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        {
+            ResumeLayout();
+        }
     }
 }

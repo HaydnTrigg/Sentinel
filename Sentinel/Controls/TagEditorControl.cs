@@ -35,6 +35,8 @@ namespace Sentinel.Controls
 
         private void TagEditorControl_Load(object sender, EventArgs e)
         {
+            SuspendLayout();
+
             using (var cacheStream = CacheInfo.TagCacheInfo.OpenRead())
             {
                 var context = new TagSerializationContext(cacheStream, CacheInfo.TagCacheData, CacheInfo.StringIDsCacheData, Instance);
@@ -54,6 +56,8 @@ namespace Sentinel.Controls
             tagInfoControl.BringToFront();
 
             var currentPoint = new Point(0, tagInfoControl.Height);
+
+            controlPanel.SuspendLayout();
 
             while (enumerator.Next())
             {
@@ -75,6 +79,9 @@ namespace Sentinel.Controls
                 controlPanel.Controls.Add(control);
                 control.BringToFront();
             }
+
+            controlPanel.ResumeLayout();
+            ResumeLayout();
         }
 
         private void saveChangesButton_Click(object sender, EventArgs e)
