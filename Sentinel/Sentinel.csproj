@@ -56,6 +56,12 @@
     <Compile Include="Controls\AngleControl.Designer.cs">
       <DependentUpon>AngleControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\BlockControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BlockControl.Designer.cs">
+      <DependentUpon>BlockControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NumberControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -111,6 +117,9 @@
     </Compile>
     <EmbeddedResource Include="Controls\AngleControl.resx">
       <DependentUpon>AngleControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BlockControl.resx">
+      <DependentUpon>BlockControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\NumberControl.resx">
       <DependentUpon>NumberControl.cs</DependentUpon>

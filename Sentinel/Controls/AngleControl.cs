@@ -24,6 +24,8 @@ namespace Sentinel.Controls
         {
             Owner = owner;
             Info = info;
+
+            if (owner != null)
             Value = (Angle)info.GetValue(owner);
 
             InitializeComponent();

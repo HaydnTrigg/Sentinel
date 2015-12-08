@@ -33,16 +33,24 @@ namespace Sentinel.Controls
         {
             nameLabel.Text = Info.Name;
 
-            var value = Info.GetValue(Owner);
+            object value = null;
 
-            if (value == null)
+            if (Owner != null)
+            {
+                value = Info.GetValue(Owner);
+            }
+            else if (Owner != null && value == null)
             {
                 value = Activator.CreateInstance(Info.FieldType);
                 Info.SetValue(Owner, value);
             }
+            else
+            {
+                Enabled = false;
+            }
 
             Value = value;
-            valueBox.Text = Value.ToString();
+            valueBox.Text = Value != null ? Value.ToString() : "";
         }
 
         private void valueBox_TextChanged(object sender, EventArgs e)

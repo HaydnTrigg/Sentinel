@@ -34,19 +34,28 @@ namespace Sentinel.Controls
         {
             nameLabel.Text = Info.Name;
 
-            var value = Info.GetValue(Owner);
+            object value = null;
 
-            if (value == null)
+            if (Owner != null)
+            {
+                value = Info.GetValue(Owner);
+            }
+            else if (Owner != null && value == null)
             {
                 value = new Vector3();
                 Info.SetValue(Owner, value);
             }
+            else
+            {
+                Enabled = false;
+            }
+            
+            if (value != null)
+                Value = (Vector3)value;
 
-            Value = (Vector3)value;
-
-            xValueBox.Text = Value.X.ToString();
-            yValueBox.Text = Value.Y.ToString();
-            zValueBox.Text = Value.Z.ToString();
+            xValueBox.Text = value != null ? Value.X.ToString() : "";
+            yValueBox.Text = value != null ? Value.Y.ToString() : "";
+            zValueBox.Text = value != null ? Value.Z.ToString() : "";
         }
         
         private void xValueBox_TextChanged(object sender, EventArgs e)

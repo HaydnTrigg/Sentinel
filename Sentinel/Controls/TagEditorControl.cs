@@ -12,6 +12,7 @@ using Blam.Common;
 using Blam.Game;
 using Blam.Cache;
 using System.IO;
+using System.Collections;
 
 namespace Sentinel.Controls
 {
@@ -21,6 +22,8 @@ namespace Sentinel.Controls
 
         public TagInstance Instance { get; set; }
         
+        public TagDefinition Definition { get; set; }
+
         public object Value { get; set; }
 
         public TagEditorControl(OpenCacheInfo cacheInfo, TagInstance instance)
@@ -33,7 +36,9 @@ namespace Sentinel.Controls
             Load += TagEditorControl_Load;
         }
 
-        private void TagEditorControl_Load(object sender, EventArgs e)
+        public Panel ControlPanel => controlPanel;
+
+        public void TagEditorControl_Load(object sender, EventArgs e)
         {
             SuspendLayout();
 
@@ -45,45 +50,77 @@ namespace Sentinel.Controls
                 Value = deserializer.Deserialize(context, type);
             }
 
-            var enumerator = new TagFieldEnumerator(Instance, CacheInfo.Version);
+            Definition = new TagDefinition(Value.GetType(), CacheInfo.Version);
+
+            AddTagDefinitionControls(
+                Definition,
+                Value,
+                new Point(),
+                controlPanel);
             
-            var tagInfoControl = new Controls.TagInfoControl(
-                string.Format("0x{0:X8}", Instance.Index),
-                string.Format("0x{0:X8}", Instance.DataOffset),
-                string.Format("0x{0:X8}", Instance.DataSize));
+            ResumeLayout();
+        }
 
-            controlPanel.Controls.Add(tagInfoControl);
-            tagInfoControl.BringToFront();
+        public static void AddTagDefinitionControls(TagDefinition definition, object value, Point baseLocation, Control parent)
+        {
+            parent.SuspendLayout();
 
-            var currentPoint = new Point(0, tagInfoControl.Height);
+            var enumerator = new TagFieldEnumerator(definition);
 
-            controlPanel.SuspendLayout();
+            var panel = new TableLayoutPanel();
+            panel.AutoSize = true;
+            panel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel.SuspendLayout();
+            
+            if (parent.Parent is TagEditorControl)
+            {
+                TagEditorControl editor = parent.Parent as TagEditorControl;
+
+                panel.RowCount++;
+                panel.RowStyles.Add(new RowStyle());
+
+                var tagInfoControl = new Controls.TagInfoControl(
+                    string.Format("0x{0:X8}", editor.Instance.Index),
+                    string.Format("0x{0:X8}", editor.Instance.DataOffset),
+                    string.Format("0x{0:X8}", editor.Instance.DataSize));
+
+                panel.Controls.Add(tagInfoControl);
+                tagInfoControl.BringToFront();
+            }
 
             while (enumerator.Next())
             {
                 Control control = null;
 
+                panel.RowCount++;
+
                 if (enumerator.Field.FieldType == typeof(Angle))
-                    control = new Controls.AngleControl(Value, enumerator.Field);
+                    control = new Controls.AngleControl(value, enumerator.Field);
                 else if (enumerator.Field.FieldType == typeof(Vector2))
-                    control = new Controls.Vector2Control(Value, enumerator.Field);
+                    control = new Controls.Vector2Control(value, enumerator.Field);
                 else if (enumerator.Field.FieldType == typeof(Vector3))
-                    control = new Controls.Vector3Control(Value, enumerator.Field);
+                    control = new Controls.Vector3Control(value, enumerator.Field);
                 else if (enumerator.Field.FieldType == typeof(Vector4))
-                    control = new Controls.Vector4Control(Value, enumerator.Field);
+                    control = new Controls.Vector4Control(value, enumerator.Field);
+                else if (enumerator.Field.FieldType.IsArray == false &&
+                         enumerator.Field.FieldType.GetInterface("IList") != null)
+                    control = new Controls.BlockControl(value, enumerator.Field,
+                        new TagDefinition(
+                            enumerator.Field.FieldType.GenericTypeArguments[0],
+                            definition.Version));
                 else
-                    control = new Controls.NumberControl(Value, enumerator.Field);
-                
-                control.Location = currentPoint;
-                currentPoint.Y += control.Height;
-                controlPanel.Controls.Add(control);
+                    control = new Controls.NumberControl(value, enumerator.Field);
+
+                panel.RowStyles.Add(new RowStyle());
+                panel.Controls.Add(control, 0, panel.RowCount - 1);
                 control.BringToFront();
             }
 
-            controlPanel.ResumeLayout();
-            ResumeLayout();
+            panel.ResumeLayout();
+            parent.Controls.Add(panel);
+            parent.ResumeLayout();
         }
-
+        
         private void saveChangesButton_Click(object sender, EventArgs e)
         {
             using (var cacheStream = CacheInfo.TagCacheInfo.Open(FileMode.Open, FileAccess.ReadWrite))
