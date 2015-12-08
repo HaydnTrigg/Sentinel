@@ -316,9 +316,9 @@ namespace Blam.Cache
             var numResourceFixups = reader.ReadInt16();                          // 0x0C int16  resource fixup count
             reader.BaseStream.Position += 2;                                     // 0x0E int16  (padding)
             var mainStructOffset = reader.ReadUInt32();                          // 0x10 uint32 main struct offset
-            resultTag.GroupTag = new Tag(reader.ReadUInt32());            // 0x14 int32  group tag
-            resultTag.ParentGroupTag = new Tag(reader.ReadUInt32());      // 0x18 int32  parent group tag
-            resultTag.GrandparentGroupTag = new Tag(reader.ReadUInt32()); // 0x1C int32  grandparent group tag
+            resultTag.GroupTag = new Tag(reader.ReadInt32());            // 0x14 int32  group tag
+            resultTag.ParentGroupTag = new Tag(reader.ReadInt32());      // 0x18 int32  parent group tag
+            resultTag.GrandparentGroupTag = new Tag(reader.ReadInt32()); // 0x1C int32  grandparent group tag
             resultTag.GroupName = new StringID(reader.ReadUInt32());             // 0x20 uint32 group name stringid
 
             var totalHeaderSize = CalculateHeaderSize(numDependencies, numDataFixups, numResourceFixups);

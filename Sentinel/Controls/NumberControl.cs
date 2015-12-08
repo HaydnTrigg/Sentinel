@@ -7,113 +7,54 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Blam.Tags;
 using System.Reflection;
 
 namespace Sentinel.Controls
 {
-    public partial class NumberControl : UserControl
+    public partial class NumberControl<T> : UserControl, ITagFieldControl
     {
-        public object Owner { get; set; }
-
-        public FieldInfo Info { get; set; }
-
-        public object Value { get; set; }
-
-        public NumberControl(object owner, FieldInfo fieldInfo)
+        public NumberControl()
         {
-            Owner = owner;
-            Info = fieldInfo;
-
             InitializeComponent();
-
-            Load += NumberControl_Load;
         }
 
-        private void NumberControl_Load(object sender, EventArgs e)
+        public virtual void LoadValue(FieldInfo field, object owner)
         {
-            nameLabel.Text = Info.Name;
-
-            object value = null;
-
-            if (Owner != null)
-            {
-                value = Info.GetValue(Owner);
-            }
-            else if (Owner != null && value == null)
-            {
-                value = Activator.CreateInstance(Info.FieldType);
-                Info.SetValue(Owner, value);
-            }
-            else
-            {
-                Enabled = false;
-            }
-
-            Value = value;
-            valueBox.Text = Value != null ? Value.ToString() : "";
+            Name = field.Name;
+            Value = (T)field.GetValue(owner);
         }
 
-        private void valueBox_TextChanged(object sender, EventArgs e)
+        public virtual void SaveValue(FieldInfo field, object owner)
         {
-            if (Info.FieldType == typeof(sbyte))
-            {
-                sbyte value;
-                if (!sbyte.TryParse(valueBox.Text, out value))
-                    valueBox.Text = Value.ToString();
-                else
-                    Value = value;
-            }
-            else if (Info.FieldType == typeof(byte))
-            {
-                byte value;
-                if (!byte.TryParse(valueBox.Text, out value))
-                    valueBox.Text = Value.ToString();
-                else
-                    Value = value;
-            }
-            else if (Info.FieldType == typeof(short))
-            {
-                short value;
-                if (!short.TryParse(valueBox.Text, out value))
-                    valueBox.Text = Value.ToString();
-                else
-                    Value = value;
-            }
-            else if (Info.FieldType == typeof(ushort))
-            {
-                ushort value;
-                if (!ushort.TryParse(valueBox.Text, out value))
-                    valueBox.Text = Value.ToString();
-                else
-                    Value = value;
-            }
-            else if (Info.FieldType == typeof(int))
-            {
-                int value;
-                if (!int.TryParse(valueBox.Text, out value))
-                    valueBox.Text = Value.ToString();
-                else
-                    Value = value;
-            }
-            else if (Info.FieldType == typeof(uint))
-            {
-                uint value;
-                if (!uint.TryParse(valueBox.Text, out value))
-                    valueBox.Text = Value.ToString();
-                else
-                    Value = value;
-            }
-            else if (Info.FieldType == typeof(float))
-            {
-                float value;
-                if (!float.TryParse(valueBox.Text, out value))
-                    valueBox.Text = Value.ToString();
-                else
-                    Value = value;
-            }
-            else return;
+            field.SetValue(owner, Value);
+        }
 
-            Info.SetValue(Owner, Value);
+        public new string Name
+        {
+            get { return base.Name; }
+            set
+            {
+                base.Name = value;
+                nameLabel.Text = GuiStringUtils.GetDisplayName(value);
+            }
+        }
+
+        public string Help
+        {
+            get { return helpLabel.Text; }
+            set { helpLabel.Text = value; }
+        }
+
+        private T _Value;
+        public T Value
+        {
+            get { return _Value; }
+            set
+            {
+                _Value = value;
+                valueBox.Text = value.ToString();
+            }
         }
     }
 }

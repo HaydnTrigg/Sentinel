@@ -18,8 +18,6 @@ namespace Sentinel.Controls
         public FileInfo MapInfo { get; set; }
         public List<FileInfo> DatFiles { get; set; }
         
-        public Dictionary<Tag, List<TagInstance>> TagGroups { get; set; }
-        
         public OpenCacheInfo CacheInfo { get; set; }
 
         public MapControl()
@@ -108,47 +106,33 @@ namespace Sentinel.Controls
             LoadDependencies(scenarioIndex, ref mapTags);
             LoadDependencies(tagsData.Tags.FindFirstInGroup(new Tag("cfgt")).Index, ref mapTags);
 
-            TagGroups = new Dictionary<Tag, List<TagInstance>>();
-
-            foreach (var entry in mapTags)
-            {
-                var tag = entry.Value;
-
-                if (tag == null)
-                    continue;
-
-                if (!TagGroups.ContainsKey(tag.GroupTag))
-                    TagGroups[tag.GroupTag] = new List<TagInstance>();
-
-                TagGroups[tag.GroupTag].Add(tag);
-            }
+            var groupNodes = new Dictionary<Tag, TreeNode>();
 
             tagTreeView.SuspendLayout();
 
-            foreach (var entry in TagGroups)
+            foreach (var entry in mapTags)
             {
-                var groupNode = new TreeNode(entry.Key.ToString());
-                bool groupNameSet = false;
+                var instance = entry.Value;
 
-                foreach (var instance in entry.Value)
-                {
-                    if (!tagNames.ContainsKey(instance.Index))
-                        tagNames[instance.Index] = string.Format("0x{0:X8}", instance.Index);
-                    if (!groupNameSet)
-                    {
-                        groupNameSet = true;
-                        groupNode.Text += string.Format(" - {0}",
-                            stringIDsData.GetString(instance.GroupName));
-                    }
-                    var instanceNode = new TreeNode(tagNames[instance.Index]);
-                    instanceNode.Tag = instance;
-                    groupNode.Nodes.Add(instanceNode);
-                }
-                tagTreeView.Nodes.Add(groupNode);
+                if (instance == null)
+                    continue;
+
+                if (!groupNodes.ContainsKey(instance.GroupTag))
+                    groupNodes[instance.GroupTag] = new TreeNode($"{instance.GroupTag} - {stringIDsData.GetString(instance.GroupName)}");
+
+                if (!tagNames.ContainsKey(entry.Value.Index))
+                    tagNames[instance.Index] = string.Format("0x{0:X8}", instance.Index);
+
+                var instanceNode = new TreeNode(tagNames[instance.Index]);
+                instanceNode.Tag = instance;
+
+                groupNodes[instance.GroupTag].Nodes.Add(instanceNode);
             }
 
+            groupNodes.ToList().ForEach(entry => tagTreeView.Nodes.Add(entry.Value));
+
             tagTreeView.Sort();
-            tagTreeView.ResumeLayout();
+            tagTreeView.ResumeLayout(false);
         }
 
         public Dictionary<int, string> GetTagNames(GameVersion version)
@@ -205,6 +189,8 @@ namespace Sentinel.Controls
             if (e.Node.Tag == null)
                 return;
 
+            SuspendLayout();
+
             var tagInstance = (TagInstance)e.Node.Tag;
 
             foreach (var entry in toolTabControl.TabPages)
@@ -234,11 +220,9 @@ namespace Sentinel.Controls
 
             var tagEditor = new TagEditorControl(CacheInfo, tagInstance);
             tagEditor.Dock = DockStyle.Fill;
-
-            Application.DoEvents();
-
+            
             tagEditPage.Controls.Add(tagEditor);
-
+            ResumeLayout(false);
         }
 
         private void tagTreeView_DoubleClick(object sender, EventArgs e)

@@ -50,47 +50,22 @@
     <Compile Include="Controls\AdvancedTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\AngleControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\AngleControl.Designer.cs">
-      <DependentUpon>AngleControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\BlockControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\BlockControl.Designer.cs">
-      <DependentUpon>BlockControl.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\GuiStringUtils.cs" />
+    <Compile Include="Controls\ITagFieldControl.cs" />
     <Compile Include="Controls\NumberControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\NumberControl.Designer.cs">
       <DependentUpon>NumberControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TagFieldPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\TagInfoControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\TagInfoControl.Designer.cs">
       <DependentUpon>TagInfoControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Vector2Control.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Vector2Control.Designer.cs">
-      <DependentUpon>Vector2Control.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Vector3Control.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Vector3Control.Designer.cs">
-      <DependentUpon>Vector3Control.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Vector4Control.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Vector4Control.Designer.cs">
-      <DependentUpon>Vector4Control.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -115,26 +90,11 @@
     <Compile Include="Controls\TagEditorControl.Designer.cs">
       <DependentUpon>TagEditorControl.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Controls\AngleControl.resx">
-      <DependentUpon>AngleControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\BlockControl.resx">
-      <DependentUpon>BlockControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\NumberControl.resx">
       <DependentUpon>NumberControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TagInfoControl.resx">
       <DependentUpon>TagInfoControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Vector2Control.resx">
-      <DependentUpon>Vector2Control.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Vector3Control.resx">
-      <DependentUpon>Vector3Control.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Vector4Control.resx">
-      <DependentUpon>Vector4Control.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -179,6 +139,7 @@
       <Name>BlamCore</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,26 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Blam.Common
 {
     /// <summary>
-    /// Represents a magic number which looks like a string.
+    /// Represents a tag which looks like a string.
     /// </summary>
     public struct Tag : IComparable<Tag>
     {
-        public static readonly Tag Null = new Tag("ÿÿÿÿ");
         /// <summary>
-        /// Constructs a magic number from an integer.
+        /// Constructs a tag from an integer.
         /// </summary>
         /// <param name="val">The integer.</param>
-        public Tag(uint val)
+        public Tag(int val)
         {
             Value = val;
         }
 
         /// <summary>
-        /// Constructs a magic number from a string.
+        /// Constructs a tag from a string.
         /// </summary>
         /// <param name="str">The string.</param>
         public Tag(string str)
@@ -35,14 +33,14 @@ namespace Blam.Common
         }
 
         /// <summary>
-        /// Gets the value of the magic number as an integer.
+        /// Gets the value of the tag as an integer.
         /// </summary>
-        public readonly uint Value;
+        public readonly int Value;
 
         /// <summary>
-        /// Converts the magic number into its string representation.
+        /// Converts the tag into its string representation.
         /// </summary>
-        /// <returns>The string that the magic number looks like.</returns>
+        /// <returns>The string that the tag looks like.</returns>
         public override string ToString()
         {
             var i = 4;
@@ -82,7 +80,7 @@ namespace Blam.Common
 
         public int CompareTo(Tag other)
         {
-            return Value.CompareTo(other.Value);
+            return Value - other.Value;
         }
     }
 }

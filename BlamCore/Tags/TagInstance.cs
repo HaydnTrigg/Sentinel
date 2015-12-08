@@ -109,7 +109,7 @@ namespace Blam.Tags
         /// <returns><c>true</c> if the tag belongs to the group.</returns>
         public bool IsInGroup(Tag groupTag)
         {
-            if (groupTag == Tag.Null)
+            if (groupTag.Value == -1)
                 return false;
             return (GroupTag == groupTag || ParentGroupTag == groupTag || GrandparentGroupTag == groupTag);
         }

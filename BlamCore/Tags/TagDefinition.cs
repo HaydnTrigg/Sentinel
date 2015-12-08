@@ -28,9 +28,9 @@ namespace Blam.Tags
         public TagDefinition(Type structureType, GameVersion version)
         {
             Version = version;
-            GroupTag = new Tag(Tag.Null.Value);
-            ParentGroupTag = new Tag(Tag.Null.Value);
-            GrandparentGroupTag = new Tag(Tag.Null.Value);
+            GroupTag = new Tag(-1);
+            ParentGroupTag = new Tag(-1);
+            GrandparentGroupTag = new Tag(-1);
             Analyze(structureType, version);
         }
         
@@ -89,11 +89,11 @@ namespace Blam.Tags
                     TotalSize += attrib.Size;
                     if (attrib.Group != null)
                     {
-                        if (GroupTag.Value == Tag.Null.Value)
+                        if (GroupTag.Value == -1)
                             GroupTag = new Tag(attrib.Group);
-                        else if (ParentGroupTag.Value == Tag.Null.Value)
+                        else if (ParentGroupTag.Value == -1)
                             ParentGroupTag = new Tag(attrib.Group);
-                        else if (GrandparentGroupTag.Value == Tag.Null.Value)
+                        else if (GrandparentGroupTag.Value == -1)
                             GrandparentGroupTag = new Tag(attrib.Group);
                     }
                 }

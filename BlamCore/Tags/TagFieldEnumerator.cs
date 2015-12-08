@@ -28,15 +28,6 @@ namespace Blam.Tags
         }
 
         /// <summary>
-        /// Constructs a tag field enumerator for a tag instance's definition type.
-        /// </summary>
-        /// <param name="instance">The tag instance containing the fields to enumerate.</param>
-        public TagFieldEnumerator(TagInstance instance, GameVersion version)
-            : this(new TagDefinition(TagUtils.TagGroupTypes[instance.GroupTag.ToString()], version))
-        {
-        }
-
-        /// <summary>
         /// Gets the info that was used to construct the enumerator.
         /// </summary>
         public TagDefinition Info { get; private set; }
@@ -83,14 +74,11 @@ namespace Blam.Tags
             // Build the field list. Scan through the type's inheritance
             // hierarchy and add any fields belonging to parent classes that
             // also have TagStructure attributes.
-
-            // Check to make sure the inheritance heirarchy is sorted correctly
-            if (Info.Types.Count > 1)
-                if (Info.Types[0].IsSubclassOf(Info.Types[1]))
-                    Info.Types.Reverse();
-
             foreach (var type in Info.Types)
-                _fields.AddRange(type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly));
+                _fields.InsertRange(0, type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly));
+
+            // Order the field list in declaration order using the MetadataToken
+            //_fields.Sort((x, y) => x.MetadataToken - y.MetadataToken);
         }
 
         private bool GetCurrentPropertyInfo()
