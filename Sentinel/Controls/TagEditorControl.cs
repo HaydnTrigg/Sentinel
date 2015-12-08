@@ -50,17 +50,17 @@ namespace Sentinel.Controls
 
             Definition = new TagDefinition(Value.GetType(), CacheInfo.Version);
 
+            SuspendLayout();
             AddTagDefinitionControls(
                 Definition,
                 Value,
                 new Point(),
                 controlPanel);
+            ResumeLayout();
         }
 
         public static void AddTagDefinitionControls(TagDefinition definition, object value, Point baseLocation, Control parent)
         {
-            parent.SuspendLayout();
-
             var enumerator = new TagFieldEnumerator(definition);
 
             var panel = new TableLayoutPanel();
@@ -109,14 +109,12 @@ namespace Sentinel.Controls
 
                 panel.RowStyles.Add(new RowStyle());
                 panel.Controls.Add(control, 0, panel.RowCount - 1);
-                control.BringToFront();
 
-                Application.DoEvents();
+                control.BringToFront();
             }
 
             panel.ResumeLayout();
             parent.Controls.Add(panel);
-            parent.ResumeLayout();
         }
         
         private void saveChangesButton_Click(object sender, EventArgs e)
