@@ -41,7 +41,7 @@ namespace Sentinel.Controls
 
             InitializeComponent();
 
-            SuspendLayout();
+            ControlPanel.SuspendLayout();
 
             controlPanel.Location = new Point(0, headerPanel.Height + Margin.Bottom);
 
@@ -71,7 +71,7 @@ namespace Sentinel.Controls
                 new Point(),
                 controlPanel);
             
-            ResumeLayout();
+            ControlPanel.ResumeLayout();
         }
 
         private void BlockControl_Load(object sender, EventArgs e)
@@ -82,8 +82,25 @@ namespace Sentinel.Controls
 
         private void OnToggle()
         {
+            if (Parent == null)
+            {
+                controlPanel.Visible = !Toggled;
+                toggleButton.Text = Toggled ? "+" : "-";
+                return;
+            }
+
+            Control parent = Parent;
+            while (!(parent is TagEditorControl))
+                parent = parent.Parent;
+
+            if (parent != null)
+                ((TagEditorControl)parent).ControlPanel.SuspendLayout();
+
             controlPanel.Visible = !Toggled;
             toggleButton.Text = Toggled ? "+" : "-";
+
+            if (parent != null)
+                ((TagEditorControl)parent).ControlPanel.ResumeLayout();
         }
 
         private void toggleButton_Click(object sender, EventArgs e)

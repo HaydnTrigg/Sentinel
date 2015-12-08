@@ -25,7 +25,9 @@ namespace Sentinel.Controls
 
         private void Vector4Control_Load(object sender, EventArgs e)
         {
-            nameLabel.Text = Info.Name;
+            nameLabel.Text = Info.Name + " X:";
+
+
 
             var value = Info.GetValue(Owner);
 

@@ -32,7 +32,7 @@ namespace Sentinel.Controls
 
         private void Vector3Control_Load(object sender, EventArgs e)
         {
-            nameLabel.Text = Info.Name;
+            nameLabel.Text = Info.Name + " X:";
 
             object value = null;
 

@@ -40,8 +40,6 @@ namespace Sentinel.Controls
 
         public void TagEditorControl_Load(object sender, EventArgs e)
         {
-            SuspendLayout();
-
             using (var cacheStream = CacheInfo.TagCacheInfo.OpenRead())
             {
                 var context = new TagSerializationContext(cacheStream, CacheInfo.TagCacheData, CacheInfo.StringIDsCacheData, Instance);
@@ -57,8 +55,6 @@ namespace Sentinel.Controls
                 Value,
                 new Point(),
                 controlPanel);
-            
-            ResumeLayout();
         }
 
         public static void AddTagDefinitionControls(TagDefinition definition, object value, Point baseLocation, Control parent)
@@ -114,6 +110,8 @@ namespace Sentinel.Controls
                 panel.RowStyles.Add(new RowStyle());
                 panel.Controls.Add(control, 0, panel.RowCount - 1);
                 control.BringToFront();
+
+                Application.DoEvents();
             }
 
             panel.ResumeLayout();
