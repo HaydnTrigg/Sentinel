@@ -56,9 +56,11 @@ namespace Sentinel.Controls
                     ((ITagFieldControl)Controls[i]).LoadValue(_Fields.ElementAt(i), value);
         }
 
-        public void SetValues(object owner)
+        public void SetValues(object value)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < _Fields.Count(); i++)
+                if (Controls[i].GetType().GetInterface(typeof(ITagFieldControl).Name) != null)
+                    ((ITagFieldControl)Controls[i]).SaveValue(_Fields.ElementAt(i), value);
         }
 
         private void BuildDefinitionLayout()
