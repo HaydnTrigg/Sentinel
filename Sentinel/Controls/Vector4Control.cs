@@ -26,9 +26,7 @@ namespace Sentinel.Controls
         private void Vector4Control_Load(object sender, EventArgs e)
         {
             nameLabel.Text = Info.Name + " X:";
-
-
-
+            
             var value = Info.GetValue(Owner);
 
             if (value == null)
@@ -42,6 +40,7 @@ namespace Sentinel.Controls
             xValueBox.Text = Value.X.ToString();
             yValueBox.Text = Value.Y.ToString();
             zValueBox.Text = Value.Z.ToString();
+            wValueBox.Text = Value.W.ToString();
         }
 
         private void xValueBox_TextChanged(object sender, EventArgs e)
