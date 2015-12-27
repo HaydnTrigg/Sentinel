@@ -4,13 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{65A47E72-F512-4B0E-A2C4-274232616F31}</ProjectGuid>
+    <ProjectGuid>{224CBE1B-3A10-443F-A0E4-1B822C12836E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sentinel</RootNamespace>
     <AssemblyName>Sentinel</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -22,6 +24,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,116 +35,322 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework" />
+    <Reference Include="LZ4, Version=1.0.9.93, Culture=neutral, PublicKeyToken=62e1b5ec1eec9bdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\lz4net.1.0.9.93\lib\net4-client\LZ4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\AdvancedTabControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\GuiStringUtils.cs" />
-    <Compile Include="Controls\ITagFieldControl.cs" />
-    <Compile Include="Controls\NumberControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\NumberControl.Designer.cs">
-      <DependentUpon>NumberControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TagFieldPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\TagInfoControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\TagInfoControl.Designer.cs">
-      <DependentUpon>TagInfoControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\MapControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\MapControl.Designer.cs">
-      <DependentUpon>MapControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OpenCacheInfo.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controls\TabCancelEventArgs.cs" />
-    <Compile Include="Controls\TabEventArgs.cs" />
-    <Compile Include="Controls\TagEditorControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\TagEditorControl.Designer.cs">
-      <DependentUpon>TagEditorControl.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Controls\NumberControl.resx">
-      <DependentUpon>NumberControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\TagInfoControl.resx">
-      <DependentUpon>TagInfoControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\MapControl.resx">
-      <DependentUpon>MapControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </ApplicationDefinition>
+    <Compile Include="HaloOnlineTagTool\Common\Angle.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\ArrayUtil.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\DdsHeader.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\Euler2.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\Euler3.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\Half\Half.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\Half\HalfHelper.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\NamingConvention.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\Range.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\SimpleJson.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\TagReferenceBlock.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\Vector2.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\Vector3.cs" />
+    <Compile Include="HaloOnlineTagTool\Common\Vector4.cs" />
+    <Compile Include="HaloOnlineTagTool\GameLanguage.cs" />
+    <Compile Include="HaloOnlineTagTool\HaloTag.cs" />
+    <Compile Include="HaloOnlineTagTool\MagicNumber.cs" />
+    <Compile Include="HaloOnlineTagTool\ProcessMemoryStream.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Bitmaps\BitmapDdsExtractor.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Bitmaps\BitmapDdsFormatDetection.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Bitmaps\BitmapDdsInjector.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Bitmaps\BitmapFlags.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Bitmaps\BitmapFormat.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Bitmaps\BitmapTextureResourceDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Bitmaps\BitmapType.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\D3DPointer.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\BlenderPhmoReader.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\GeometryReference.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\IndexBufferStream.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\IVertexStream.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\Mesh.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\MeshFlags.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\MeshReader.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\ObjExtractor.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\PhysicsModelBuilder.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\PrimitiveType.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\PrtType.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\RenderGeometryResourceDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\RenderMaterial.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\RenderModelBuilder.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\Vertex.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\VertexBufferFormat.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\VertexCompressor.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\VertexElementStream.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\VertexStreamFactory.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\VertexType.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\ResourceAddress.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\ResourceCache.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\ResourceDataManager.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\ResourceDataReference.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\ResourceReference.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Sounds\SoundResourceDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\IDataBlock.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\ISerializationContext.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\MaxVersionAttribute.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\MinVersionAttribute.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\ResourceSerializationContext.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\TagDeserializer.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\TagFieldAttribute.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\TagFieldEnumerator.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\TagSerializationContext.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\TagSerializer.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\TagStructureAttribute.cs" />
+    <Compile Include="HaloOnlineTagTool\Serialization\TagStructureInfo.cs" />
+    <Compile Include="HaloOnlineTagTool\StreamUtil.cs" />
+    <Compile Include="HaloOnlineTagTool\StringId.cs" />
+    <Compile Include="HaloOnlineTagTool\StringIdCache.cs" />
+    <Compile Include="HaloOnlineTagTool\StringIdResolverBase.cs" />
+    <Compile Include="HaloOnlineTagTool\StringIdResolverFactory.cs" />
+    <Compile Include="HaloOnlineTagTool\TagCache.cs" />
+    <Compile Include="HaloOnlineTagTool\TagList.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Achievements.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\AiDialogueGlobals.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\AiGlobals.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Antenna.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\AreaScreenEffect.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ArmorSounds.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\BeamSystem.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Bink.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Biped.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Bitmap.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\BreakableSurface.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\CacheFileGlobalTags.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\CameraFxSettings.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\CameraTrack.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Camo.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Character.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ChocolateMountainNew.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ChudAnimationDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ChudDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ChudGlobalsDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ChudWidgetParallaxData.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Cloth.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\CollisionDamage.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\CollisionModel.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ColorTable.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ContrailSystem.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Crate.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Creature.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\DamageEffect.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\DamageResponseDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\DecalSystem.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\DecoratorSet.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Device.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\DeviceControl.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\DeviceMachine.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Dialogue.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Effect.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\EffectGlobals.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\EffectScenery.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Equipment.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Flock.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Formation.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GameEngineSettingsDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GameObject.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GameProgression.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GfxTexturesList.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GlobalPixelShader.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Globals.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GlobalVertexShader.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiBitmapWidgetDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiButtonKeyDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiDatasourceDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiGroupWidgetDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiListWidgetDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiModelWidgetDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiScreenWidgetDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiSkinDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiTextWidgetDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiWidgetAnimationCollectionDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiWidgetAnimationDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiWidgetColorAnimationDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiWidgetPositionAnimationDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiWidgetRotationAnimationDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiWidgetScaleAnimationDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiWidgetSpriteAnimationDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\GuiWidgetTextureCoordinateAnimationDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\InputGlobals.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Item.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\LeafSystem.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\LensFlare.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Light.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\LightVolumeSystem.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\MaterialEffects.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Model.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ModelAnimationGraph.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Muffin.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\MultilingualUnicodeStringList.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\MultiplayerGlobals.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\MultiplayerVariantSettingsInterfaceDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Particle.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ParticleModel.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ParticlePhysics.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\PerformanceThrottles.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\PhysicsModel.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\PixelShader.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\PodiumSettings.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\PointPhysics.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Projectile.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\RasterizerCacheFileGlobals.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\RasterizerGlobals.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\RenderMethod.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\RenderMethodDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\RenderMethodOption.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\RenderMethodTemplate.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\RenderModel.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\RenderWaterRipple.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SandboxTextValuePairDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Scenario.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ScenarioLightmap.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ScenarioLightmapBspData.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ScenarioStructureBsp.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Scenery.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Shader.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ShaderCustom.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ShaderDecal.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ShaderFoliage.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ShaderHalogram.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ShaderScreen.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ShaderTerrain.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ShaderWater.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ShaderZonly.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\ShieldImpact.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SimulationInterpolation.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SkyAtmParameters.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Sound.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SoundClasses.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SoundDialogueConstants.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SoundEffectCollection.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SoundEffectTemplate.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SoundEnvironment.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SoundGlobalPropagation.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SoundLooping.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SoundMix.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SoundScenery.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SoundUiSounds.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SquadTemplate.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\StructureDesign.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Style.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\SurvivalModeGlobals.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\TagStructureTypes.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\TextureRenderList.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\TextValuePairDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Unit.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\UserInterfaceGlobalsDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\UserInterfaceSharedGlobalsDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\UserInterfaceSoundsDefinition.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Vehicle.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\VertexShader.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\VFilesList.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\VisionMode.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Weapon.cs" />
+    <Compile Include="HaloOnlineTagTool\TagStructures\Wind.cs" />
+    <Compile Include="HaloOnlineTagTool\TagVersionMap.cs" />
+    <Compile Include="HaloOnlineTagTool\V11_1_498295\StringIdResolver.cs" />
+    <Compile Include="HaloOnlineTagTool\V12_1_700123\StringIdResolver.cs" />
+    <Compile Include="HaloOnlineTagTool\V1_106708\StringIdResolver.cs" />
+    <Compile Include="HaloOnlineTagTool\V1_106708\VertexStream.cs" />
+    <Compile Include="HaloOnlineTagTool\V1_235640\VertexStream.cs" />
+    <Compile Include="HaloOnlineTagTool\VersionDetection.cs" />
+    <Compile Include="DevIL.cs" />
+    <Compile Include="Renderer.xaml.cs">
+      <DependentUpon>Renderer.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Renderer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Controls\TagEditorControl.resx">
-      <DependentUpon>TagEditorControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="tagnames_1.106708 cert_ms23.csv">
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Cache\V11_1_498295\tagnames.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="tagnames_11.1.498295 Live.csv">
+    <None Include="Cache\V12_1_700123\tagnames.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Cache\V1_106708\tagnames.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BlamCore\BlamCore.csproj">
-      <Project>{8421cec0-06ee-4589-a315-7487e3c66465}</Project>
-      <Name>BlamCore</Name>
-    </ProjectReference>
+    <None Include="DevIL.output">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>move $(TargetDir)DevIL.output $(TargetDir)DevIL.dll</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
