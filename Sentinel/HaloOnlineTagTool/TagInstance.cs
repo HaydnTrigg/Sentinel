@@ -10,12 +10,12 @@ namespace HaloOnlineTagTool
     /// <summary>
     /// Describes a tag in a tag cache.
     /// </summary>
-    public class HaloTag
+    public class TagInstance
     {
         /// <summary>
         /// Initializes an empty tag description.
         /// </summary>
-        public HaloTag()
+        public TagInstance()
         {
             Dependencies = new HashSet<int>();
             DataFixups = new List<TagFixup>();
@@ -33,17 +33,17 @@ namespace HaloOnlineTagTool
         /// <summary>
         /// Gets or sets the tag's group tag.
         /// </summary>
-        public MagicNumber GroupTag { get; set; }
+        public Tag GroupTag { get; set; }
 
         /// <summary>
         /// Gets or sets the tag's parent group tag. Can be -1.
         /// </summary>
-        public MagicNumber ParentGroupTag { get; set; }
+        public Tag ParentGroupTag { get; set; }
 
         /// <summary>
         /// Gets or sets the tag's grandparent group tag. Can be -1.
         /// </summary>
-        public MagicNumber GrandparentGroupTag { get; set; }
+        public Tag GrandparentGroupTag { get; set; }
 
         /// <summary>
         /// Gets or sets the stringID for the tag's group.
@@ -111,7 +111,7 @@ namespace HaloOnlineTagTool
         /// </summary>
         /// <param name="groupTag">The group tag.</param>
         /// <returns><c>true</c> if the tag belongs to the group.</returns>
-        public bool IsInGroup(MagicNumber groupTag)
+        public bool IsInGroup(Tag groupTag)
         {
             if (groupTag.Value == -1)
                 return false;
@@ -125,7 +125,7 @@ namespace HaloOnlineTagTool
         /// <returns><c>true</c> if the tag belongs to the group.</returns>
         public bool IsInGroup(string groupTag)
         {
-            return IsInGroup(new MagicNumber(groupTag));
+            return IsInGroup(new Tag(groupTag));
         }
 
         public override string ToString() =>

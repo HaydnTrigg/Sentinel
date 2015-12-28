@@ -42,11 +42,11 @@ namespace Sentinel
 
         public StringIdCache StringIDCache { get; set; }
 
-        public Dictionary<int, HaloTag> MapTags { get; set; }
+        public Dictionary<int, TagInstance> MapTags { get; set; }
 
         public Dictionary<int, string> TagNames { get; set; }
 
-        public HaloTag ScenarioTag { get; set; }
+        public TagInstance ScenarioTag { get; set; }
 
         public Scenario ScenarioDefinition { get; set; }
 
@@ -144,10 +144,10 @@ namespace Sentinel
 
             this.renderer.lblStats.Content = $"{label} | {TagNames[scenarioIndex]}.scenario";
 
-            var mapTags = new Dictionary<int, HaloTag>();
+            var mapTags = new Dictionary<int, TagInstance>();
 
             LoadTagDependencies(scenarioIndex, ref mapTags);
-            LoadTagDependencies(TagCache.Tags.FindFirstInGroup(new MagicNumber("cfgt")).Index, ref mapTags);
+            LoadTagDependencies(TagCache.Tags.FindFirstInGroup(new Tag("cfgt")).Index, ref mapTags);
 
             MapTags = mapTags;
 
@@ -928,12 +928,12 @@ namespace Sentinel
 
         private static HashSet<int> LoadedSections = new HashSet<int>();
 
-        private static Dictionary<HaloTag, Model3DGroup> GameObjects =
-            new Dictionary<HaloTag, Model3DGroup>();
+        private static Dictionary<TagInstance, Model3DGroup> GameObjects =
+            new Dictionary<TagInstance, Model3DGroup>();
 
-        private Model3DGroup LoadGameObject(Stream cacheStream, ResourceDataManager resourceManager, TagDeserializer deserializer, HaloTag tag)
+        private Model3DGroup LoadGameObject(Stream cacheStream, ResourceDataManager resourceManager, TagDeserializer deserializer, TagInstance tag)
         {
-            if (tag == null || !tag.IsInGroup(new MagicNumber("obje")))
+            if (tag == null || !tag.IsInGroup(new Tag("obje")))
                 return null;
 
             if (GameObjects.ContainsKey(tag))
@@ -1003,10 +1003,10 @@ namespace Sentinel
             return renderModelGroup;
         }
 
-        private static Dictionary<HaloTag, MaterialGroup> Materials =
-            new Dictionary<HaloTag, MaterialGroup>();
+        private static Dictionary<TagInstance, MaterialGroup> Materials =
+            new Dictionary<TagInstance, MaterialGroup>();
 
-        private MaterialGroup LoadMaterial(Stream cacheStream, ResourceDataManager resourceManager, HaloTag tag)
+        private MaterialGroup LoadMaterial(Stream cacheStream, ResourceDataManager resourceManager, TagInstance tag)
         {
             var errMat = new MaterialGroup();
             errMat.Children.Add(new DiffuseMaterial { Color = Colors.Gold });
@@ -1063,7 +1063,7 @@ namespace Sentinel
 
             }
 
-            HaloTag bitmapTag;
+            TagInstance bitmapTag;
 
             try
             {
@@ -1274,7 +1274,7 @@ namespace Sentinel
             return result;
         }
 
-        private void LoadTagDependencies(int index, ref Dictionary<int, HaloTag> tags)
+        private void LoadTagDependencies(int index, ref Dictionary<int, TagInstance> tags)
         {
             var queue = new List<int> { index };
 

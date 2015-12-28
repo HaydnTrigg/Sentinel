@@ -79,8 +79,6 @@
     <Compile Include="HaloOnlineTagTool\Common\Vector3.cs" />
     <Compile Include="HaloOnlineTagTool\Common\Vector4.cs" />
     <Compile Include="HaloOnlineTagTool\GameLanguage.cs" />
-    <Compile Include="HaloOnlineTagTool\HaloTag.cs" />
-    <Compile Include="HaloOnlineTagTool\MagicNumber.cs" />
     <Compile Include="HaloOnlineTagTool\ProcessMemoryStream.cs" />
     <Compile Include="HaloOnlineTagTool\Resources\Bitmaps\BitmapDdsExtractor.cs" />
     <Compile Include="HaloOnlineTagTool\Resources\Bitmaps\BitmapDdsFormatDetection.cs" />
@@ -115,6 +113,8 @@
     <Compile Include="HaloOnlineTagTool\Resources\ResourceDataManager.cs" />
     <Compile Include="HaloOnlineTagTool\Resources\ResourceDataReference.cs" />
     <Compile Include="HaloOnlineTagTool\Resources\ResourceReference.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Shaders\ShaderCompiler.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Shaders\ShaderConverter.cs" />
     <Compile Include="HaloOnlineTagTool\Resources\Sounds\SoundResourceDefinition.cs" />
     <Compile Include="HaloOnlineTagTool\Serialization\IDataBlock.cs" />
     <Compile Include="HaloOnlineTagTool\Serialization\ISerializationContext.cs" />
@@ -133,7 +133,9 @@
     <Compile Include="HaloOnlineTagTool\StringIdCache.cs" />
     <Compile Include="HaloOnlineTagTool\StringIdResolverBase.cs" />
     <Compile Include="HaloOnlineTagTool\StringIdResolverFactory.cs" />
+    <Compile Include="HaloOnlineTagTool\Tag.cs" />
     <Compile Include="HaloOnlineTagTool\TagCache.cs" />
+    <Compile Include="HaloOnlineTagTool\TagInstance.cs" />
     <Compile Include="HaloOnlineTagTool\TagList.cs" />
     <Compile Include="HaloOnlineTagTool\TagStructures\Achievements.cs" />
     <Compile Include="HaloOnlineTagTool\TagStructures\AiDialogueGlobals.cs" />

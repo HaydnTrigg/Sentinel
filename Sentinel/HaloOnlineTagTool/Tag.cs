@@ -6,13 +6,13 @@ namespace HaloOnlineTagTool
     /// <summary>
     /// Represents a magic number which looks like a string.
     /// </summary>
-    public struct MagicNumber : IComparable<MagicNumber>
+    public struct Tag : IComparable<Tag>
     {
         /// <summary>
         /// Constructs a magic number from an integer.
         /// </summary>
         /// <param name="val">The integer.</param>
-        public MagicNumber(int val)
+        public Tag(int val)
         {
             Value = val;
         }
@@ -21,7 +21,7 @@ namespace HaloOnlineTagTool
         /// Constructs a magic number from a string.
         /// </summary>
         /// <param name="str">The string.</param>
-        public MagicNumber(string str)
+        public Tag(string str)
         {
             var bytes = Encoding.ASCII.GetBytes(str);
             Value = 0;
@@ -57,18 +57,18 @@ namespace HaloOnlineTagTool
 
         public override bool Equals(object obj)
         {
-            if (!(obj is MagicNumber))
+            if (!(obj is Tag))
                 return false;
-            var other = (MagicNumber)obj;
+            var other = (Tag)obj;
             return (Value == other.Value);
         }
 
-        public static bool operator ==(MagicNumber a, MagicNumber b)
+        public static bool operator ==(Tag a, Tag b)
         {
             return a.Equals(b);
         }
 
-        public static bool operator !=(MagicNumber a, MagicNumber b)
+        public static bool operator !=(Tag a, Tag b)
         {
             return !(a == b);
         }
@@ -78,7 +78,7 @@ namespace HaloOnlineTagTool
             return Value.GetHashCode();
         }
 
-        public int CompareTo(MagicNumber other)
+        public int CompareTo(Tag other)
         {
             return Value - other.Value;
         }

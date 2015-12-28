@@ -303,7 +303,7 @@ namespace HaloOnlineTagTool.Resources.Geometry
         /// </summary>
         private void WriteHeader()
         {
-            _writer.WriteLine("# Extracted by Blam on {0}", DateTime.Now);
+            _writer.WriteLine("# Extracted by HaloOnlineTagTool on {0}", DateTime.Now);
         }
 
         /// <summary>

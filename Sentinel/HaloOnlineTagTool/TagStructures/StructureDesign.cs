@@ -16,7 +16,7 @@ namespace HaloOnlineTagTool.TagStructures
         public List<DesignMoppCode> DesignMoppCodes;
         public List<DesignShapes2Block> DesignShapes2;
         public List<WaterMoppCode> WaterMoppCodes;
-        public List<StringId> WaterNames;
+        public List<WaterName> WaterNames;
         public List<UnderwaterDefinition> UnderwaterDefinitions;
         public uint Unknown2;
 
@@ -39,8 +39,14 @@ namespace HaloOnlineTagTool.TagStructures
             public sbyte Unknown5;
             public sbyte Unknown6;
             public sbyte Unknown7;
-            public List<byte> Data;
+            public List<Datum> Data;
             public uint Unknown8;
+
+            [TagStructure(Size = 0x1)]
+            public class Datum
+            {
+                public byte DataByte;
+            }
         }
 
         [TagStructure(Size = 0x14)]
@@ -93,8 +99,20 @@ namespace HaloOnlineTagTool.TagStructures
             public sbyte Unknown5;
             public sbyte Unknown6;
             public sbyte Unknown7;
-            public List<byte> Data;
+            public List<Datum> Data;
             public uint Unknown8;
+
+            [TagStructure(Size = 0x1)]
+            public class Datum
+            {
+                public byte DataByte;
+            }
+        }
+
+        [TagStructure(Size = 0x4)]
+        public class WaterName
+        {
+            public StringId Name;
         }
 
         [TagStructure(Size = 0x2C)]

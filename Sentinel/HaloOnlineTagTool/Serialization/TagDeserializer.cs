@@ -170,7 +170,7 @@ namespace HaloOnlineTagTool.Serialization
                 return DeserializeString(reader, valueInfo);
 
             // TagInstance = Tag reference
-            if (valueType == typeof(HaloTag))
+            if (valueType == typeof(TagInstance))
                 return DeserializeTagReference(reader, context, valueInfo);
 
             // ResourceAddress = Resource address
@@ -294,7 +294,7 @@ namespace HaloOnlineTagTool.Serialization
         /// <param name="context">The serialization context to use.</param>
         /// <param name="valueInfo">The value information. Can be <c>null</c>.</param>
         /// <returns>The deserialized tag reference.</returns>
-        private static HaloTag DeserializeTagReference(BinaryReader reader, ISerializationContext context, TagFieldAttribute valueInfo)
+        private static TagInstance DeserializeTagReference(BinaryReader reader, ISerializationContext context, TagFieldAttribute valueInfo)
         {
             if (valueInfo == null || (valueInfo.Flags & TagFieldFlags.Short) == 0)
                 reader.BaseStream.Position += 0xC; // Skip the class name and zero bytes, it's not important
