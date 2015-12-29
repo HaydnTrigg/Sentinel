@@ -362,9 +362,9 @@ namespace Sentinel
 
             #region Check +/-
             if (CheckKeyState(System.Windows.Forms.Keys.Oemplus))
-                LookSensitivity = Math.Min(LookSensitivity + 0.01, 100.0);
+                LookSensitivity = Math.Min(LookSensitivity + 0.1, 100.0);
             if (CheckKeyState(System.Windows.Forms.Keys.OemMinus))
-                LookSensitivity = Math.Max(LookSensitivity - 0.01, 1.0);
+                LookSensitivity = Math.Max(LookSensitivity - 0.1, 1.0);
             #endregion
 
             camera.Position = new Point3D(
