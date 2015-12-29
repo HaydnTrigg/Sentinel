@@ -16,6 +16,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Microsoft.Win32;
 using HaloOnlineTagTool;
 using HaloOnlineTagTool.Common;
@@ -44,7 +45,7 @@ namespace Sentinel
 
         public Dictionary<int, TagInstance> MapTags { get; set; }
 
-        public Dictionary<int, string> TagNames { get; set; }
+        public Dictionary<TagInstance, string> TagNames { get; set; }
 
         public TagInstance ScenarioTag { get; set; }
 
@@ -67,14 +68,41 @@ namespace Sentinel
                 return;
             
             MapFile = new FileInfo(ofd.FileName);
-            
-            LoadCache();
+            this.Title = $"Sentinel - {MapFile.FullName}";
+
+            Application.Current.Dispatcher.Invoke(
+                DispatcherPriority.Background,
+                new Action(delegate
+                {
+                    LoadCache();
+                }));
         }
 
         private void LoadCache()
         {
-            GameObjects.Clear();
-            Materials.Clear();
+            renderer.IsHitTestVisible = false;
+            renderer.Viewport.Children.Clear();
+            renderer.StatsLabel.Content = null;
+            renderer.Refresh();
+
+            if (GameObjects != null)
+            {
+                GameObjects.Clear();
+                GameObjects = null;
+            }
+
+            if (Materials != null)
+            {
+                Materials.Clear();
+                Materials = null;
+            }
+
+            if (Bitmaps != null)
+            {
+                Bitmaps.Clear();
+                Bitmaps = null;
+            }
+
             GC.Collect();
 
             var directory = MapFile.Directory;
@@ -83,6 +111,22 @@ namespace Sentinel
 
             var tagsCacheInfo = DatFiles.Find(file => file.Name == "tags.dat");
             
+            if (tagsCacheInfo == null)
+            {
+                MessageBox.Show("No tags.dat was found in the maps directory!",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                MapFile = null;
+
+                if (DatFiles != null)
+                {
+                    DatFiles.Clear();
+                    DatFiles = null;
+                }
+                
+                return;
+            }
+
             using (var tagCacheStream = tagsCacheInfo.OpenRead())
                 TagCache = new TagCache(tagCacheStream);
 
@@ -110,7 +154,9 @@ namespace Sentinel
 
             StringIdResolverBase stringIDsResolver = null;
 
-            if (VersionDetection.Compare(Version, EngineVersion.V11_1_498295_Live) >= 0)
+            if (Version == EngineVersion.V12_1_700123_cert_ms30_oct19)
+                stringIDsResolver = new HaloOnlineTagTool.V12_1_700123.StringIdResolver();
+            else if (VersionDetection.Compare(Version, EngineVersion.V11_1_498295_Live) >= 0)
                 stringIDsResolver = new HaloOnlineTagTool.V11_1_498295.StringIdResolver();
             else
                 stringIDsResolver = new HaloOnlineTagTool.V1_106708.StringIdResolver();
@@ -139,38 +185,53 @@ namespace Sentinel
 
                 scenarioIndex = reader.ReadInt32();
             }
+            
+            renderer.InfoLabel.Content = "Loading tag name database...";
+            renderer.Refresh();
 
             TagNames = GetTagNames(Version);
 
-            this.renderer.lblStats.Content = $"{label} | {TagNames[scenarioIndex]}.scenario";
+            renderer.InfoLabel.Content = "Loading tag dependency graph...";
+            renderer.Refresh();
 
             var mapTags = new Dictionary<int, TagInstance>();
 
-            LoadTagDependencies(scenarioIndex, ref mapTags);
             LoadTagDependencies(TagCache.Tags.FindFirstInGroup(new Tag("cfgt")).Index, ref mapTags);
-
+            LoadTagDependencies(scenarioIndex, ref mapTags);
+            
             MapTags = mapTags;
 
             using (var cacheStream = tagsCacheInfo.OpenRead())
             {
+                renderer.StatsLabel.Content = "Loading resource cache...";
+                renderer.Refresh();
+
                 var resourceManager = new ResourceDataManager();
                 resourceManager.LoadCachesFromDirectory(MapFile.Directory.FullName);
 
                 var deserializer = new TagDeserializer(this.Version);
-                
-                var context = new TagSerializationContext(cacheStream, TagCache, StringIDCache, MapTags[scenarioIndex]);
+                ScenarioTag = MapTags[scenarioIndex];
+
+                renderer.StatsLabel.Content = "Loading scenario definition...";
+                renderer.Refresh();
+
+                var context = new TagSerializationContext(cacheStream, TagCache, StringIDCache, ScenarioTag);
                 ScenarioDefinition = deserializer.Deserialize<Scenario>(context);
+
+                renderer.StatsLabel.Content = "Loading scenario_structure_bsp definition...";
+                renderer.Refresh();
 
                 context = new TagSerializationContext(cacheStream, TagCache, StringIDCache, ScenarioDefinition.StructureBsps[0].StructureBsp2);
                 BSPDefinition = deserializer.Deserialize<ScenarioStructureBsp>(context);
+
+                renderer.StatsLabel.Content = "Loading atmosphere...";
+                renderer.Refresh();
 
                 context = new TagSerializationContext(cacheStream, TagCache, StringIDCache, ScenarioDefinition.SkyReferences[0].SkyObject);
                 var skyObject = deserializer.Deserialize(context, TagStructureTypes.FindByGroupTag(ScenarioDefinition.SkyReferences[0].SkyObject.GroupTag));
 
                 context = new TagSerializationContext(cacheStream, TagCache, StringIDCache, ScenarioDefinition.SkyParameters);
                 var skya = deserializer.Deserialize<SkyAtmParameters>(context);
-
-                renderer.Viewport.Children.Clear();
 
                 var lightGroup = new Model3DGroup();
 
@@ -190,6 +251,13 @@ namespace Sentinel
 
                 using (var bspStream = new MemoryStream())
                 {
+                    var bspTag = ScenarioDefinition.StructureBsps[0].StructureBsp2;
+                    var groupName = StringIDCache.GetString(bspTag.GroupName);
+                    if (!TagNames.ContainsKey(bspTag))
+                        TagNames[bspTag] = $"0x{bspTag.Index:X8}";
+                    renderer.InfoLabel.Content = $"Loading {TagNames[bspTag]}.{groupName}...";
+                    renderer.Refresh();
+
                     resourceManager.Extract(BSPDefinition.Geometry2.Resource, bspStream);
 
                     var bspContext = new ResourceSerializationContext(BSPDefinition.Geometry2.Resource);
@@ -201,8 +269,14 @@ namespace Sentinel
 
                     var materials = new List<MaterialGroup>();
 
+                    renderer.StatsLabel.Content = "Loading scenario_structure_bsp materials...";
+                    renderer.Refresh();
+
                     foreach (var material in BSPDefinition.Materials)
                         materials.Add(LoadMaterial(cacheStream, resourceManager, material.RenderMethod));
+
+                    renderer.StatsLabel.Content = "Loading scenario_structure_bsp clusters...";
+                    renderer.Refresh();
 
                     foreach (var cluster in BSPDefinition.Clusters)
                     {
@@ -220,6 +294,9 @@ namespace Sentinel
 
                     var nc = new GeometryCompressionInfo();
 
+                    renderer.StatsLabel.Content = "Loading scenario_structure_bsp instanced geometry...";
+                    renderer.Refresh();
+
                     foreach (var instance in BSPDefinition.InstancedGeometryInstances)
                     {
                         var section = LoadMesh(
@@ -229,7 +306,7 @@ namespace Sentinel
 
                         if (section == null)
                             continue;
-
+                        
                         var mat = Matrix3D.Identity;
                         mat.M11 = instance.ForwardI;
                         mat.M12 = instance.ForwardJ;
@@ -259,8 +336,13 @@ namespace Sentinel
                     bspGroup.Children.Add(clusterGroup);
                     bspGroup.Children.Add(instanceGroup);
 
+                    SetupCamera();
+
                     renderer.viewport.Children.Add(new ModelVisual3D { Content = bspGroup });
                 }
+
+                renderer.StatsLabel.Content = "Loading scenery...";
+                renderer.Refresh();
 
                 #region Scenery
                 var sceneryGroup = new Model3DGroup();
@@ -315,6 +397,10 @@ namespace Sentinel
 
                 renderer.viewport.Children.Add(new ModelVisual3D { Content = sceneryGroup });
                 #endregion
+
+                renderer.StatsLabel.Content = "Loading bipeds...";
+                renderer.Refresh();
+
                 #region Bipeds
                 var bipedsGroup = new Model3DGroup();
 
@@ -368,6 +454,10 @@ namespace Sentinel
 
                 renderer.viewport.Children.Add(new ModelVisual3D { Content = bipedsGroup });
                 #endregion
+
+                renderer.StatsLabel.Content = "Loading vehicles...";
+                renderer.Refresh();
+
                 #region Vehicles
                 var vehiclesGroup = new Model3DGroup();
 
@@ -421,6 +511,10 @@ namespace Sentinel
 
                 renderer.viewport.Children.Add(new ModelVisual3D { Content = vehiclesGroup });
                 #endregion
+
+                renderer.StatsLabel.Content = "Loading equipment...";
+                renderer.Refresh();
+
                 #region Equipment
                 var equipGroup = new Model3DGroup();
 
@@ -474,6 +568,10 @@ namespace Sentinel
 
                 renderer.viewport.Children.Add(new ModelVisual3D { Content = equipGroup });
                 #endregion
+
+                renderer.StatsLabel.Content = "Loading weapons...";
+                renderer.Refresh();
+
                 #region Weapons
                 var weaponsGroup = new Model3DGroup();
 
@@ -527,6 +625,10 @@ namespace Sentinel
 
                 renderer.viewport.Children.Add(new ModelVisual3D { Content = weaponsGroup });
                 #endregion
+
+                renderer.StatsLabel.Content = "Loading machines...";
+                renderer.Refresh();
+
                 #region Machines
                 var machinesGroup = new Model3DGroup();
 
@@ -580,6 +682,10 @@ namespace Sentinel
 
                 renderer.viewport.Children.Add(new ModelVisual3D { Content = machinesGroup });
                 #endregion
+
+                renderer.StatsLabel.Content = "Loading terminals...";
+                renderer.Refresh();
+
                 #region Terminals
                 var terminalsGroup = new Model3DGroup();
 
@@ -633,6 +739,10 @@ namespace Sentinel
 
                 renderer.viewport.Children.Add(new ModelVisual3D { Content = terminalsGroup });
                 #endregion
+
+                renderer.StatsLabel.Content = "Loading alternate reality devices...";
+                renderer.Refresh();
+
                 #region Alternate Reality Devices
                 var ardGroup = new Model3DGroup();
 
@@ -686,6 +796,10 @@ namespace Sentinel
 
                 renderer.viewport.Children.Add(new ModelVisual3D { Content = ardGroup });
                 #endregion
+
+                renderer.StatsLabel.Content = "Loading controls...";
+                renderer.Refresh();
+
                 #region Controls
                 var controlsGroup = new Model3DGroup();
 
@@ -739,6 +853,10 @@ namespace Sentinel
 
                 renderer.viewport.Children.Add(new ModelVisual3D { Content = controlsGroup });
                 #endregion
+
+                renderer.StatsLabel.Content = "Loading giants...";
+                renderer.Refresh();
+
                 #region Giants
                 var giantsGroup = new Model3DGroup();
 
@@ -792,6 +910,10 @@ namespace Sentinel
 
                 renderer.viewport.Children.Add(new ModelVisual3D { Content = giantsGroup });
                 #endregion
+
+                renderer.StatsLabel.Content = "Loading effects scenery...";
+                renderer.Refresh();
+
                 #region Effects Scenery
                 var esGroup = new Model3DGroup();
 
@@ -847,13 +969,24 @@ namespace Sentinel
                 #endregion
             }
 
-            #region Renderer Setup
+            renderer.StatsLabel.Content = null;
+            renderer.IsHitTestVisible = true;
+            renderer.Refresh();
+            
+            if (!TagNames.ContainsKey(ScenarioTag))
+                TagNames[ScenarioTag] = $"0x{ScenarioTag.Index:X8}";
+            renderer.InfoLabel.Content = $"{label} | {TagNames[ScenarioTag]}.scenario";
+            renderer.Start();
+        }
+
+        private void SetupCamera()
+        {
             var camera = (PerspectiveCamera)this.renderer.Viewport.Camera;
 
             var XBounds = new Range<float>(float.MaxValue, float.MinValue);
             var YBounds = new Range<float>(float.MaxValue, float.MinValue);
             var ZBounds = new Range<float>(float.MaxValue, float.MinValue);
-            
+
             foreach (var cluster in BSPDefinition.Clusters)
             {
                 if (cluster.MeshIndex >= BSPDefinition.Geometry2.Meshes.Count)
@@ -880,7 +1013,7 @@ namespace Sentinel
                 if (cluster.BoundsZMax > ZBounds.Max)
                     ZBounds = new Range<float>(ZBounds.Min, cluster.BoundsZMax);
             }
-            
+
             double pythagoras3d = Math.Sqrt(
                 Math.Pow(XBounds.Max - XBounds.Min, 2) +
                 Math.Pow(YBounds.Max - YBounds.Min, 2) +
@@ -897,14 +1030,14 @@ namespace Sentinel
                     Math.Pow(YBounds.Max - YBounds.Min, 2) +
                     Math.Pow(ZBounds.Max - ZBounds.Min, 2));
             }
-            
+
             var cameraPosition = new Point3D(
                 XBounds.Max + pythagoras3d * 0.5,
                 (YBounds.Max + YBounds.Min) / 2,
                 (ZBounds.Max + ZBounds.Min) / 2);
-            
-            renderer.MoveCamera(cameraPosition, new Vector3D(-1, 0, 0));
-            
+
+            renderer.TranslateCamera(cameraPosition, new Vector3D(-1, 0, 0));
+
             renderer.CameraSpeed = Math.Ceiling(pythagoras3d * 3) / 5000;
             renderer.MaxCameraSpeed = Math.Ceiling(pythagoras3d * 3) * 5 / 1000;
 
@@ -921,20 +1054,23 @@ namespace Sentinel
             renderer.FarPlaneMin = pythagoras3d * 0.01;
             renderer.FarPlane = pythagoras3d * pythagoras3d;
             renderer.FarPlaneMax = pythagoras3d * pythagoras3d;
-            
-            renderer.Start();
-            #endregion
         }
 
-        private static HashSet<int> LoadedSections = new HashSet<int>();
-
-        private static Dictionary<TagInstance, Model3DGroup> GameObjects =
-            new Dictionary<TagInstance, Model3DGroup>();
+        private static Dictionary<TagInstance, Model3DGroup> GameObjects = null;
 
         private Model3DGroup LoadGameObject(Stream cacheStream, ResourceDataManager resourceManager, TagDeserializer deserializer, TagInstance tag)
         {
             if (tag == null || !tag.IsInGroup(new Tag("obje")))
                 return null;
+
+            var groupName = StringIDCache.GetString(tag.GroupName);
+            if (!TagNames.ContainsKey(tag))
+                TagNames[tag] = $"0x{tag.Index:X8}";
+            renderer.InfoLabel.Content = $"Loading {TagNames[tag]}.{groupName}...";
+            renderer.Refresh();
+
+            if (GameObjects == null)
+                GameObjects = new Dictionary<TagInstance, Model3DGroup>();
 
             if (GameObjects.ContainsKey(tag))
                 return GameObjects[tag];
@@ -1003,16 +1139,24 @@ namespace Sentinel
             return renderModelGroup;
         }
 
-        private static Dictionary<TagInstance, MaterialGroup> Materials =
-            new Dictionary<TagInstance, MaterialGroup>();
+        private static Dictionary<TagInstance, MaterialGroup> Materials = null;
 
         private MaterialGroup LoadMaterial(Stream cacheStream, ResourceDataManager resourceManager, TagInstance tag)
         {
             var errMat = new MaterialGroup();
             errMat.Children.Add(new DiffuseMaterial { Color = Colors.Gold });
 
+            var groupName = StringIDCache.GetString(tag.GroupName);
+            if (!TagNames.ContainsKey(tag))
+                TagNames[tag] = $"0x{tag.Index:X8}";
+            renderer.InfoLabel.Content = $"Loading {TagNames[tag]}.{groupName}...";
+            renderer.Refresh();
+
             if (tag == null)
                 return errMat;
+
+            if (Materials == null)
+                Materials = new Dictionary<TagInstance, MaterialGroup>();
 
             if (Materials.ContainsKey(tag))
                 return Materials[tag];
@@ -1057,12 +1201,7 @@ namespace Sentinel
                     break;
                 }
             }
-
-            if (bitmapArgName == "")
-            {
-
-            }
-
+            
             TagInstance bitmapTag;
 
             try
@@ -1075,38 +1214,9 @@ namespace Sentinel
                 return errMat;
             }
 
-            context = new TagSerializationContext(cacheStream, TagCache, StringIDCache, bitmapTag);
-            var bitmap = deserializer.Deserialize<Bitmap>(context);
-            var extractor = new BitmapDdsExtractor(resourceManager);
+            var diffuse = LoadBitmap(cacheStream, resourceManager, bitmapTag);
 
-            System.Drawing.Bitmap bmp = null;
-            bool transparent = false;
-
-            using (var ddsStream = new MemoryStream())
-            {
-                transparent = (shader.ShaderProperties[0].ShaderMaps[bitmapIndex].BitmapFlags & (1 << 2)) != 0;
-
-                if (transparent)
-                {
-                    foreach (var import in shader.ImportData)
-                    {
-                        var name = StringIDCache.GetString(import.MaterialType);
-
-                        if (name != bitmapArgName)
-                            continue;
-
-                        if (import.Unknown4 != 1 && import.Unknown5 != 4)
-                            transparent = false;
-
-                        break;
-                    }
-                }
-
-                extractor.ExtractDds(deserializer, bitmap, 0, ddsStream);
-                bmp = LoadDDSBitmap(ddsStream, transparent);
-            }
-
-            if (bitmap == null)
+            if (diffuse == null)
             {
                 Materials[tag] = errMat;
                 return errMat;
@@ -1121,26 +1231,6 @@ namespace Sentinel
             float vTiling;
             try { vTiling = shader.ShaderProperties[0].Arguments[tileIndex].Arg2; }
             catch { vTiling = 1; }
-
-            MemoryStream stream;
-
-            try
-            {
-                stream = new MemoryStream();
-                bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-                bmp.Dispose();
-            }
-            catch
-            {
-                Materials[tag] = errMat;
-                return errMat;
-            }
-
-            var diffuse = new BitmapImage();
-
-            diffuse.BeginInit();
-            diffuse.StreamSource = stream;
-            diffuse.EndInit();
 
             var material = new MaterialGroup();
 
@@ -1159,8 +1249,16 @@ namespace Sentinel
             return material;
         }
 
+        private static Dictionary<Mesh, Model3DGroup> Meshes = null;
+
         private Model3DGroup LoadMesh(Mesh mesh, List<MaterialGroup> materials, Stream meshStream, RenderGeometryResourceDefinition resource, ObjExtractor extractor, GeometryCompressionInfo compression = null)
         {
+            if (Meshes == null)
+                Meshes = new Dictionary<Mesh, Model3DGroup>();
+
+            if (Meshes.ContainsKey(mesh))
+                return Meshes[mesh];
+            
             if (mesh.Parts.Count == 0)
                 return null;
 
@@ -1197,58 +1295,103 @@ namespace Sentinel
                 foreach (var i in partIndices)
                     geom.TriangleIndices.Add((int)i);
 
-                group.Children.Add(
-                    new GeometryModel3D(geom, materials[part.MaterialIndex]));
+                var model = new GeometryModel3D(geom, materials[part.MaterialIndex]);
+                group.Children.Add(model);
             }
 
+            Meshes[mesh] = group;
             return group;
         }
 
-        /// <summary>
-        /// Converts an in-memory image in DDS format to a System.Drawing.Bitmap
-        /// object for easy display in Windows forms.
-        /// </summary>
-        /// <param name="DDSData">Byte array containing DDS image data</param>
-        /// <returns>A Bitmap object that can be displayed</returns>
-        public static System.Drawing.Bitmap LoadDDSBitmap(MemoryStream stream, bool transparent)
+        private static Dictionary<TagInstance, BitmapImage> Bitmaps = null;
+
+        public BitmapImage LoadBitmap(Stream cacheStream, ResourceDataManager resourceManager, TagInstance bitmapTag)
         {
-            // Create a DevIL image "name" (which is actually a number)
-            int img_name;
-            DevIL.ilGenImages(1, out img_name);
-            DevIL.ilBindImage(img_name);
+            if (bitmapTag == null)
+                return null;
 
-            var ddsData = stream.ToArray();
+            var groupName = StringIDCache.GetString(bitmapTag.GroupName);
+            if (!TagNames.ContainsKey(bitmapTag))
+                TagNames[bitmapTag] = $"0x{bitmapTag.Index:X8}";
+            renderer.InfoLabel.Content = $"Loading {TagNames[bitmapTag]}.{groupName}...";
+            renderer.Refresh();
 
-            // Load the DDS file into the bound DevIL image
-            DevIL.ilLoadL(DevIL.IL_DDS, ddsData, ddsData.Length);
+            if (Bitmaps == null)
+                Bitmaps = new Dictionary<TagInstance, BitmapImage>();
 
-            // Set a few size variables that will simplify later code
-
-            int ImgWidth = DevIL.ilGetInteger(DevIL.IL_IMAGE_WIDTH);
-            int ImgHeight = DevIL.ilGetInteger(DevIL.IL_IMAGE_HEIGHT);
-            var rect = new System.Drawing.Rectangle(0, 0, ImgWidth, ImgHeight);
-
-            // Convert the DevIL image to a pixel byte array to copy into Bitmap
-            DevIL.ilConvertImage(DevIL.IL_BGRA, DevIL.IL_UNSIGNED_BYTE);
-
-            // Create a Bitmap to copy the image into, and prepare it to get data
-            var bmp = new System.Drawing.Bitmap(ImgWidth, ImgHeight);
-            var bmd = bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-            // Copy the pixel byte array from the DevIL image to the Bitmap
-            DevIL.ilCopyPixels(0, 0, 0,
-              DevIL.ilGetInteger(DevIL.IL_IMAGE_WIDTH),
-              DevIL.ilGetInteger(DevIL.IL_IMAGE_HEIGHT),
-              1, DevIL.IL_BGRA, DevIL.IL_UNSIGNED_BYTE,
-              bmd.Scan0);
+            if (Bitmaps.ContainsKey(bitmapTag))
+                return Bitmaps[bitmapTag];
             
-            // Clean up and return Bitmap
-            DevIL.ilDeleteImages(1, ref img_name);
-            bmp.UnlockBits(bmd);
-            return bmp;
+            var deserializer = new TagDeserializer(Version);
+            var context = new TagSerializationContext(cacheStream, TagCache, StringIDCache, bitmapTag);
+            var bitmap = deserializer.Deserialize<Bitmap>(context);
+            var extractor = new BitmapDdsExtractor(resourceManager);
+
+            System.Drawing.Bitmap bmp = null;
+
+            using (var ddsStream = new MemoryStream())
+            {
+                extractor.ExtractDds(deserializer, bitmap, 0, ddsStream);
+
+                // Create a DevIL image "name" (which is actually a number)
+                int img_name;
+                DevIL.ilGenImages(1, out img_name);
+                DevIL.ilBindImage(img_name);
+
+                var ddsData = ddsStream.ToArray();
+
+                // Load the DDS file into the bound DevIL image
+                DevIL.ilLoadL(DevIL.IL_DDS, ddsData, ddsData.Length);
+
+                // Set a few size variables that will simplify later code
+
+                int ImgWidth = DevIL.ilGetInteger(DevIL.IL_IMAGE_WIDTH);
+                int ImgHeight = DevIL.ilGetInteger(DevIL.IL_IMAGE_HEIGHT);
+                var rect = new System.Drawing.Rectangle(0, 0, ImgWidth, ImgHeight);
+
+                // Convert the DevIL image to a pixel byte array to copy into Bitmap
+                DevIL.ilConvertImage(DevIL.IL_BGRA, DevIL.IL_UNSIGNED_BYTE);
+
+                // Create a Bitmap to copy the image into, and prepare it to get data
+                bmp = new System.Drawing.Bitmap(ImgWidth, ImgHeight);
+                var bmd = bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                // Copy the pixel byte array from the DevIL image to the Bitmap
+                DevIL.ilCopyPixels(0, 0, 0,
+                  DevIL.ilGetInteger(DevIL.IL_IMAGE_WIDTH),
+                  DevIL.ilGetInteger(DevIL.IL_IMAGE_HEIGHT),
+                  1, DevIL.IL_BGRA, DevIL.IL_UNSIGNED_BYTE,
+                  bmd.Scan0);
+
+                // Clean up and return Bitmap
+                DevIL.ilDeleteImages(1, ref img_name);
+                bmp.UnlockBits(bmd);
+            }
+            
+            MemoryStream stream;
+
+            try
+            {
+                stream = new MemoryStream();
+                bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+                bmp.Dispose();
+            }
+            catch
+            {
+                return null;
+            }
+
+            var result = new BitmapImage();
+
+            result.BeginInit();
+            result.StreamSource = stream;
+            result.EndInit();
+            
+            Bitmaps[bitmapTag] = result;
+            return result;
         }
 
-        private Dictionary<int, string> GetTagNames(EngineVersion version)
+        private Dictionary<TagInstance, string> GetTagNames(EngineVersion version)
         {
             FileInfo csvFile = null;
 
@@ -1257,7 +1400,7 @@ namespace Sentinel
             else
                 csvFile = new FileInfo("cache\\V1_106708\\tagnames.csv");
 
-            var result = new Dictionary<int, string>();
+            var result = new Dictionary<TagInstance, string>();
 
             using (var streamReader = new StreamReader(csvFile.OpenRead()))
             {
@@ -1267,7 +1410,9 @@ namespace Sentinel
                     int tagIndex;
                     if (!int.TryParse(line[0].Replace("0x", ""), NumberStyles.HexNumber, null, out tagIndex))
                         continue;
-                    result[tagIndex] = line[1];
+                    if (TagCache.Tags[tagIndex] == null)
+                        continue;
+                    result[TagCache.Tags[tagIndex]] = line[1];
                 }
             }
 

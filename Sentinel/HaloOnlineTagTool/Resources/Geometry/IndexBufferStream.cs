@@ -70,7 +70,7 @@ namespace HaloOnlineTagTool.Resources.Geometry
         /// <param name="buffer">The buffer to read into.</param>
         /// <param name="offset">The offset into the buffer to start storing at.</param>
         /// <param name="count">The number of indexes to read.</param>
-        public void ReadIndexes(uint[] buffer, uint offset, uint count)
+        public void ReadIndices(uint[] buffer, uint offset, uint count)
         {
             for (uint i = 0; i < count; i++)
                 buffer[i + offset] = ReadIndex();
@@ -81,10 +81,10 @@ namespace HaloOnlineTagTool.Resources.Geometry
         /// </summary>
         /// <param name="count">The number of indexes to read.</param>
         /// <returns>The indexes that were read.</returns>
-        public uint[] ReadIndexes(uint count)
+        public uint[] ReadIndices(uint count)
         {
             var result = new uint[count];
-            ReadIndexes(result, 0, count);
+            ReadIndices(result, 0, count);
             return result;
         }
 
@@ -124,7 +124,7 @@ namespace HaloOnlineTagTool.Resources.Geometry
 
             var triangleCount = indexCount - 2;
             var result = new uint[triangleCount * 3];
-            var previous = ReadIndexes(2);
+            var previous = ReadIndices(2);
             for (var i = 0; i < triangleCount; i++)
             {
                 var index = ReadIndex();

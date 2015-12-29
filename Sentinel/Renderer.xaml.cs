@@ -17,7 +17,6 @@ using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using System.Runtime.InteropServices;
 
-
 namespace Sentinel
 {
     /// <summary>
@@ -29,37 +28,81 @@ namespace Sentinel
         private const double RAD_090 = 1.5707963268;
         private const double RAD_360 = 6.2831853072;
 
-        private bool mouseDown;
-        private DispatcherTimer timer = new DispatcherTimer();
-        private double forwardEx;
-        private Point lastPos = new Point();
-        private double yaw;
-        private double pitch;
-        private double backEx;
-        private double leftEx;
-        private double rightEx;
-        private double upEx;
-        private double downEx;
-        private double aSpeed = 0.1;
-        private double bSpeed = 0.1;
+        private DispatcherTimer Timer = new DispatcherTimer();
+        private Point LastPosition = new Point();
+        private double Yaw;
+        private double Pitch;
+        private double ForwardAmount;
+        private double BackwardAmount;
+        private double LeftAmount;
+        private double RightAmount;
+        private double UpAmount;
+        private double DownAmount;
+        private double Speed1 = 0.1;
+        private double Speed2 = 0.1;
 
+        /// <summary>
+        /// The sensitivity of the mouse's effect on camera rotation.
+        /// </summary>
+        public double LookSensitivity { get; set; } = 100.0;
 
-        public double CameraSpeed = 0.015;
-        public Viewport3D Viewport
+        /// <summary>
+        /// The viewport of the renderer.
+        /// </summary>
+        public Viewport3D Viewport => viewport;
+
+        /// <summary>
+        /// States if the mouse is current pressed down in the renderer.
+        /// </summary>
+        public bool MiddleButtonDown { get; private set; } = false;
+
+        /// <summary>
+        /// The movement speed of the camera.
+        /// </summary>
+        public double CameraSpeed { get; set; } = 0.015;
+
+        /// <summary>
+        /// The maximum movement speed of the camera.
+        /// </summary>
+        public double MaxCameraSpeed { get; set; } = 1.5;
+
+        /// <summary>
+        /// The minimum position of the camera
+        /// </summary>
+        public Point3D MinPosition { get; set; } = new Point3D(-500, -500, -500);
+
+        /// <summary>
+        /// The maximum position of the camera.
+        /// </summary>
+        public Point3D MaxPosition { get; set; } = new Point3D(500, 500, 500);
+
+        /// <summary>
+        /// The far view plane of the camera.
+        /// </summary>
+        public double FarPlane
         {
-            get { return this.viewport; }
-        }
-        public double MaxCameraSpeed = 1.5;
-        public Point3D MaxPosition = new Point3D(500, 500, 500);
-        public Point3D MinPosition = new Point3D(-500, -500, -500);
-        public double FarPlane { get { return ((PerspectiveCamera)viewport.Camera).FarPlaneDistance; } set { ((PerspectiveCamera)viewport.Camera).FarPlaneDistance = value; } }
-        public double FarPlaneMin = 200;
-        public double FarPlaneMax = 5000;
-        public bool Running
-        {
-            get { return timer.IsEnabled; }
+            get { return ((PerspectiveCamera)viewport.Camera).FarPlaneDistance; }
+            set { ((PerspectiveCamera)viewport.Camera).FarPlaneDistance = value; }
         }
 
+        /// <summary>
+        /// The minimum far view plane of the camera.
+        /// </summary>
+        public double FarPlaneMin { get; set; } = 200;
+
+        /// <summary>
+        /// The maximum far view plane of the camera.
+        /// </summary>
+        public double FarPlaneMax { get; set; } = 5000;
+
+        /// <summary>
+        /// The running state of the renderer.
+        /// </summary>
+        public bool Running => Timer.IsEnabled;
+
+        /// <summary>
+        /// Initializes a new <see cref="Renderer"/> instance.
+        /// </summary>
         public Renderer()
         {
             InitializeComponent();
@@ -68,16 +111,17 @@ namespace Sentinel
         private void Renderer_Loaded(object sender, RoutedEventArgs e)
         {
             Viewport.Children.Clear();
-            NormalizeSet();
-            timer = new DispatcherTimer();
-            timer.Tick += new EventHandler(dispatcherTimer_Tick);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+            NormalizeCamera();
+            Timer = new DispatcherTimer();
+            Timer.Tick += new EventHandler(Timer_Tick);
+            Timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
         }
 
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             var CursorPos = new System.Drawing.Point();
             GetCursorPos(out CursorPos);
+
             var point2 = new System.Windows.Point(CursorPos.X, CursorPos.Y);
 
             if (base.IsFocused)
@@ -89,19 +133,18 @@ namespace Sentinel
         private void Renderer_MouseDown(object sender, MouseButtonEventArgs e)
         {
             base.Focus();
-            if (e.LeftButton == MouseButtonState.Pressed)
-                mouseDown = true;
+            if (e.MiddleButton == MouseButtonState.Pressed)
+                MiddleButtonDown = true;
         }
 
         private void Renderer_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            mouseDown = false;
+            if (e.MiddleButton == MouseButtonState.Released)
+                MiddleButtonDown = false;
         }
 
         private void Renderer_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            //cameraSpeed += (double)e.Delta / 120000.0;
-
             if (e.Delta > 0)
                 CameraSpeed = Math.Ceiling(CameraSpeed * 1050) / 1000;
             else
@@ -114,177 +157,214 @@ namespace Sentinel
                 CameraSpeed = MaxCameraSpeed;
         }
 
+        /// <summary>
+        /// Refreshes the viewport and starts the <see cref="Renderer"/>.
+        /// </summary>
         public void Start()
         {
-            timer.Start();
+            Refresh();
+            Timer.Start();
         }
 
+        /// <summary>
+        /// Stops the renderer.
+        /// </summary>
+        /// <param name="Message"></param>
         public void Stop(string Message)
         {
-            timer.Stop();
+            Timer.Stop();
             Viewport.Children.Clear();
-            lblStats.Content = Message;
+            StatsLabel.Content = Message;
             Refresh();
         }
 
-        public void Refresh()
-        {
+        /// <summary>
+        /// Refreshes the renderer.
+        /// </summary>
+        public void Refresh() =>
             Dispatcher.Invoke(DispatcherPriority.Render, (Action)delegate { });
+
+        /// <summary>
+        /// Normalizes the look direction of a camera.
+        /// </summary>
+        /// <param name="Camera">The camera to normalizes the look direction of.</param>
+        private void NormalizeDirection(PerspectiveCamera Camera)
+        {
+            var length = Camera.LookDirection.Length;
+
+            Camera.LookDirection = new Vector3D(
+                Camera.LookDirection.X / length,
+                Camera.LookDirection.Y / length,
+                Camera.LookDirection.Z / length);
         }
 
-        private void NormalizeCamera(PerspectiveCamera Camera)
+        /// <summary>
+        /// Normalizes the position and look direction of the renderer's camera.
+        /// </summary>
+        public void NormalizeCamera()
         {
-            double len = Camera.LookDirection.Length;
-            Camera.LookDirection = new Vector3D(Camera.LookDirection.X / len, Camera.LookDirection.Y / len, Camera.LookDirection.Z / len);
+            var camera = (PerspectiveCamera)viewport.Camera;
+            NormalizeDirection(camera);
+
+            Yaw = Math.Atan2(camera.LookDirection.X, camera.LookDirection.Z);
+            Pitch = Math.Atan(camera.LookDirection.Y);
         }
 
-        public void NormalizeSet()
+        /// <summary>
+        /// Tranlates the position and look direction of the renderer's camera.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="lookDirection"></param>
+        public void TranslateCamera(Point3D position, Vector3D lookDirection)
         {
-            PerspectiveCamera camera = (PerspectiveCamera)viewport.Camera;
-            NormalizeCamera(camera);
-            yaw = Math.Atan2(camera.LookDirection.X, camera.LookDirection.Z);
-            pitch = Math.Atan(camera.LookDirection.Y);
-        }
-
-        public void MoveCamera(Point3D Position, Vector3D Direction)
-        {
-            lastPos = new Point();
-            PerspectiveCamera camera = (PerspectiveCamera)viewport.Camera;
-            camera.Position = Position;
-            camera.LookDirection = Direction;
-            NormalizeSet();
+            LastPosition = new Point();
+            var camera = (PerspectiveCamera)viewport.Camera;
+            camera.Position = position;
+            camera.LookDirection = lookDirection;
+            NormalizeCamera();
         }
 
         private void SetDebugInfo(PerspectiveCamera Camera)
         {
-            lblStats.Content = string.Format(
-                "{0,6:0.00}\x00b0, {1,6:0.00}\x00b0 X:{2:0.00} Y:{3:0.00} Z:{4:0.00} FOV: {5:0}, FPD: {6:0}, Speed: {7:0}",
-                (360.0 * yaw) / RAD_360,
-                (360.0 * pitch) / RAD_360,
+            StatsLabel.Content = string.Format(
+                "{0,6:0.00}\x00b0, {1,6:0.00}\x00b0 X:{2:0.00} Y:{3:0.00} Z:{4:0.00} FOV: {5:0}, FPD: {6:0}, Speed: {7:0}, Sensitivity: {8:0}",
+                (360.0 * Yaw) / RAD_360,
+                (360.0 * Pitch) / RAD_360,
                 Camera.Position.X,
                 Camera.Position.Y,
                 Camera.Position.Z,
                 Camera.FieldOfView,
                 Camera.FarPlaneDistance,
-                CameraSpeed * 1000);
+                CameraSpeed * 1000,
+                LookSensitivity);
         }
 
         private void UpdateCameraPosition()
         {
-            PerspectiveCamera camera = (PerspectiveCamera)viewport.Camera;
-            NormalizeCamera(camera);
-            //lblHelp.Visibility = CheckKeyState(Key.F1) ? Visibility.Visible : Visibility.Hidden;
-
+            var camera = (PerspectiveCamera)viewport.Camera;
+            NormalizeDirection(camera);
+            
             #region Set FOV
-            if (CheckKeyState(System.Windows.Forms.Keys.NumPad6)) camera.FieldOfView += camera.FieldOfView / 100.0;
-            if (CheckKeyState(System.Windows.Forms.Keys.NumPad4)) camera.FieldOfView -= camera.FieldOfView / 100.0;
+            if (CheckKeyState(System.Windows.Forms.Keys.NumPad6))
+                camera.FieldOfView += camera.FieldOfView / 100.0;
+            if (CheckKeyState(System.Windows.Forms.Keys.NumPad4))
+                camera.FieldOfView -= camera.FieldOfView / 100.0;
             camera.FieldOfView = ClipValue(camera.FieldOfView, 40, 120);
             #endregion
 
             #region Set FPD
-            if (CheckKeyState(System.Windows.Forms.Keys.NumPad8)) camera.FarPlaneDistance *= 1.01;
-            if (CheckKeyState(System.Windows.Forms.Keys.NumPad2)) camera.FarPlaneDistance *= 0.99;
+            if (CheckKeyState(System.Windows.Forms.Keys.NumPad8))
+                camera.FarPlaneDistance *= 1.01;
+            if (CheckKeyState(System.Windows.Forms.Keys.NumPad2))
+                camera.FarPlaneDistance *= 0.99;
             camera.FarPlaneDistance = ClipValue(camera.FarPlaneDistance, FarPlaneMin, FarPlaneMax);
             #endregion
 
             #region Check WASD
             if (!CheckKeyState(System.Windows.Forms.Keys.W))
             {
-                if (forwardEx > 0.0)
-                    forwardEx -= CameraSpeed * bSpeed;
+                if (ForwardAmount > 0.0)
+                    ForwardAmount -= CameraSpeed * Speed2;
                 else
-                    forwardEx = 0.0;
+                    ForwardAmount = 0.0;
             }
-            else if (forwardEx < CameraSpeed)
-                forwardEx += CameraSpeed * aSpeed;
+            else if (ForwardAmount < CameraSpeed)
+                ForwardAmount += CameraSpeed * Speed1;
             else
-                forwardEx = CameraSpeed;
+                ForwardAmount = CameraSpeed;
 
-            if (forwardEx != 0.0)
-                camera.Position = new Point3D(camera.Position.X + (camera.LookDirection.X * forwardEx), camera.Position.Y + (camera.LookDirection.Y * forwardEx), camera.Position.Z + (camera.LookDirection.Z * forwardEx));
+            if (ForwardAmount != 0.0)
+                camera.Position = new Point3D(camera.Position.X + (camera.LookDirection.X * ForwardAmount), camera.Position.Y + (camera.LookDirection.Y * ForwardAmount), camera.Position.Z + (camera.LookDirection.Z * ForwardAmount));
 
             if (!CheckKeyState(System.Windows.Forms.Keys.A))
             {
-                if (leftEx > 0.0)
-                    leftEx -= CameraSpeed * bSpeed;
+                if (LeftAmount > 0.0)
+                    LeftAmount -= CameraSpeed * Speed2;
                 else
-                    leftEx = 0.0;
+                    LeftAmount = 0.0;
             }
-            else if (leftEx < CameraSpeed)
-                leftEx += CameraSpeed * aSpeed;
+            else if (LeftAmount < CameraSpeed)
+                LeftAmount += CameraSpeed * Speed1;
             else
-                leftEx = CameraSpeed;
+                LeftAmount = CameraSpeed;
 
-            if (leftEx != 0.0)
-                camera.Position = new Point3D(camera.Position.X - (Math.Sin(yaw + RAD_090) * leftEx), camera.Position.Y - (Math.Cos(yaw + RAD_090) * leftEx), camera.Position.Z);
+            if (LeftAmount != 0.0)
+                camera.Position = new Point3D(camera.Position.X - (Math.Sin(Yaw + RAD_090) * LeftAmount), camera.Position.Y - (Math.Cos(Yaw + RAD_090) * LeftAmount), camera.Position.Z);
 
             if (!CheckKeyState(System.Windows.Forms.Keys.S))
             {
-                if (backEx > 0.0)
-                    backEx -= CameraSpeed * bSpeed;
+                if (BackwardAmount > 0.0)
+                    BackwardAmount -= CameraSpeed * Speed2;
                 else
-                    backEx = 0.0;
+                    BackwardAmount = 0.0;
             }
-            else if (backEx < CameraSpeed)
-                backEx += CameraSpeed * aSpeed;
+            else if (BackwardAmount < CameraSpeed)
+                BackwardAmount += CameraSpeed * Speed1;
             else
-                backEx = CameraSpeed;
+                BackwardAmount = CameraSpeed;
 
-            if (backEx != 0.0)
-                camera.Position = new Point3D(camera.Position.X - (camera.LookDirection.X * backEx), camera.Position.Y - (camera.LookDirection.Y * backEx), camera.Position.Z - (camera.LookDirection.Z * backEx));
+            if (BackwardAmount != 0.0)
+                camera.Position = new Point3D(camera.Position.X - (camera.LookDirection.X * BackwardAmount), camera.Position.Y - (camera.LookDirection.Y * BackwardAmount), camera.Position.Z - (camera.LookDirection.Z * BackwardAmount));
 
             if (!CheckKeyState(System.Windows.Forms.Keys.D))
             {
-                if (rightEx > 0.0)
-                    rightEx -= CameraSpeed * bSpeed;
+                if (RightAmount > 0.0)
+                    RightAmount -= CameraSpeed * Speed2;
                 else
-                    rightEx = 0.0;
+                    RightAmount = 0.0;
             }
-            else if (rightEx < CameraSpeed)
-                rightEx += CameraSpeed * aSpeed;
+            else if (RightAmount < CameraSpeed)
+                RightAmount += CameraSpeed * Speed1;
             else
-                rightEx = CameraSpeed;
-            if (rightEx != 0.0)
-                camera.Position = new Point3D(camera.Position.X + (Math.Sin(yaw + RAD_090) * rightEx), camera.Position.Y + (Math.Cos(yaw + RAD_090) * rightEx), camera.Position.Z);
+                RightAmount = CameraSpeed;
+            if (RightAmount != 0.0)
+                camera.Position = new Point3D(camera.Position.X + (Math.Sin(Yaw + RAD_090) * RightAmount), camera.Position.Y + (Math.Cos(Yaw + RAD_090) * RightAmount), camera.Position.Z);
             #endregion
 
             #region Check RF
             if (!CheckKeyState(System.Windows.Forms.Keys.R))
             {
-                if (upEx > 0.0)
-                    upEx -= CameraSpeed * bSpeed;
+                if (UpAmount > 0.0)
+                    UpAmount -= CameraSpeed * Speed2;
                 else
-                    upEx = 0.0;
+                    UpAmount = 0.0;
             }
-            else if (upEx < CameraSpeed)
-                upEx += CameraSpeed * aSpeed;
+            else if (UpAmount < CameraSpeed)
+                UpAmount += CameraSpeed * Speed1;
             else
-                upEx = CameraSpeed;
-            if (upEx != 0.0)
+                UpAmount = CameraSpeed;
+            if (UpAmount != 0.0)
             {
-                Vector3D vectord = Vector3D.CrossProduct(camera.LookDirection, Vector3D.CrossProduct(camera.LookDirection, camera.UpDirection));
+                var vectord = Vector3D.CrossProduct(camera.LookDirection, Vector3D.CrossProduct(camera.LookDirection, camera.UpDirection));
                 vectord.Normalize();
-                camera.Position = new Point3D(camera.Position.X - (vectord.X * upEx), camera.Position.Y - (vectord.Y * upEx), camera.Position.Z - (vectord.Z * upEx));
+                camera.Position = new Point3D(camera.Position.X - (vectord.X * UpAmount), camera.Position.Y - (vectord.Y * UpAmount), camera.Position.Z - (vectord.Z * UpAmount));
             }
             
             if (!CheckKeyState(System.Windows.Forms.Keys.F))
             {
-                if (downEx > 0.0)
-                    downEx -= CameraSpeed * bSpeed;
+                if (DownAmount > 0.0)
+                    DownAmount -= CameraSpeed * Speed2;
                 else
-                    downEx = 0.0;
+                    DownAmount = 0.0;
             }
-            else if (downEx < CameraSpeed)
-                downEx += CameraSpeed * aSpeed;
+            else if (DownAmount < CameraSpeed)
+                DownAmount += CameraSpeed * Speed1;
             else
-                downEx = CameraSpeed;
+                DownAmount = CameraSpeed;
 
-            if (downEx != 0.0)
+            if (DownAmount != 0.0)
             {
-                Vector3D vectord2 = Vector3D.CrossProduct(camera.LookDirection, Vector3D.CrossProduct(camera.LookDirection, camera.UpDirection));
+                var vectord2 = Vector3D.CrossProduct(camera.LookDirection, Vector3D.CrossProduct(camera.LookDirection, camera.UpDirection));
                 vectord2.Normalize();
-                camera.Position = new Point3D(camera.Position.X + (vectord2.X * downEx), camera.Position.Y + (vectord2.Y * downEx), camera.Position.Z + (vectord2.Z * downEx));
+                camera.Position = new Point3D(camera.Position.X + (vectord2.X * DownAmount), camera.Position.Y + (vectord2.Y * DownAmount), camera.Position.Z + (vectord2.Z * DownAmount));
             }
+            #endregion
+
+            #region Check +/-
+            if (CheckKeyState(System.Windows.Forms.Keys.Oemplus))
+                LookSensitivity = Math.Min(LookSensitivity + 0.01, 100.0);
+            if (CheckKeyState(System.Windows.Forms.Keys.OemMinus))
+                LookSensitivity = Math.Max(LookSensitivity - 0.01, 1.0);
             #endregion
 
             camera.Position = new Point3D(
@@ -297,10 +377,11 @@ namespace Sentinel
 
         private void UpdateCameraDirection(System.Windows.Point point)
         {
-            PerspectiveCamera camera = (PerspectiveCamera)viewport.Camera;
-            Point locationFromWindow = base.TranslatePoint(new Point(0, 0), this);
-            Point locationFromScreen = base.PointToScreen(locationFromWindow);
-            if (mouseDown)
+            var camera = (PerspectiveCamera)viewport.Camera;
+            var locationFromWindow = TranslatePoint(new Point(0, 0), this);
+            var locationFromScreen = PointToScreen(locationFromWindow);
+
+            if (MiddleButtonDown)
             {
                 if (point.X < locationFromScreen.X + 1)
                     SetCursorPos((int)(locationFromScreen.X + base.ActualWidth - 2), (int)point.Y);
@@ -317,28 +398,28 @@ namespace Sentinel
                     || point.Y < locationFromScreen.Y + 1
                     || point.Y > locationFromScreen.Y + base.ActualHeight - 1)
                 {
-                    System.Drawing.Point CursorPos = new System.Drawing.Point();
-                    GetCursorPos(out CursorPos);
-                    point = new System.Windows.Point(CursorPos.X, CursorPos.Y);
-                    lastPos = point;
+                    var cursorPos = new System.Drawing.Point();
+                    GetCursorPos(out cursorPos);
+                    point = new System.Windows.Point(cursorPos.X, cursorPos.Y);
+                    LastPosition = point;
                 }
 
-                if (lastPos.X > point.X)
-                    yaw -= (((lastPos.X - point.X) * RAD_360) / 54321.0) * camera.FieldOfView;
-                else if (lastPos.X < point.X)
-                    yaw += (((point.X - lastPos.X) * RAD_360) / 54321.0) * camera.FieldOfView;
-                if (lastPos.Y > point.Y)
-                    pitch += (((lastPos.Y - point.Y) * RAD_360) / 54321.0) * camera.FieldOfView;
-                else if (lastPos.Y < point.Y)
-                    pitch -= (((point.Y - lastPos.Y) * RAD_360) / 54321.0) * camera.FieldOfView;
+                if (LastPosition.X > point.X)
+                    Yaw -= (((((LastPosition.X - point.X) * RAD_360) / 54321.0) * camera.FieldOfView) * (LookSensitivity * 0.01));
+                else if (LastPosition.X < point.X)
+                    Yaw += (((((point.X - LastPosition.X) * RAD_360) / 54321.0) * camera.FieldOfView) * (LookSensitivity * 0.01));
+                if (LastPosition.Y > point.Y)
+                    Pitch += (((((LastPosition.Y - point.Y) * RAD_360) / 54321.0) * camera.FieldOfView) * (LookSensitivity * 0.01));
+                else if (LastPosition.Y < point.Y)
+                    Pitch -= (((((point.Y - LastPosition.Y) * RAD_360) / 54321.0) * camera.FieldOfView) * (LookSensitivity * 0.01));
             }
 
-            yaw %= RAD_360;
-            pitch = ClipValue(pitch, -RAD_089, RAD_089);
+            Yaw %= RAD_360;
+            Pitch = ClipValue(Pitch, -RAD_089, RAD_089);
 
             SetDebugInfo(camera);
-            camera.LookDirection = new Vector3D((camera.Position.X + Math.Sin(yaw)) - camera.Position.X, (camera.Position.Y + Math.Cos(yaw)) - camera.Position.Y, (camera.Position.Z + Math.Tan(pitch)) - camera.Position.Z);
-            lastPos = point;
+            camera.LookDirection = new Vector3D((camera.Position.X + Math.Sin(Yaw)) - camera.Position.X, (camera.Position.Y + Math.Cos(Yaw)) - camera.Position.Y, (camera.Position.Z + Math.Tan(Pitch)) - camera.Position.Z);
+            LastPosition = point;
         }
 
         private double ClipValue(double value, double min, double max) =>

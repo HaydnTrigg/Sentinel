@@ -290,7 +290,7 @@ namespace HaloOnlineTagTool.Resources.Geometry
             switch (indexBuffer.Type)
             {
                 case PrimitiveType.TriangleList:
-                    return indexStream.ReadIndexes(part.IndexCount);
+                    return indexStream.ReadIndices(part.IndexCount);
                 case PrimitiveType.TriangleStrip:
                     return indexStream.ReadTriangleStrip(part.IndexCount);
                 default:

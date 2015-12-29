@@ -89,6 +89,7 @@
     <Compile Include="HaloOnlineTagTool\Resources\Bitmaps\BitmapType.cs" />
     <Compile Include="HaloOnlineTagTool\Resources\D3DPointer.cs" />
     <Compile Include="HaloOnlineTagTool\Resources\Geometry\BlenderPhmoReader.cs" />
+    <Compile Include="HaloOnlineTagTool\Resources\Geometry\CollisionGeometryBuilder.cs" />
     <Compile Include="HaloOnlineTagTool\Resources\Geometry\GeometryReference.cs" />
     <Compile Include="HaloOnlineTagTool\Resources\Geometry\IndexBufferStream.cs" />
     <Compile Include="HaloOnlineTagTool\Resources\Geometry\IVertexStream.cs" />

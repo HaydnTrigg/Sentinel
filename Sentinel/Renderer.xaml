@@ -14,43 +14,13 @@
                     </Camera.Transform>
                 </PerspectiveCamera>
             </Viewport3D.Camera>
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <DirectionalLight Light.Color="White" DirectionalLight.Direction="-2,-3,-1" />
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <DirectionalLight Light.Color="White" DirectionalLight.Direction="2,3,1" />
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <AmbientLight Light.Color="DarkGray" />
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
         </Viewport3D>
-        <Label Name="lblHelp" Control.Foreground="#FFFFFFFF" UIElement.Visibility="Hidden" FrameworkElement.Margin="8,8,87,183" Control.FontFamily="Lucida Console">
-            <TextBlock>
-                <LineBreak />
-                  Controls:
-                  <LineBreak />
-                  - Movement: WASD, RF
-                  <LineBreak />
-                  - Panning: Left Click
-                  <LineBreak />
-                  - FOV: Numpad + -
-                  <LineBreak />
-                  - Camera Speed: Mouse Wheel
-                  <LineBreak />
-                  <LineBreak />
-                  Thanks Darvolt!
-            </TextBlock>
+        <Label Content="" Height="28" HorizontalAlignment="Stretch" Margin="6,0,0,33" Name="StatsLabel" VerticalAlignment="Bottom" FontFamily="Lucida Console" Foreground="White" FontWeight="Normal" FontStyle="Normal" FontSize="11">
             <UIElement.Effect>
                 <DropShadowEffect DropShadowEffect.ShadowDepth="0" DropShadowEffect.BlurRadius="5" DropShadowEffect.Color="Black" DropShadowEffect.Opacity="100" />
             </UIElement.Effect>
         </Label>
-        <Label Content="Welcome to Sentinel! Open a map file to begin..." Height="28" HorizontalAlignment="Stretch" Margin="6,0,0,0" Name="lblStats" VerticalAlignment="Bottom" FontFamily="Lucida Console" Foreground="White" Grid.Column="1" Grid.Row="1" FontWeight="Normal" FontStyle="Normal" FontSize="11">
+        <Label Content="" Height="28" HorizontalAlignment="Stretch" Margin="6,0,0,0" Name="InfoLabel" VerticalAlignment="Bottom" FontFamily="Lucida Console" Foreground="White" Grid.Column="1" Grid.Row="1" FontWeight="Normal" FontStyle="Normal" FontSize="11">
             <UIElement.Effect>
                 <DropShadowEffect DropShadowEffect.ShadowDepth="0" DropShadowEffect.BlurRadius="5" DropShadowEffect.Color="Black" DropShadowEffect.Opacity="100" />
             </UIElement.Effect>

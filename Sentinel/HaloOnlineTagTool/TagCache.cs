@@ -33,7 +33,7 @@ namespace HaloOnlineTagTool
         /// <summary>
         /// Gets the tags in the file.
         /// </summary>
-        public TagList Tags { get; private set; }
+        public TagList Tags { get; set; }
 
         /// <summary>
         /// Gets the timestamp stored in the file (as a FILETIME value).
