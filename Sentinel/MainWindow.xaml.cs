@@ -37,6 +37,12 @@ namespace Sentinel
 
         public List<FileInfo> DatFiles { get; set; }
 
+        public FileInfo TagsFile =>
+            DatFiles.Find(file => file.Name == "tags.dat");
+
+        public FileInfo StringIDsFile =>
+            DatFiles.Find(file => file.Name == "string_ids.dat");
+
         public EngineVersion Version { get; set; }
 
         public TagCache TagCache { get; set; }
@@ -74,11 +80,105 @@ namespace Sentinel
                 DispatcherPriority.Background,
                 new Action(delegate
                 {
-                    LoadCache();
+                    LoadScenario();
                 }));
         }
 
-        private void LoadCache()
+        private bool LoadCache()
+        {
+            var directory = MapFile.Directory;
+
+            DatFiles = directory.GetFiles("*.dat").ToList();
+
+            var tagsFile = TagsFile;
+            var stringIDsFile = StringIDsFile;
+
+            if (tagsFile == null || stringIDsFile == null)
+            {
+                var noTags = tagsFile == null;
+                var noStringIDs = stringIDsFile == null;
+                var message =
+                    (noTags && noStringIDs) ?
+                        "tags.dat or string_ids.dat" :
+                    (noTags) ?
+                        "tags.dat" :
+                    (noStringIDs) ?
+                        "string_ids.dat" :
+                    "life";
+
+                MessageBox.Show($"No {message} was found in the maps directory!",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                MapFile = null;
+
+                if (DatFiles != null)
+                {
+                    DatFiles.Clear();
+                    DatFiles = null;
+                }
+
+                return false;
+            }
+
+            renderer.InfoLabel.Content = "Loading tag cache...";
+            renderer.Refresh();
+
+            using (var tagCacheStream = tagsFile.OpenRead())
+                TagCache = new TagCache(tagCacheStream);
+
+            EngineVersion closestVersion;
+            Version = VersionDetection.DetectVersion(TagCache, out closestVersion);
+
+            if (Version == EngineVersion.Unknown)
+                Version = closestVersion;
+
+            renderer.InfoLabel.Content = "Loading string_ids...";
+            renderer.Refresh();
+
+            StringIdResolverBase stringIDsResolver = null;
+
+            if (Version == EngineVersion.V12_1_700123_cert_ms30_oct19)
+                stringIDsResolver = new HaloOnlineTagTool.V12_1_700123.StringIdResolver();
+            else if (VersionDetection.Compare(Version, EngineVersion.V11_1_498295_Live) >= 0)
+                stringIDsResolver = new HaloOnlineTagTool.V11_1_498295.StringIdResolver();
+            else
+                stringIDsResolver = new HaloOnlineTagTool.V1_106708.StringIdResolver();
+
+            using (var stringIDsCacheStream = stringIDsFile.OpenRead())
+                StringIDCache = new StringIdCache(stringIDsCacheStream, stringIDsResolver);
+
+            var scenarioIndex = -1;
+
+            using (var reader = new BinaryReader(MapFile.OpenRead()))
+            {
+                reader.BaseStream.Seek(4, SeekOrigin.Current);
+
+                var mapFileVersion = reader.ReadInt32();
+
+                if (mapFileVersion != 18)
+                    throw new NotImplementedException("Only Halo Online map files are supported.");
+
+                reader.BaseStream.Seek(0x011C, SeekOrigin.Begin);
+                var buildName = new string(reader.ReadChars(32)).Trim();
+
+                if (buildName.StartsWith("1.106708"))
+                    reader.BaseStream.Seek(0x2DF0, SeekOrigin.Begin);
+                else if (buildName.StartsWith("12.1.700123"))
+                    reader.BaseStream.Seek(0x2E00, SeekOrigin.Begin);
+
+                scenarioIndex = reader.ReadInt32();
+                ScenarioTag = TagCache.Tags[scenarioIndex];
+            }
+
+            renderer.InfoLabel.Content = "Loading tag name database...";
+            renderer.Refresh();
+
+            TagNames = GetTagNames(Version);
+
+            return true;
+        }
+
+        private void LoadScenario()
         {
             renderer.IsHitTestVisible = false;
             renderer.Viewport.Children.Clear();
@@ -105,91 +205,8 @@ namespace Sentinel
 
             GC.Collect();
 
-            var directory = MapFile.Directory;
-
-            DatFiles = directory.GetFiles("*.dat").ToList();
-
-            var tagsCacheInfo = DatFiles.Find(file => file.Name == "tags.dat");
-            
-            if (tagsCacheInfo == null)
-            {
-                MessageBox.Show("No tags.dat was found in the maps directory!",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                MapFile = null;
-
-                if (DatFiles != null)
-                {
-                    DatFiles.Clear();
-                    DatFiles = null;
-                }
-                
+            if (!LoadCache())
                 return;
-            }
-
-            using (var tagCacheStream = tagsCacheInfo.OpenRead())
-                TagCache = new TagCache(tagCacheStream);
-
-            EngineVersion closestVersion;
-            Version = VersionDetection.DetectVersion(TagCache, out closestVersion);
-
-            var label = "";
-
-            if (Version != EngineVersion.Unknown)
-            {
-                var buildDate = DateTime.FromFileTime(TagCache.Timestamp);
-                label += string.Format("Halo Online {0} {1} ({2})",
-                    VersionDetection.GetVersionString(Version),
-                    buildDate.ToShortDateString(),
-                    buildDate.ToShortTimeString());
-            }
-            else
-            {
-                label += string.Format("Halo Online UNKNOWN ({0}?)",
-                    VersionDetection.GetVersionString(closestVersion));
-                Version = closestVersion;
-            }
-            
-            var stringIDsCacheInfo = DatFiles.Find(file => file.Name == "string_ids.dat");
-
-            StringIdResolverBase stringIDsResolver = null;
-
-            if (Version == EngineVersion.V12_1_700123_cert_ms30_oct19)
-                stringIDsResolver = new HaloOnlineTagTool.V12_1_700123.StringIdResolver();
-            else if (VersionDetection.Compare(Version, EngineVersion.V11_1_498295_Live) >= 0)
-                stringIDsResolver = new HaloOnlineTagTool.V11_1_498295.StringIdResolver();
-            else
-                stringIDsResolver = new HaloOnlineTagTool.V1_106708.StringIdResolver();
-            
-            using (var stringIDsCacheStream = stringIDsCacheInfo.OpenRead())
-                StringIDCache = new StringIdCache(stringIDsCacheStream, stringIDsResolver);
-
-            var scenarioIndex = -1;
-
-            using (var reader = new BinaryReader(MapFile.OpenRead()))
-            {
-                reader.BaseStream.Seek(4, SeekOrigin.Current);
-
-                var mapFileVersion = reader.ReadInt32();
-
-                if (mapFileVersion != 18)
-                    throw new NotImplementedException("Only Halo Online map files are supported.");
-
-                reader.BaseStream.Seek(0x011C, SeekOrigin.Begin);
-                var buildName = new string(reader.ReadChars(32)).Trim();
-
-                if (buildName.StartsWith("1.106708"))
-                    reader.BaseStream.Seek(0x2DF0, SeekOrigin.Begin);
-                else if (buildName.StartsWith("12.1.700123"))
-                    reader.BaseStream.Seek(0x2E00, SeekOrigin.Begin);
-
-                scenarioIndex = reader.ReadInt32();
-            }
-            
-            renderer.InfoLabel.Content = "Loading tag name database...";
-            renderer.Refresh();
-
-            TagNames = GetTagNames(Version);
 
             renderer.InfoLabel.Content = "Loading tag dependency graph...";
             renderer.Refresh();
@@ -197,11 +214,11 @@ namespace Sentinel
             var mapTags = new Dictionary<int, TagInstance>();
 
             LoadTagDependencies(TagCache.Tags.FindFirstInGroup(new Tag("cfgt")).Index, ref mapTags);
-            LoadTagDependencies(scenarioIndex, ref mapTags);
+            LoadTagDependencies(ScenarioTag.Index, ref mapTags);
             
             MapTags = mapTags;
 
-            using (var cacheStream = tagsCacheInfo.OpenRead())
+            using (var cacheStream = DatFiles.Find(f => f.Name == "tags.dat").OpenRead())
             {
                 renderer.StatsLabel.Content = "Loading resource cache...";
                 renderer.Refresh();
@@ -210,15 +227,14 @@ namespace Sentinel
                 resourceManager.LoadCachesFromDirectory(MapFile.Directory.FullName);
 
                 var deserializer = new TagDeserializer(this.Version);
-                ScenarioTag = MapTags[scenarioIndex];
-
+                
                 renderer.StatsLabel.Content = "Loading scenario definition...";
                 renderer.Refresh();
 
                 var context = new TagSerializationContext(cacheStream, TagCache, StringIDCache, ScenarioTag);
                 ScenarioDefinition = deserializer.Deserialize<Scenario>(context);
 
-                renderer.StatsLabel.Content = "Loading scenario_structure_bsp definition...";
+                renderer.StatsLabel.Content = "Loading bsp definition...";
                 renderer.Refresh();
 
                 context = new TagSerializationContext(cacheStream, TagCache, StringIDCache, ScenarioDefinition.StructureBsps[0].StructureBsp2);
@@ -269,13 +285,13 @@ namespace Sentinel
 
                     var materials = new List<MaterialGroup>();
 
-                    renderer.StatsLabel.Content = "Loading scenario_structure_bsp materials...";
+                    renderer.StatsLabel.Content = "Loading bsp materials...";
                     renderer.Refresh();
 
                     foreach (var material in BSPDefinition.Materials)
                         materials.Add(LoadMaterial(cacheStream, resourceManager, material.RenderMethod));
 
-                    renderer.StatsLabel.Content = "Loading scenario_structure_bsp clusters...";
+                    renderer.StatsLabel.Content = "Loading bsp clusters...";
                     renderer.Refresh();
 
                     foreach (var cluster in BSPDefinition.Clusters)
@@ -294,7 +310,7 @@ namespace Sentinel
 
                     var nc = new GeometryCompressionInfo();
 
-                    renderer.StatsLabel.Content = "Loading scenario_structure_bsp instanced geometry...";
+                    renderer.StatsLabel.Content = "Loading bsp instanced geometry...";
                     renderer.Refresh();
 
                     foreach (var instance in BSPDefinition.InstancedGeometryInstances)
@@ -339,6 +355,9 @@ namespace Sentinel
                     SetupCamera();
 
                     renderer.viewport.Children.Add(new ModelVisual3D { Content = bspGroup });
+
+                    bspStream.Close();
+                    bspStream.Dispose();
                 }
 
                 renderer.StatsLabel.Content = "Loading scenery...";
@@ -972,6 +991,14 @@ namespace Sentinel
             renderer.StatsLabel.Content = null;
             renderer.IsHitTestVisible = true;
             renderer.Refresh();
+
+            var buildDate = DateTime.FromFileTime(TagCache.Timestamp);
+
+            var label =
+                string.Format("Halo Online {0} {1} ({2})",
+                    VersionDetection.GetVersionString(Version),
+                    buildDate.ToShortDateString(),
+                    buildDate.ToShortTimeString());
             
             if (!TagNames.ContainsKey(ScenarioTag))
                 TagNames[ScenarioTag] = $"0x{ScenarioTag.Index:X8}";
@@ -1057,7 +1084,7 @@ namespace Sentinel
         }
 
         private static Dictionary<TagInstance, Model3DGroup> GameObjects = null;
-
+        
         private Model3DGroup LoadGameObject(Stream cacheStream, ResourceDataManager resourceManager, TagDeserializer deserializer, TagInstance tag)
         {
             if (tag == null || !tag.IsInGroup(new Tag("obje")))
@@ -1118,19 +1145,18 @@ namespace Sentinel
                     for (var i = 0; i < permutation.MeshCount; i++)
                     {
                         Model3DGroup section;
-
-                        try
-                        {
-                            section = LoadMesh(
-                                renderModel.Geometry.Meshes[permutation.MeshIndex + i],
-                                materials, renderModelStream, renderModelGeometry, extractor,
-                                renderModel.Geometry.Compression[0]);
-                        }
-                        catch { continue; }
+                        
+                        section = LoadMesh(
+                            renderModel.Geometry.Meshes[permutation.MeshIndex + i],
+                            materials, renderModelStream, renderModelGeometry, extractor,
+                            renderModel.Geometry.Compression[0]);
 
                         renderModelGroup.Children.Add(section);
                     }
                 }
+
+                renderModelStream.Close();
+                renderModelStream.Dispose();
             }
 
 
@@ -1292,8 +1318,19 @@ namespace Sentinel
                     geom.TextureCoordinates.Add(new Point(v.TexCoords.X, v.TexCoords.Y));
                 }
 
-                foreach (var i in partIndices)
-                    geom.TriangleIndices.Add((int)i);
+                for (var x = 0; x < partIndices.Length; x += 3)
+                {
+                    var a = partIndices[x];
+                    var b = partIndices[x + 1];
+                    var c = partIndices[x + 2];
+
+                    if (a == b || a == c || b == c)
+                        continue;
+
+                    geom.TriangleIndices.Add((int)a);
+                    geom.TriangleIndices.Add((int)b);
+                    geom.TriangleIndices.Add((int)c);
+                }
 
                 var model = new GeometryModel3D(geom, materials[part.MaterialIndex]);
                 group.Children.Add(model);
@@ -1366,6 +1403,9 @@ namespace Sentinel
                 // Clean up and return Bitmap
                 DevIL.ilDeleteImages(1, ref img_name);
                 bmp.UnlockBits(bmd);
+
+                ddsStream.Close();
+                ddsStream.Dispose();
             }
             
             MemoryStream stream;
@@ -1395,7 +1435,9 @@ namespace Sentinel
         {
             FileInfo csvFile = null;
 
-            if (VersionDetection.Compare(version, EngineVersion.V11_1_498295_Live) >= 0)
+            if (VersionDetection.Compare(version, EngineVersion.V12_1_700123_cert_ms30_oct19) >= 0)
+                csvFile = new FileInfo("cache\\V12_1_700123\\tagnames.csv");
+            else if (VersionDetection.Compare(version, EngineVersion.V11_1_498295_Live) >= 0)
                 csvFile = new FileInfo("cache\\V11_1_498295\\tagnames.csv");
             else
                 csvFile = new FileInfo("cache\\V1_106708\\tagnames.csv");

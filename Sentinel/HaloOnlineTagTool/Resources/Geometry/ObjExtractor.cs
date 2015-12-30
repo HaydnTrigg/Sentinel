@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using HaloOnlineTagTool.Common;
 
 namespace HaloOnlineTagTool.Resources.Geometry
@@ -14,26 +17,10 @@ namespace HaloOnlineTagTool.Resources.Geometry
         private readonly StringWriter _faceWriter = new StringWriter();
         private uint _baseIndex = 1;
 
-        public class ObjVertex
+        public ObjExtractor()
         {
-            public Vector4 Position { get; set; }
-            public Vector3 Normal { get; set; }
-            public Vector2 TexCoords { get; set; }
+            _writer = null;
         }
-
-        public struct ObjMesh
-        {
-            public IEnumerable<ObjVertex> Vertices { get; }
-            public IEnumerable<uint> Indices { get; }
-
-            public ObjMesh(IEnumerable<ObjVertex> vertices, IEnumerable<uint> indices)
-            {
-                Vertices = vertices;
-                Indices = indices;
-            }
-        }
-
-        public ObjExtractor() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjExtractor"/> class.
@@ -66,58 +53,42 @@ namespace HaloOnlineTagTool.Resources.Geometry
                 var indexes = ReadIndices(reader, part, resourceStream);
                 WriteTriangles(indexes);
             }
-
             _baseIndex += (uint)vertices.Count;
         }
 
-        /// <summary>
-        /// Reads an uncompressed mesh from the resource stream.
-        /// </summary>
-        /// <param name="reader">The mesh reader to use.</param>
-        /// <param name="resourceStream">A stream open on the resource data.</param>
-        /// <returns>The extracted mesh in OBJ format.</returns>
-        public ObjMesh ReadMesh(MeshReader reader, Stream resourceStream)
-        {
-            // Read the uncompressed vertex buffer
-            var vertices = ReadVertices(reader, resourceStream);
-
-            // Read the indices for each part
-            var indices = new List<uint>();
-            foreach (var part in reader.Mesh.Parts)
-            {
-                var partIndices = ReadIndices(reader, part, resourceStream);
-                indices.AddRange(partIndices);
-            }
-
-            _baseIndex += (uint)vertices.Count;
-
-            return new ObjMesh(vertices, indices);
-        }
-
-        /// <summary>
-        /// Reads a mesh from the resource stream.
-        /// </summary>
-        /// <param name="reader">The mesh reader to use.</param>
-        /// <param name="compressor">The vertex compressor to use.</param>
-        /// <param name="resourceStream">A stream open on the resource data.</param>
-        /// <returns>The extracted mesh in OBJ format.</returns>
         public ObjMesh ReadMesh(MeshReader reader, VertexCompressor compressor, Stream resourceStream)
         {
-            // Read the vertex buffer and decompress each vertex
             var vertices = ReadVertices(reader, resourceStream);
-            DecompressVertices(vertices, compressor);
 
-            // Read the indices for each part
+            if (compressor != null)
+                DecompressVertices(vertices, compressor);
+
             var indices = new List<uint>();
+            
             foreach (var part in reader.Mesh.Parts)
             {
                 var partIndices = ReadIndices(reader, part, resourceStream);
-                indices.AddRange(partIndices);
+                
+                for (var i = 0; i < partIndices.Length; i += 3)
+                {
+                    var a = partIndices[i] + _baseIndex;
+                    var b = partIndices[i + 1] + _baseIndex;
+                    var c = partIndices[i + 2] + _baseIndex;
+                    
+                    if (a == b || a == c || b == c)
+                        continue;
+
+                    indices.AddRange(new uint[] { a, b, c });
+                }
             }
 
             _baseIndex += (uint)vertices.Count;
 
-            return new ObjMesh(vertices, indices);
+            return new ObjMesh
+            {
+                Vertices = vertices,
+                Indices = indices
+            };
         }
 
         /// <summary>
@@ -137,35 +108,25 @@ namespace HaloOnlineTagTool.Resources.Geometry
         /// <returns>The list of vertices that were read.</returns>
         public static List<ObjVertex> ReadVertices(MeshReader reader, Stream resourceStream)
         {
-            var result = new List<ObjVertex>();
+            // Open a vertex reader on stream 0 (main vertex data)
+            var mainBuffer = reader.VertexStreams[0];
+            if (mainBuffer == null)
+                throw new InvalidOperationException("Mesh does not have a vertex buffer bound to stream 0");
+            var vertexReader = reader.OpenVertexStream(mainBuffer, resourceStream);
 
-            foreach (var vertexStream in reader.VertexStreams)
+            switch (reader.Mesh.Type)
             {
-                if (vertexStream == null)
-                    continue;
-
-                var vertexReader = reader.OpenVertexStream(vertexStream, resourceStream);
-
-                switch (reader.Mesh.Type)
-                {
-                    case VertexType.Rigid:
-                        result.AddRange(ReadRigidVertices(vertexReader, vertexStream.Count));
-                        break;
-                    case VertexType.Skinned:
-                        result.AddRange(ReadSkinnedVertices(vertexReader, vertexStream.Count));
-                        break;
-                    case VertexType.DualQuat:
-                        result.AddRange(ReadDualQuatVertices(vertexReader, vertexStream.Count));
-                        break;
-                    case VertexType.World:
-                        result.AddRange(ReadWorldVertices(vertexReader, vertexStream.Count));
-                        break;
-                    default:
-                        throw new InvalidOperationException("Only Rigid, Skinned, and DualQuat meshes are supported");
-                }
+                case VertexType.Rigid:
+                    return ReadRigidVertices(vertexReader, mainBuffer.Count);
+                case VertexType.Skinned:
+                    return ReadSkinnedVertices(vertexReader, mainBuffer.Count);
+                case VertexType.DualQuat:
+                    return ReadDualQuatVertices(vertexReader, mainBuffer.Count);
+                case VertexType.World:
+                    return ReadWorldVertices(vertexReader, mainBuffer.Count);
+                default:
+                    throw new InvalidOperationException("Only Rigid, Skinned, and DualQuat meshes are supported");
             }
-
-            return result;
         }
 
         /// <summary>
@@ -235,7 +196,7 @@ namespace HaloOnlineTagTool.Resources.Geometry
         }
 
         /// <summary>
-        /// Reads rigid vertices into a format-independent list.
+        /// Reads world vertices into a format-independent list.
         /// </summary>
         /// <param name="reader">The vertex reader to read from.</param>
         /// <param name="count">The number of vertices to read.</param>
@@ -330,14 +291,14 @@ namespace HaloOnlineTagTool.Resources.Geometry
         /// <summary>
         /// Queues triangle list data to be written out to the file.
         /// </summary>
-        /// <param name="indexes">The indexes for the triangle list. Each set of 3 indexes forms one triangle.</param>
-        private void WriteTriangles(IReadOnlyList<uint> indexes)
+        /// <param name="indices">The indexes for the triangle list. Each set of 3 indexes forms one triangle.</param>
+        private void WriteTriangles(IReadOnlyList<uint> indices)
         {
-            for (var i = 0; i < indexes.Count; i += 3)
+            for (var i = 0; i < indices.Count; i += 3)
             {
-                var a = indexes[i] + _baseIndex;
-                var b = indexes[i + 1] + _baseIndex;
-                var c = indexes[i + 2] + _baseIndex;
+                var a = indices[i] + _baseIndex;
+                var b = indices[i + 1] + _baseIndex;
+                var c = indices[i + 2] + _baseIndex;
 
                 // Discard degenerate triangles
                 if (a == b || a == c || b == c)
@@ -346,6 +307,19 @@ namespace HaloOnlineTagTool.Resources.Geometry
                 // Write a face command for a triangle
                 _faceWriter.WriteLine("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}", a, b, c);
             }
+        }
+
+        public class ObjVertex
+        {
+            public Vector4 Position { get; set; }
+            public Vector3 Normal { get; set; }
+            public Vector2 TexCoords { get; set; }
+        }
+
+        public class ObjMesh
+        {
+            public List<ObjVertex> Vertices { get; set; }
+            public List<uint> Indices { get; set; }
         }
     }
 }
