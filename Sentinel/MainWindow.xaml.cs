@@ -1003,6 +1003,9 @@ namespace Sentinel
             if (!TagNames.ContainsKey(ScenarioTag))
                 TagNames[ScenarioTag] = $"0x{ScenarioTag.Index:X8}";
             renderer.InfoLabel.Content = $"{label} | {TagNames[ScenarioTag]}.scenario";
+
+            GC.Collect();
+
             renderer.Start();
         }
 
